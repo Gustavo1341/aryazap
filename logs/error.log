@@ -1,0 +1,409 @@
+2025-09-28 11:15:18 ERROR  Erro ao conectar com ChromaDB: Failed to connect to chromadb. Make sure your server is running and try again. If you are running from a browser, make sure that your chromadb instance is configured to allow requests from the current origin using the CHROMA_SERVER_CORS_ALLOW_ORIGINS environment variable.
+ChromaConnectionError: Failed to connect to chromadb. Make sure your server is running and try again. If you are running from a browser, make sure that your chromadb instance is configured to allow requests from the current origin using the CHROMA_SERVER_CORS_ALLOW_ORIGINS environment variable.
+    at chromaFetch (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/chromadb/dist/chromadb.mjs:4082:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ChromaClient.heartbeat (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/chromadb/dist/chromadb.mjs:4519:22)
+    at async ChromaService.connect (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/chromaService.js:21:7)
+    at async RAGService.initialize (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:17:31)
+    at async SalesAgent.initialize (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:19:30)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:22:25)
+2025-09-28 11:15:18 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:18 ERROR  Erro ao gerar resposta: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:19 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:19 ERROR  Erro no fallback: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:19 ERROR  Erro ao processar mensagem: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:20 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:20 ERROR  Erro ao gerar resposta: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:21 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:21 ERROR  Erro no fallback: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:21 ERROR  Erro ao processar mensagem: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:22 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:22 ERROR  Erro ao gerar resposta: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:23 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:23 ERROR  Erro no fallback: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:23 ERROR  Erro ao processar mensagem: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:24 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:24 ERROR  Erro ao gerar resposta: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:24 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:24 ERROR  Erro no fallback: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:24 ERROR  Erro ao processar mensagem: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:26 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:26 ERROR  Erro ao gerar resposta: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:26 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:26 ERROR  Erro no fallback: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:26 ERROR  Erro ao processar mensagem: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:28 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:28 ERROR  Erro ao gerar resposta: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:28 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:28 ERROR  Erro no fallback: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:28 ERROR  Erro ao processar mensagem: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:29 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:29 ERROR  Erro ao gerar resposta: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:30 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:30 ERROR  Erro no fallback: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:30 ERROR  Erro ao processar mensagem: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:31 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:31 ERROR  Erro ao gerar resposta: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:32 ERROR  Erro ao gerar texto com Gemini: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:32 ERROR  Erro no fallback: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:134:34)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+2025-09-28 11:15:32 ERROR  Erro ao processar mensagem: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Error: [404 Not Found] models/gemini-1.5-flash is not found for API version v1, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at makeRequest (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:214:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async generateContent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/@google/generative-ai/dist/index.mjs:523:22)
+    at async GeminiService.generateText (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/geminiService.js:62:22)
+    at async RAGService.generateResponse (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:114:24)
+    at async SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:72:22)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:50:22)
+[90m2025-09-28 11:17:52[39m [31mERROR[39m  Erro ao conectar com ChromaDB: Failed to connect to chromadb. Make sure your server is running and try again. If you are running from a browser, make sure that your chromadb instance is configured to allow requests from the current origin using the CHROMA_SERVER_CORS_ALLOW_ORIGINS environment variable.
+ChromaConnectionError: Failed to connect to chromadb. Make sure your server is running and try again. If you are running from a browser, make sure that your chromadb instance is configured to allow requests from the current origin using the CHROMA_SERVER_CORS_ALLOW_ORIGINS environment variable.
+    at chromaFetch (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/chromadb/dist/chromadb.mjs:4082:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ChromaClient.heartbeat (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/chromadb/dist/chromadb.mjs:4519:22)
+    at async ChromaService.connect (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/chromaService.js:21:7)
+    at async RAGService.initialize (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:17:31)
+    at async SalesAgent.initialize (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:19:30)
+    at async testSimple (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-simple.js:22:25)
+2025-09-28 11:34:40 ERROR  Erro ao conectar com ChromaDB: Failed to connect to chromadb. Make sure your server is running and try again. If you are running from a browser, make sure that your chromadb instance is configured to allow requests from the current origin using the CHROMA_SERVER_CORS_ALLOW_ORIGINS environment variable.
+ChromaConnectionError: Failed to connect to chromadb. Make sure your server is running and try again. If you are running from a browser, make sure that your chromadb instance is configured to allow requests from the current origin using the CHROMA_SERVER_CORS_ALLOW_ORIGINS environment variable.
+    at chromaFetch (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/chromadb/dist/chromadb.mjs:4082:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ChromaClient.heartbeat (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/chromadb/dist/chromadb.mjs:4519:22)
+    at async ChromaService.connect (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/chromaService.js:21:7)
+    at async RAGService.initialize (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:17:31)
+    at async testEmbeddings (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-embeddings.js:23:25)
+2025-09-28 11:36:19 ERROR  Erro ao conectar com ChromaDB: Failed to connect to chromadb. Make sure your server is running and try again. If you are running from a browser, make sure that your chromadb instance is configured to allow requests from the current origin using the CHROMA_SERVER_CORS_ALLOW_ORIGINS environment variable.
+ChromaConnectionError: Failed to connect to chromadb. Make sure your server is running and try again. If you are running from a browser, make sure that your chromadb instance is configured to allow requests from the current origin using the CHROMA_SERVER_CORS_ALLOW_ORIGINS environment variable.
+    at chromaFetch (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/chromadb/dist/chromadb.mjs:4082:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ChromaClient.heartbeat (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/node_modules/chromadb/dist/chromadb.mjs:4519:22)
+    at async ChromaService.connect (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/chromaService.js:21:7)
+    at async RAGService.initialize (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/services/ragService.js:17:31)
+    at async SalesAgent.initialize (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:19:30)
+    at async testSalesAgent (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-agent.js:21:25)
+2025-09-28 11:46:52 ERROR  Erro ao conectar com Supabase: TypeError: fetch failed
+2025-09-28 11:51:09 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 11:51:09 ERROR  Erro ao indexar base de conhecimento: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 11:51:09 ERROR  Erro no teste de embeddings: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 11:51:57 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 11:51:57 ERROR  Erro ao indexar base de conhecimento: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 11:51:57 ERROR  Erro ao carregar base de conhecimento: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 11:54:22 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 11:58:27 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 11:59:17[39m [31mERROR[39m  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 12:01:02 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 12:01:11 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 12:01:26[39m [31mERROR[39m  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 12:01:53 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache

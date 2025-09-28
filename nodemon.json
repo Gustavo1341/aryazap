@@ -1,0 +1,14 @@
+{
+  "watch": ["*.js", "*.mjs", "*.cjs"],
+  "ext": "js,mjs,cjs,json",
+  "ignore": [
+    "node_modules/",
+    "session/",
+    "logs/",
+    "temp/",
+    "objection_classifier.json",
+    "classifier_metadata.json",
+    "*.log"
+  ],
+  "exec": "node main.js"
+} 

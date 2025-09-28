@@ -1,0 +1,188 @@
+# Objetivo: Implementar Lógica de Alteração do {tag_link} para Chunk 'mais_provas'
+
+- [x] Tarefa 1: Análise e Engenharia Reversa do Sistema Atual
+  - [x] Micro-tarefa 1.1: Examinar o chunk 'mais_provas' no knowledgeBase.js
+    - [x] Identificar estrutura e conteúdo do chunk
+    - [x] Verificar como é processado no generateChunks.cjs
+  - [x] Micro-tarefa 1.2: Analisar o socialProofPersonalizer.js
+    - [x] Entender lógica atual de substituição do {tag_link}
+    - [x] Identificar função replaceTagLink e determineContext
+  - [x] Micro-tarefa 1.3: Mapear fluxo de processamento
+    - [x] Verificar como chunks são enviados no aiProcessor.js
+    - [x] Identificar onde {tag_link} é substituído
+
+- [x] Tarefa 2: Implementar Detecção do Chunk 'mais_provas'
+  - [x] Micro-tarefa 2.1: Modificar socialProofPersonalizer.js
+    - [x] Adicionar função para detectar quando chunk 'mais_provas' está sendo enviado
+    - [x] Implementar lógica para ativar flag usesSalesPageLink
+  - [x] Micro-tarefa 2.2: Integrar detecção no aiProcessor.js
+    - [x] Modificar processamento para detectar chunk 'mais_provas'
+    - [x] Ativar flag antes da substituição do {tag_link}
+
+- [x] Tarefa 3: Implementar Lógica de Alteração do Link
+  - [x] Micro-tarefa 3.1: Modificar função determineContext
+    - [x] Adicionar verificação específica para chunk 'mais_provas'
+    - [x] Garantir que {tag_link} aponte para salesPage quando chunk for detectado
+  - [x] Micro-tarefa 3.2: Atualizar stateManager
+    - [x] Adicionar flag contextFlags.usesSalesPageLink quando chunk for enviado
+    - [x] Garantir persistência da flag no estado do chat
+
+- [x] Tarefa 4: Testes e Validação
+  - [x] Micro-tarefa 4.1: Testar cenário específico
+    - [x] Simular envio do chunk 'mais_provas'
+    - [x] Verificar se {tag_link} aponta para salesPage
+  - [x] Micro-tarefa 4.2: Verificar processedKnowledge.js
+    - [x] Executar generateChunks.cjs
+    - [x] Confirmar que chunk foi processado corretamente
+
+- [x] Tarefa 5: Documentação e Finalização
+  - [x] Micro-tarefa 5.1: Documentar alterações
+    - [x] Criar arquivo de documentação das modificações
+    - [x] Explicar lógica implementada
+  - [x] Micro-tarefa 5.2: Validação final
+    - [x] Testar fluxo completo
+    - [x] Confirmar funcionamento correto
+
+- [x] Tarefa 12: Correção do erro de mensagem com 'undefined' no chunk duracao_aulas
+  - [x] Micro-tarefa 12.1: Identificação da causa do 'undefined'
+    - [x] Análise do processedKnowledge.js linha 229
+    - [x] Verificação do knowledgeBase.js chunk 'duracao_aulas'
+    - [x] Identificação de que o campo 'resposta' estava ausente
+
+- [x] Tarefa 13: Correção do problema de detecção de pedidos iniciais de provas sociais
+  - [x] Micro-tarefa 13.1: Investigação do problema reportado
+    - [x] Análise do cenário: "Quero ver algumas provas sociais" seguido de "quero ver mais provas sociais"
+    - [x] Identificação de que o segundo pedido não ativava o chunk correto
+  - [x] Micro-tarefa 13.2: Diagnóstico da causa raiz
+    - [x] Teste da função hasPreviousSocialProofInHistory
+    - [x] Descoberta de que "algumas provas" não estava nos indicadores
+    - [x] Confirmação de que pedidos iniciais não eram detectados
+  - [x] Micro-tarefa 13.3: Implementação da correção
+    - [x] Adição de novos indicadores na função hasPreviousSocialProofInHistory
+    - [x] Inclusão de termos como "algumas provas", "quero ver algumas", "ver algumas"
+    - [x] Teste e validação da correção com cenário completo
+  - [x] Micro-tarefa 12.2: Correção do knowledgeBase.js
+    - [x] Adição do campo 'resposta' ao chunk 'duracao_aulas'
+    - [x] Regeneração dos chunks com generateChunks.cjs
+    - [x] Validação da correção no processedKnowledge.js
+  - [x] Micro-tarefa 12.3: Teste do funcionamento
+    - [x] Reinicialização do bot para validar as correções
+    - [x] Confirmação de que não há mais erros de 'undefined'
+
+- [x] Tarefa 10: Implementar armazenamento no banco de dados para preferência de link (checkout vs salesPage) ao detectar pedidos de mais provas sociais
+  - [x] Micro-tarefa 10.1: Verificar e garantir estrutura de armazenamento no banco
+    - [x] Confirmar que a tabela `chat_states` já possui coluna `state_data` JSONB
+    - [x] Verificar que `state_data` já possui estrutura `metadata.contextFlags.usesSalesPageLink`
+  - [x] Micro-tarefa 10.2: Criar função para atualizar preferência de link no banco
+
+- [x] Tarefa 16: Corrigir erro "LINK_CONFIGURATION is not defined"
+  - [x] Micro-tarefa 16.1: Identificar que LINK_CONFIGURATION não estava definido no pricing.js
+  - [x] Micro-tarefa 16.2: Criar configuração LINK_CONFIGURATION usando variáveis de ambiente
+
+- [x] Tarefa 11: Corrigir erro `socialProofPersonalizer is not defined` no aiProcessor.js
+  - [x] Micro-tarefa 11.1: Analisar o erro e identificar a causa raiz
+    - [x] Investigar o erro `socialProofPersonalizer is not defined` no aiProcessor.js
+    - [x] Confirmar que o módulo `socialProofPersonalizer` não existia
+    - [x] Revisar documentação existente em `docs/implementacao_mais_provas_chunk.md`
+  - [x] Micro-tarefa 11.2: Implementar o módulo `socialProofPersonalizer.js`
+    - [x] Criar arquivo com todas as funções necessárias
+    - [x] Implementar detecção de pedidos de mais provas sociais
+    - [x] Implementar lógica de substituição do {tag_link}
+  - [x] Micro-tarefa 11.3: Integrar o módulo no aiProcessor.js
+    - [x] Adicionar import do `socialProofPersonalizer`
+    - [x] Testar correção e confirmar inicialização bem-sucedida
+    - [x] Criar função `updateLinkPreference` no `stateManager.js` para salvar usesSalesPageLink
+    - [x] Implementar lógica para detectar quando deve usar salesPage ao invés de checkout
+  - [x] Micro-tarefa 10.3: Integrar detecção de provas sociais com armazenamento
+    - [x] Modificar `IntelligentRAG.js` para chamar função de atualização quando detectar chunk `mais_provas`
+    - [x] Garantir que a preferência seja salva no banco imediatamente após detecção
+  - [x] Micro-tarefa 10.4: Garantir persistência independente da etapa do funil
+    - [x] Modificar `aiProcessor.js` para sempre verificar a flag do banco antes de construir links
+    - [x] Implementar lógica para usar salesPage quando flag estiver ativa, independente da etapa
+  - [x] Micro-tarefa 10.5: Testar e validar implementação
+    - [x] Criar testes para verificar se a preferência é salva corretamente
+    - [x] Validar que a preferência persiste mesmo trocando de etapa do funil
+    - [x] Confirmar que o link correto é usado baseado na preferência armazenada
+
+- [x] Tarefa 6: Implementação Inteligente e Testes de Validação
+  - [x] Micro-tarefa 6.1: Aprimorar função containsMaisProvasChunk
+    - [x] Adicionar indicadores adicionais (evidências sociais, testimonials)
+    - [x] Melhorar detecção de variações linguísticas
+  - [x] Micro-tarefa 6.2: Criar arquivo de teste abrangente
+    - [x] Desenvolver test_mais_provas_simple.cjs
+    - [x] Implementar 35 casos de teste diferentes
+    - [x] Validar detecção, não-detecção e edge cases
+  - [x] Micro-tarefa 6.3: Validação completa da implementação
+    - [x] Executar todos os testes de validação
+    - [x] Confirmar 100% de sucesso nos testes
+    - [x] Garantir funcionamento sem bugs
+
+- [x] Tarefa 7: Engenharia Reversa - Problema CLOSE_DEAL
+  - [x] Micro-tarefa 7.1: Análise do Fluxo de Processamento do {tag_link}
+    - [x] Identificar onde _injectRuntimePlaceholders é chamada (linha 781 PRÉ-IA e linha 2009 PÓS-IA)
+    - [x] Analisar função replaceTagLink no socialProofPersonalizer.js
+    - [x] Confirmar que função força salesPage quando detecta mais_provas
+  - [x] Micro-tarefa 7.2: Diagnóstico do Problema CLOSE_DEAL
+    - [x] Verificar se CLOSE_DEAL está sendo processado na linha 781 (PRÉ-IA)
+    - [x] Analisar por que salesPage não está sendo usado na etapa CLOSE_DEAL
+    - [x] Verificar se containsMaisProvasChunk detecta corretamente o prompt CLOSE_DEAL
+  - [x] Micro-tarefa 7.3: Identificação da Causa Raiz
+    - [x] Testar se o prompt CLOSE_DEAL contém indicadores do chunk mais_provas
+    - [x] Verificar se a lógica de detecção está funcionando corretamente
+    - [x] Propor solução para garantir salesPage na etapa CLOSE_DEAL
+  - [x] Micro-tarefa 7.4: Implementação da Correção
+    - [x] Modificar replaceTagLink para detectar quando usuário pediu mais provas anteriormente
+    - [x] Implementar lógica para usar salesPage na etapa CLOSE_DEAL se flag estiver ativa
+    - [x] Testar a correção e validar funcionamento
+    - [x] Criar teste abrangente para validar a correção
+    - [x] Validar que todos os cenários funcionam corretamente (CLOSE_DEAL + flag ativa/inativa, chunk mais_provas)
+
+- [x] Tarefa 8: Corrigir a função containsMaisProvasChunk para detectar corretamente o conteúdo do chunk 'mais_provas'
+  - [x] Micro-tarefa 8.1: Analisar o conteúdo real do chunk 'mais_provas' no processedKnowledge.js
+  - [x] Micro-tarefa 8.2: Identificar os indicadores que estão faltando na função containsMaisProvasChunk
+  - [x] Micro-tarefa 8.3: Atualizar a lista de indicadores na função containsMaisProvasChunk
+  - [x] Micro-tarefa 8.4: Testar a correção para garantir que funciona corretamente
+
+- [x] Tarefa 9: Corrigir Persistência da Flag usesSalesPageLink
+  - [x] Micro-tarefa 9.1: Identificar onde a flag usesSalesPageLink estava sendo perdida
+    - [x] Buscar por padrões de sobrescrita do metadata
+    - [x] Analisar aiProcessor.js e socialProofPersonalizer.js
+    - [x] Identificar linha 2218 do aiProcessor.js como causa principal
+  - [x] Micro-tarefa 9.2: Aplicar correções no aiProcessor.js
+    - [x] Modificar inicialização de finalMetadataToSave para preservar contextFlags
+    - [x] Garantir que spread do metadata e contextFlags seja feito corretamente
+    - [x] Testar a correção com teste específico
+  - [x] Micro-tarefa 9.3: Aplicar correções no socialProofPersonalizer.js
+    - [x] Modificar função de adição de tags para preservar contextFlags
+    - [x] Implementar merge correto do metadata ao adicionar novas tags
+    - [x] Garantir que flags existentes não sejam perdidas
+  - [x] Micro-tarefa 9.4: Validação completa das correções
+    - [x] Criar teste abrangente simulando cenário real completo
+    - [x] Testar persistência da flag através de múltiplas operações
+    - [x] Confirmar que todas as correções funcionam perfeitamente
+    - [x] Validar integridade de tags e flags após todas as operações
+
+- [x] Tarefa 3: Investigar por que "Quero ver mais alguns" retorna informações sobre aulas em vez de ativar o chunk mais_provas.
+  - [x] Micro-tarefa 3.1: Testar as funções do socialProofPersonalizer para verificar se detectam corretamente "Quero ver mais alguns".
+  - [x] Micro-tarefa 3.2: Testar as funções do IntelligentRAG para verificar se detectam corretamente queries de mais provas sociais.
+  - [x] Micro-tarefa 3.3: Identificar a causa raiz do problema na lógica de priorização de chunks.
+    - [x] Descoberto que o chunk de mais provas só é ativado se já houve pedido ANTERIOR de provas sociais no histórico.
+    - [x] Como "Quero ver mais alguns" é a primeira mensagem, não há histórico anterior, então o sistema não ativa o chunk.
+  - [ ] Micro-tarefa 3.4: Propor e implementar solução para corrigir o comportamento.
+
+- [x] Tarefa 14: Investigar problema do placeholder {contactName} aparecendo como 'undefined'
+  - [x] Micro-tarefa 14.1: Analisar onde o placeholder não está sendo substituído
+    - [x] Verificar se o problema está no chunk de provas sociais
+    - [x] Investigar se a função _injectRuntimePlaceholders está sendo aplicada corretamente
+    - [x] Identificar que o problema estava na mensagem hardcoded do aiProcessor.js
+  - [x] Micro-tarefa 14.2: Corrigir a substituição do placeholder
+    - [x] Modificar aiProcessor.js para usar _injectRuntimePlaceholders na mensagem personalizada
+    - [x] Substituir o .replace('{contactName}', contactName) simples pela função completa
+    - [x] Garantir que todos os placeholders sejam processados corretamente
+
+- [x] Tarefa 15: Corrigir o problema do 'undefined' que aparecia junto com a mensagem de provas sociais
+  - [x] Micro-tarefa 15.1: Investigar onde o 'undefined' estava sendo adicionado à mensagem
+  - [x] Micro-tarefa 15.2: Identificar que context.link não estava sendo definido na função determineContext
+  - [x] Micro-tarefa 15.3: Corrigir a função determineContext para incluir a propriedade link
+    - [x] Modificar socialProofPersonalizer.js para adicionar link ao contexto retornado
+    - [x] Garantir que o link apropriado seja determinado baseado no contexto (salesPage ou checkout)

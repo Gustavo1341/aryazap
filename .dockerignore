@@ -1,0 +1,40 @@
+# .dockerignore
+
+# Logs e arquivos de sessão locais
+logs
+session
+temp/*
+*.log
+*.bak
+
+# Arquivos de configuração locais e sensíveis
+.env
+*.env.local
+
+# Dependências e arquivos de build
+node_modules
+npm-debug.log
+yarn-error.log
+build
+dist
+
+# Metadados de controle de versão e SO
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+README.md
+*.md
+Thumbs.db
+.DS_Store
+
+# Arquivos de teste
+test
+tests
+*.test.js
+*.spec.js
+
+# Outros arquivos específicos do ambiente de desenvolvimento
+.vscode
+.idea

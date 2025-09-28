@@ -1,37 +1,58 @@
 {
-  "name": "cli-sales-agent",
-  "version": "1.0.0",
-  "description": "Agente de vendas inteligente para CLI com ChromaDB e LlamaIndex",
-  "main": "src/index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js",
-    "test": "node --test test/**/*.js",
-    "test-simple": "node test-simple.js",
-    "setup": "node scripts/setup.js",
-    "load-knowledge": "node scripts/loadKnowledge.js"
-  },
-  "keywords": [
-    "sales",
-    "agent",
-    "ai",
-    "chromadb",
-    "llamaindex",
-    "gemini"
-  ],
-  "author": "DPA Sales Team",
-  "license": "MIT",
-  "dependencies": {
-    "@google/generative-ai": "^0.1.3",
-    "@supabase/supabase-js": "^2.58.0",
-    "chalk": "^5.3.0",
-    "dotenv": "^16.4.5",
-    "inquirer": "^9.2.12",
-    "uuid": "^9.0.1",
-    "winston": "^3.11.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
-  }
+    "name": "smartzap-agent",
+    "version": "1.0.0",
+    "description": "Agente de Vendas Humanizado para WhatsApp usando IA",
+    "main": "main.js",
+    "type": "module",
+    "scripts": {
+        "start": "node main.js",
+        "dev": "nodemon main.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "retrain-intent": "node lmEngine/retrainScript.js"
+    },
+    "keywords": [
+        "whatsapp",
+        "chatbot",
+        "sales",
+        "ai",
+        "openai",
+        "gpt",
+        "humanized",
+        "wpp",
+        "vendas"
+    ],
+    "author": "SmartZap (Seu Nome/Empresa aqui)",
+    "license": "ISC",
+    "dependencies": {
+        "@google/generative-ai": "^0.24.1",
+        "@hapi/boom": "^10.0.1",
+        "@modelcontextprotocol/sdk": "^1.10.2",
+        "@xenova/transformers": "^2.17.2",
+        "axios": "^1.9.0",
+        "crypto": "^1.0.1",
+        "date-fns-tz": "^3.2.0",
+        "dotenv": "^16.4.5",
+        "elevenlabs": "^1.56.0",
+        "express": "^4.19.2",
+        "form-data": "^4.0.2",
+        "natural": "^8.0.1",
+        "node-fetch": "^3.3.2",
+        "node-pdftotext": "^1.0.4",
+        "openai": "^4.47.1",
+        "pdfjs-dist": "^4.10.38",
+        "pg": "^8.14.1",
+        "punycode": "^2.3.1",
+        "qrcode-terminal": "^0.12.0",
+        "safe-stable-stringify": "^2.5.0",
+        "serialize-error": "^12.0.0",
+        "stopwords-pt": "^0.3.0",
+        "whatsapp-web.js": "^1.23.0",
+        "winston": "^3.13.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
 }

@@ -1,0 +1,55 @@
+services:
+  # --- Serviço da Aplicação Node.js ---
+  app:
+    container_name: smartzap_agent_app
+    build:
+      context: . # Assume que o Dockerfile está na mesma pasta que o docker-compose.yml
+    env_file: # <-- ADICIONADO AQUI
+      - .env   # Carrega as variáveis do arquivo .env nesta pasta
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}" # Mapeia a porta definida no .env ou usa 3000 como padrão
+    volumes:
+      - ./session:/usr/src/app/session
+      - ./logs:/usr/src/app/logs
+      - ./training:/usr/src/app/training
+      - ./provasSociais:/usr/src/app/provasSociais
+    environment: # Variáveis aqui SOBRESCREVEM as do env_file, se tiverem o mesmo nome
+      # É mais limpo definir estas no .env também, mas se precisar sobrescrever, faça aqui.
+      - NODE_ENV=${NODE_ENV:-production} # Usa valor do .env ou 'production'
+      - TZ=${TZ:-America/Sao_Paulo}       # Usa valor do .env ou 'America/Sao_Paulo'
+      # Variáveis do DB são lidas do .env agora, não precisa repetir aqui
+      # - DB_HOST=db
+      # - DB_PORT=${DB_PORT:-5432}
+      # - DB_USER=${DB_USER:-smartzapuser}
+      # - DB_PASSWORD=${DB_PASSWORD:-root}
+      # - DB_NAME=${DB_NAME:-smartzapdb}
+    depends_on:
+      db:
+        condition: service_healthy # Aguarda o DB ficar pronto
+
+  # --- Serviço do Banco de Dados PostgreSQL ---
+  db:
+    container_name: smartzap_agent_db
+    image: postgres:15-alpine
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      # Estas variáveis configuram o container do Postgres
+      # Usam os valores do .env ou os padrões definidos aqui
+      POSTGRES_USER: ${DB_USER:-smartzapuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-root}
+      POSTGRES_DB: ${DB_NAME:-smartzapdb}
+    ports:
+      - "5433:5432" # Porta 5433 no seu PC mapeada para 5432 no container DB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-smartzapuser} -d $${POSTGRES_DB:-smartzapdb}"] # Corrigido para usar $${VAR} para escapar do Compose
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+# --- Volumes ---
+volumes:
+  pgdata: # Define o volume nomeado para persistir dados do DB

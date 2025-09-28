@@ -8,7 +8,7 @@
  * Inclui `coreQuestionPrompt` para perguntas centrais das etapas.
  */
 
-import logger from "./logger.js";
+import logger from "./src/utils/logger.js";
 import dotenv from "dotenv";
 
 dotenv.config();

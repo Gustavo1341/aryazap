@@ -48,6 +48,91 @@ class SalesAgent {
     }
   }
 
+  async processFirstMessage(userMessage) {
+    if (!this.isInitialized) {
+      throw new Error('Sales Agent não está inicializado');
+    }
+
+    try {
+      logger.info(`Processando primeira mensagem: "${userMessage.substring(0, 100)}..."`, { module: 'SalesAgent' });
+
+      // Detecta nome se estivermos na primeira etapa
+      this.detectAndSaveName(userMessage);
+
+      // Para primeira mensagem, combinamos a saudação inicial com a resposta ao input do usuário
+      const currentStep = this.funnelService.getCurrentStep();
+
+      // Constrói prompt especial para primeira mensagem
+      let initialPrompt = '';
+      if (currentStep && currentStep.coreQuestionPrompt) {
+        initialPrompt = this.formatResponse(currentStep.coreQuestionPrompt);
+      }
+
+      // Constrói instrução especial que combina saudação + resposta ao usuário
+      const systemInstruction = this.funnelService.generateSystemInstruction();
+      const enhancedInstruction = this.enhanceInstructionWithStepContext(systemInstruction);
+
+      const firstMessageInstruction = `${enhancedInstruction}
+
+PRIMEIRA MENSAGEM DA CONVERSA:
+Você deve iniciar com a saudação/pergunta inicial da etapa e depois responder ao que o usuário disse.
+
+SAUDAÇÃO INICIAL OBRIGATÓRIA: "${initialPrompt}"
+
+INSTRUÇÃO ESPECIAL PARA PRIMEIRA MENSAGEM:
+1. SEMPRE inicie sua resposta com a saudação/pergunta inicial formatada
+2. Se o usuário fez uma pergunta, responda após a saudação
+3. Siga todas as instruções específicas da etapa atual
+4. Mensagem do usuário foi: "${userMessage}"`;
+
+      // Gera resposta usando RAG
+      const result = await this.ragService.generateResponse(
+        userMessage,
+        firstMessageInstruction,
+        5 // máximo de contextos
+      );
+
+      // Processa resposta e determina próximos passos
+      const processedResponse = this.processResponse(result.response, userMessage);
+
+      // Adiciona ao histórico ANTES de verificar avanço
+      this.funnelService.addToHistory(userMessage, processedResponse.finalResponse);
+
+      // Avança no funil APENAS se a resposta da IA indicar
+      if (processedResponse.shouldAdvance) {
+        this.funnelService.advanceToNextStep();
+      }
+
+      logger.info('Primeira mensagem processada com sucesso', { module: 'SalesAgent' });
+
+      return {
+        response: processedResponse.finalResponse,
+        currentStep: this.funnelService.getCurrentStep(),
+        advanced: processedResponse.shouldAdvance,
+        hasContext: result.hasContext,
+        usage: result.usage,
+        sessionInfo: this.funnelService.getSessionInfo(),
+      };
+    } catch (error) {
+      logger.error('Erro ao processar primeira mensagem:', error, { module: 'SalesAgent' });
+
+      // Resposta de fallback para primeira mensagem
+      const currentStep = this.funnelService.getCurrentStep();
+      let fallbackResponse = 'Desculpe, tive um problema técnico. ';
+      if (currentStep && currentStep.coreQuestionPrompt) {
+        fallbackResponse += this.formatResponse(currentStep.coreQuestionPrompt);
+      }
+
+      return {
+        response: fallbackResponse,
+        currentStep: this.funnelService.getCurrentStep(),
+        advanced: false,
+        hasContext: false,
+        error: true,
+      };
+    }
+  }
+
   async processMessage(userMessage) {
     if (!this.isInitialized) {
       throw new Error('Sales Agent não está inicializado');
@@ -59,30 +144,31 @@ class SalesAgent {
       // Detecta nome se estivermos na primeira etapa
       this.detectAndSaveName(userMessage);
 
-      // Detecta sinais de avanço automático
-      const shouldAdvance = this.funnelService.detectAdvanceSignals(userMessage);
-
       // Gera instrução do sistema baseada na etapa atual
       const systemInstruction = this.funnelService.generateSystemInstruction();
 
       // Adiciona contexto específico da etapa
       const enhancedInstruction = this.enhanceInstructionWithStepContext(systemInstruction);
 
+      // Adiciona histórico da conversa para contexto
+      const conversationContext = this.funnelService.getConversationContext();
+      const fullInstruction = enhancedInstruction + '\n\nHISTÓRICO DA CONVERSA:\n' + conversationContext;
+
       // Gera resposta usando RAG
       const result = await this.ragService.generateResponse(
         userMessage,
-        enhancedInstruction,
+        fullInstruction,
         5 // máximo de contextos
       );
 
       // Processa resposta e determina próximos passos
       const processedResponse = this.processResponse(result.response, userMessage);
 
-      // Adiciona ao histórico
+      // Adiciona ao histórico ANTES de verificar avanço
       this.funnelService.addToHistory(userMessage, processedResponse.finalResponse);
 
-      // Avança no funil se necessário
-      if (shouldAdvance || processedResponse.shouldAdvance) {
+      // Avança no funil APENAS se a resposta da IA indicar
+      if (processedResponse.shouldAdvance) {
         this.funnelService.advanceToNextStep();
       }
 
@@ -91,7 +177,7 @@ class SalesAgent {
       return {
         response: processedResponse.finalResponse,
         currentStep: this.funnelService.getCurrentStep(),
-        advanced: shouldAdvance || processedResponse.shouldAdvance,
+        advanced: processedResponse.shouldAdvance,
         hasContext: result.hasContext,
         usage: result.usage,
         sessionInfo: this.funnelService.getSessionInfo(),
@@ -114,7 +200,7 @@ class SalesAgent {
     const currentStep = this.funnelService.getCurrentStep();
 
     if (currentStep.id === 'NAME_CAPTURE_VALIDATION') {
-      // Tenta extrair um nome da mensagem
+      // Tenta extrair um nome explícito da mensagem
       const namePattern = /(?:me chama(?:m|r)? de|sou (?:o|a)?|meu nome é)\s*([a-záàâãéèêíïóôõöúçñ]+)/i;
       const match = userMessage.match(namePattern);
 
@@ -123,15 +209,20 @@ class SalesAgent {
         this.funnelService.updateUserContext('preferredName', name);
         logger.info(`Nome preferido detectado: ${name}`, { module: 'SalesAgent' });
       } else {
-        // Se não detectou um nome específico, assume mensagens como confirmação
-        const confirmationWords = ['pode', 'sim', 'ok', 'tudo bem', 'claro'];
-        const isConfirmation = confirmationWords.some(word =>
-          userMessage.toLowerCase().includes(word)
-        );
+        // Verifica se é apenas um nome (palavra única que pode ser um nome)
+        const words = userMessage.trim().split(/\s+/);
+        const firstWord = words[0];
 
-        if (isConfirmation) {
-          this.funnelService.updateUserContext('preferredName', 'usuário');
+        // Se for uma palavra única que parece ser um nome (começa com maiúscula, só letras, mais de 2 caracteres)
+        if (words.length === 1 &&
+            firstWord.length > 2 &&
+            /^[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ][a-záàâãéèêíïóôõöúçñ]+$/.test(firstWord) &&
+            !['Oi', 'Olá', 'Sim', 'Não', 'Ok'].includes(firstWord)) {
+          this.funnelService.updateUserContext('preferredName', firstWord);
+          logger.info(`Nome detectado automaticamente: ${firstWord}`, { module: 'SalesAgent' });
         }
+        // Se não é um nome claro, não salva nada ainda
+        // Deixa a IA responder naturalmente
       }
     }
   }

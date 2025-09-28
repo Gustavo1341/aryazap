@@ -815,3 +815,356 @@ ChromaConnectionError: Failed to connect to chromadb. Make sure your server is r
 2025-09-28 12:01:53 WARN  Erro no Supabase, mudando para modo fallback:
 2025-09-28 12:01:53 INFO [RAGService] Base de conhecimento indexada: 66 documentos (Memória)
 2025-09-28 12:01:53 INFO [SalesAgent] Base de conhecimento carregada com sucesso
+2025-09-28 16:55:16 INFO  Configuração validada com sucesso
+2025-09-28 16:55:16 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 16:55:16 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 16:55:16 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 16:55:17 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 16:55:17 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 16:55:17 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 16:55:17 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 16:55:17 INFO [SalesAgent] Sales Agent inicializado com sucesso
+2025-09-28 16:55:25 INFO  Configuração validada com sucesso
+2025-09-28 16:55:25 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 16:55:25 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 16:55:25 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 16:55:25 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 16:55:25 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 16:55:25 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 16:55:25 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 16:55:25 INFO [SalesAgent] Sales Agent inicializado com sucesso
+[90m2025-09-28 16:55:55[39m [34mINFO[39m  Configuração validada com sucesso
+[90m2025-09-28 16:55:55[39m [34mINFO[39m [SalesAgent] Inicializando Sales Agent...
+[90m2025-09-28 16:55:55[39m [34mINFO[39m [RAGService] Inicializando RAG Service...
+[90m2025-09-28 16:55:55[39m [34mINFO[39m [SupabaseService] Conectando ao Supabase...
+[90m2025-09-28 16:55:55[39m [34mINFO[39m [SupabaseService] Supabase conectado com sucesso
+[90m2025-09-28 16:55:55[39m [34mINFO[39m [GeminiService] Inicializando Gemini AI...
+[90m2025-09-28 16:55:55[39m [34mINFO[39m [GeminiService] Gemini AI inicializado com sucesso
+[90m2025-09-28 16:55:55[39m [34mINFO[39m [RAGService] RAG Service inicializado com sucesso
+[90m2025-09-28 16:55:55[39m [34mINFO[39m [SalesAgent] Sales Agent inicializado com sucesso
+2025-09-28 16:57:13 INFO  Configuração validada com sucesso
+2025-09-28 16:57:13 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 16:57:13 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 16:57:13 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 16:57:14 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 16:57:14 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 16:57:14 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 16:57:14 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 16:57:14 INFO [SalesAgent] Sales Agent inicializado com sucesso
+2025-09-28 16:58:13 INFO  Configuração validada com sucesso
+2025-09-28 16:58:13 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 16:58:13 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 16:58:13 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 16:58:13 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 16:58:13 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 16:58:13 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 16:58:13 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 16:58:13 INFO [SalesAgent] Sales Agent inicializado com sucesso
+2025-09-28 16:58:29 INFO  Configuração validada com sucesso
+2025-09-28 16:58:29 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 16:58:29 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 16:58:29 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 16:58:29 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 16:58:29 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 16:58:29 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 16:58:29 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 16:58:29 INFO [SalesAgent] Sales Agent inicializado com sucesso
+2025-09-28 16:58:29 INFO [SalesAgent] Processando mensagem: "Gustavo\nsair..."
+2025-09-28 16:58:29 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 16:58:29 INFO [SupabaseService] Buscando por: "Gustavo\nsair"
+2025-09-28 16:58:29 ERROR  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 16:58:29 ERROR  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 16:58:29 INFO [RAGService] Usando busca em memória (fallback)
+2025-09-28 16:58:32 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 16:58:32 INFO [FunnelService] Avançando para: PROBLEM_EXPLORATION_INITIAL
+2025-09-28 16:58:32 INFO [SalesAgent] Mensagem processada com sucesso
+[90m2025-09-28 16:59:03[39m [34mINFO[39m  Configuração validada com sucesso
+[90m2025-09-28 16:59:03[39m [34mINFO[39m [SalesAgent] Inicializando Sales Agent...
+[90m2025-09-28 16:59:03[39m [34mINFO[39m [RAGService] Inicializando RAG Service...
+[90m2025-09-28 16:59:03[39m [34mINFO[39m [SupabaseService] Conectando ao Supabase...
+[90m2025-09-28 16:59:04[39m [34mINFO[39m [SupabaseService] Supabase conectado com sucesso
+[90m2025-09-28 16:59:04[39m [34mINFO[39m [GeminiService] Inicializando Gemini AI...
+[90m2025-09-28 16:59:04[39m [34mINFO[39m [GeminiService] Gemini AI inicializado com sucesso
+[90m2025-09-28 16:59:04[39m [34mINFO[39m [RAGService] RAG Service inicializado com sucesso
+[90m2025-09-28 16:59:04[39m [34mINFO[39m [SalesAgent] Sales Agent inicializado com sucesso
+[90m2025-09-28 16:59:07[39m [34mINFO[39m [SalesAgent] Processando mensagem: "Oi..."
+[90m2025-09-28 16:59:07[39m [34mINFO[39m [RAGService] Gerando resposta com RAG...
+[90m2025-09-28 16:59:07[39m [34mINFO[39m [SupabaseService] Buscando por: "Oi"
+[90m2025-09-28 16:59:07[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 16:59:07[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 16:59:07[39m [34mINFO[39m [RAGService] Usando busca em memória (fallback)
+[90m2025-09-28 16:59:09[39m [34mINFO[39m [RAGService] Resposta gerada com sucesso
+[90m2025-09-28 16:59:09[39m [34mINFO[39m [FunnelService] Avançando para: PROBLEM_EXPLORATION_INITIAL
+[90m2025-09-28 16:59:09[39m [34mINFO[39m [SalesAgent] Mensagem processada com sucesso
+2025-09-28 17:01:31 INFO  Configuração validada com sucesso
+2025-09-28 17:01:31 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 17:01:31 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:01:31 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:01:32 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:01:32 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:01:32 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:01:32 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:01:32 INFO [SalesAgent] Sales Agent inicializado com sucesso
+2025-09-28 17:01:32 INFO [SalesAgent] Processando mensagem: "Oi..."
+2025-09-28 17:01:32 INFO [SalesAgent] Nome detectado automaticamente: Oi
+2025-09-28 17:01:32 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 17:01:32 INFO [SupabaseService] Buscando por: "Oi"
+2025-09-28 17:01:32 ERROR  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 17:01:32 ERROR  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 17:01:32 INFO [RAGService] Usando busca em memória (fallback)
+2025-09-28 17:01:38 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 17:01:38 INFO [SalesAgent] Mensagem processada com sucesso
+2025-09-28 17:01:38 ERROR  Erro ao processar mensagem: shouldAdvance is not defined
+ReferenceError: shouldAdvance is not defined
+    at SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:95:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async SalesAgentCLI.processUserInput (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/index.js:144:22)
+    at async SalesAgentCLI.chatLoop (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/index.js:130:9)
+    at async SalesAgentCLI.startChat (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/index.js:103:5)
+    at async testChat (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-chat.js:21:5)
+2025-09-28 17:02:04 INFO  Configuração validada com sucesso
+2025-09-28 17:02:04 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 17:02:04 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:02:04 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:02:04 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:02:04 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:02:04 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:02:04 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:02:04 INFO [SalesAgent] Sales Agent inicializado com sucesso
+2025-09-28 17:02:04 INFO [SalesAgent] Processando mensagem: "Oi..."
+2025-09-28 17:02:04 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 17:02:04 INFO [SupabaseService] Buscando por: "Oi"
+2025-09-28 17:02:04 ERROR  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 17:02:04 ERROR  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 17:02:04 INFO [RAGService] Usando busca em memória (fallback)
+2025-09-28 17:02:16 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 17:02:16 INFO [SalesAgent] Mensagem processada com sucesso
+[90m2025-09-28 17:02:45[39m [34mINFO[39m  Configuração validada com sucesso
+[90m2025-09-28 17:02:45[39m [34mINFO[39m [SalesAgent] Inicializando Sales Agent...
+[90m2025-09-28 17:02:45[39m [34mINFO[39m [RAGService] Inicializando RAG Service...
+[90m2025-09-28 17:02:45[39m [34mINFO[39m [SupabaseService] Conectando ao Supabase...
+[90m2025-09-28 17:02:45[39m [34mINFO[39m [SupabaseService] Supabase conectado com sucesso
+[90m2025-09-28 17:02:45[39m [34mINFO[39m [GeminiService] Inicializando Gemini AI...
+[90m2025-09-28 17:02:45[39m [34mINFO[39m [GeminiService] Gemini AI inicializado com sucesso
+[90m2025-09-28 17:02:45[39m [34mINFO[39m [RAGService] RAG Service inicializado com sucesso
+[90m2025-09-28 17:02:45[39m [34mINFO[39m [SalesAgent] Sales Agent inicializado com sucesso
+[90m2025-09-28 17:04:12[39m [34mINFO[39m [SalesAgent] Processando mensagem: "oi..."
+[90m2025-09-28 17:04:12[39m [34mINFO[39m [RAGService] Gerando resposta com RAG...
+[90m2025-09-28 17:04:12[39m [34mINFO[39m [SupabaseService] Buscando por: "oi"
+[90m2025-09-28 17:04:13[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:04:13[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:04:13[39m [34mINFO[39m [RAGService] Usando busca em memória (fallback)
+[90m2025-09-28 17:04:16[39m [34mINFO[39m [RAGService] Resposta gerada com sucesso
+[90m2025-09-28 17:04:16[39m [34mINFO[39m [SalesAgent] Mensagem processada com sucesso
+[90m2025-09-28 17:04:35[39m [34mINFO[39m [SalesAgent] Processando mensagem: "Sim..."
+[90m2025-09-28 17:04:35[39m [34mINFO[39m [RAGService] Gerando resposta com RAG...
+[90m2025-09-28 17:04:35[39m [34mINFO[39m [SupabaseService] Buscando por: "Sim"
+[90m2025-09-28 17:04:35[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:04:35[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:04:35[39m [34mINFO[39m [RAGService] Usando busca em memória (fallback)
+[90m2025-09-28 17:04:39[39m [34mINFO[39m [RAGService] Resposta gerada com sucesso
+[90m2025-09-28 17:04:39[39m [34mINFO[39m [FunnelService] Avançando para: PROBLEM_EXPLORATION_INITIAL
+[90m2025-09-28 17:04:39[39m [34mINFO[39m [SalesAgent] Mensagem processada com sucesso
+2025-09-28 17:08:07 INFO  Configuração validada com sucesso
+2025-09-28 17:08:07 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 17:08:07 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:08:07 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:08:08 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:08:08 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:08:08 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:08:08 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:08:08 INFO [SalesAgent] Sales Agent inicializado com sucesso
+[90m2025-09-28 17:08:40[39m [34mINFO[39m  Configuração validada com sucesso
+[90m2025-09-28 17:08:40[39m [34mINFO[39m [SalesAgent] Inicializando Sales Agent...
+[90m2025-09-28 17:08:40[39m [34mINFO[39m [RAGService] Inicializando RAG Service...
+[90m2025-09-28 17:08:40[39m [34mINFO[39m [SupabaseService] Conectando ao Supabase...
+[90m2025-09-28 17:08:40[39m [34mINFO[39m [SupabaseService] Supabase conectado com sucesso
+[90m2025-09-28 17:08:40[39m [34mINFO[39m [GeminiService] Inicializando Gemini AI...
+[90m2025-09-28 17:08:40[39m [34mINFO[39m [GeminiService] Gemini AI inicializado com sucesso
+[90m2025-09-28 17:08:40[39m [34mINFO[39m [RAGService] RAG Service inicializado com sucesso
+[90m2025-09-28 17:08:40[39m [34mINFO[39m [SalesAgent] Sales Agent inicializado com sucesso
+[90m2025-09-28 17:08:43[39m [34mINFO[39m [SalesAgent] Processando primeira mensagem: "Oi..."
+[90m2025-09-28 17:08:43[39m [34mINFO[39m [RAGService] Gerando resposta com RAG...
+[90m2025-09-28 17:08:43[39m [34mINFO[39m [SupabaseService] Buscando por: "Oi"
+[90m2025-09-28 17:08:43[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:08:43[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:08:43[39m [34mINFO[39m [RAGService] Usando busca em memória (fallback)
+[90m2025-09-28 17:08:48[39m [34mINFO[39m [RAGService] Resposta gerada com sucesso
+[90m2025-09-28 17:08:48[39m [34mINFO[39m [FunnelService] Avançando para: PROBLEM_EXPLORATION_INITIAL
+[90m2025-09-28 17:08:48[39m [34mINFO[39m [SalesAgent] Primeira mensagem processada com sucesso
+[90m2025-09-28 17:09:08[39m [34mINFO[39m [SalesAgent] Processando mensagem: "Pode ser de Maria..."
+[90m2025-09-28 17:09:08[39m [34mINFO[39m [RAGService] Gerando resposta com RAG...
+[90m2025-09-28 17:09:08[39m [34mINFO[39m [SupabaseService] Buscando por: "Pode ser de Maria"
+[90m2025-09-28 17:09:09[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:09:09[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:09:09[39m [34mINFO[39m [RAGService] Usando busca em memória (fallback)
+[90m2025-09-28 17:09:12[39m [34mINFO[39m [RAGService] Resposta gerada com sucesso
+[90m2025-09-28 17:09:12[39m [34mINFO[39m [SalesAgent] Mensagem processada com sucesso
+[90m2025-09-28 17:09:29[39m [34mINFO[39m [SalesAgent] Processando mensagem: "Pretendo iniciar. O curso aborda sucessões?..."
+[90m2025-09-28 17:09:29[39m [34mINFO[39m [RAGService] Gerando resposta com RAG...
+[90m2025-09-28 17:09:29[39m [34mINFO[39m [SupabaseService] Buscando por: "Pretendo iniciar. O curso aborda sucessões?"
+[90m2025-09-28 17:09:30[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:09:30[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:09:30[39m [34mINFO[39m [RAGService] Usando busca em memória (fallback)
+[90m2025-09-28 17:09:42[39m [34mINFO[39m [RAGService] Resposta gerada com sucesso
+[90m2025-09-28 17:09:42[39m [34mINFO[39m [SalesAgent] Mensagem processada com sucesso
+2025-09-28 17:17:10 INFO  Configuração validada com sucesso
+2025-09-28 17:17:10 INFO [SalesAgent] Inicializando Sales Agent...
+2025-09-28 17:17:10 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:17:10 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:17:10 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:17:10 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:17:10 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:17:10 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:17:10 INFO [SalesAgent] Sales Agent inicializado com sucesso
+2025-09-28 17:17:22 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:17:22 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:17:22 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:17:22 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:17:22 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:17:22 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:17:22 INFO [SupabaseService] Buscando por: "preço curso"
+2025-09-28 17:17:22 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:17:22 INFO [RAGService] Desligando RAG Service...
+2025-09-28 17:17:22 INFO [SupabaseService] Supabase desconectado
+2025-09-28 17:17:22 INFO [RAGService] RAG Service desligado
+2025-09-28 17:17:35 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:17:35 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:17:35 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:17:35 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:17:35 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:17:35 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:17:35 INFO [SupabaseService] Buscando por: "curso"
+2025-09-28 17:17:35 INFO [SupabaseService] Busca retornou 8 resultados
+2025-09-28 17:17:35 INFO [SupabaseService] Buscando por: "investimento"
+2025-09-28 17:17:36 INFO [SupabaseService] Busca retornou 2 resultados
+2025-09-28 17:17:36 INFO [SupabaseService] Buscando por: "Jaylton"
+2025-09-28 17:17:36 INFO [SupabaseService] Busca retornou 2 resultados
+2025-09-28 17:17:36 INFO [SupabaseService] Buscando por: "advogado"
+2025-09-28 17:17:36 INFO [SupabaseService] Busca retornou 1 resultados
+2025-09-28 17:17:36 INFO [RAGService] Desligando RAG Service...
+2025-09-28 17:17:36 INFO [SupabaseService] Supabase desconectado
+2025-09-28 17:17:36 INFO [RAGService] RAG Service desligado
+2025-09-28 17:17:51 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:17:51 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:17:52 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:17:52 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:17:52 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:17:52 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:17:52 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 17:17:52 INFO [SupabaseService] Buscando por: "Quanto custa o curso?"
+2025-09-28 17:17:52 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:17:52 INFO [RAGService] Usando busca em memória (fallback)
+2025-09-28 17:18:00 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 17:18:00 INFO [RAGService] Desligando RAG Service...
+2025-09-28 17:18:00 INFO [SupabaseService] Supabase desconectado
+2025-09-28 17:18:00 INFO [RAGService] RAG Service desligado
+2025-09-28 17:18:15 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:18:15 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:18:15 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:18:15 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:18:15 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:18:15 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:18:15 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 17:18:15 INFO [SupabaseService] Buscando por: "Qual o valor do investimento no curso?"
+2025-09-28 17:18:16 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:18:16 INFO [RAGService] Usando busca em memória (fallback)
+2025-09-28 17:18:23 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 17:18:23 INFO [RAGService] Desligando RAG Service...
+2025-09-28 17:18:23 INFO [SupabaseService] Supabase desconectado
+2025-09-28 17:18:23 INFO [RAGService] RAG Service desligado
+2025-09-28 17:20:15 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:20:15 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:20:15 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:20:15 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:20:15 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:20:15 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:20:15 INFO [SupabaseService] Buscando por: "O curso tem garantia?"
+2025-09-28 17:20:15 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:15 INFO [SupabaseService] Buscando por: "Posso pedir reembolso?"
+2025-09-28 17:20:16 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:16 INFO [SupabaseService] Buscando por: "Quanto custa o curso?"
+2025-09-28 17:20:16 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:16 INFO [SupabaseService] Buscando por: "Qual o valor do investimento?"
+2025-09-28 17:20:16 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:16 INFO [SupabaseService] Buscando por: "Por quanto tempo tenho acesso?"
+2025-09-28 17:20:16 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:16 INFO [SupabaseService] Buscando por: "O curso é vitalício?"
+2025-09-28 17:20:16 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:16 INFO [SupabaseService] Buscando por: "Quem é o professor?"
+2025-09-28 17:20:16 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:16 INFO [SupabaseService] Buscando por: "O curso tem certificado?"
+2025-09-28 17:20:17 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:17 INFO [SupabaseService] Buscando por: "O que é a IAJUR?"
+2025-09-28 17:20:17 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:17 INFO [SupabaseService] Buscando por: "Tem assistente virtual?"
+2025-09-28 17:20:17 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:20:17 INFO [RAGService] Desligando RAG Service...
+2025-09-28 17:20:17 INFO [SupabaseService] Supabase desconectado
+2025-09-28 17:20:17 INFO [RAGService] RAG Service desligado
+2025-09-28 17:21:19 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:21:19 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:21:20 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:21:20 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:21:20 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:21:20 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "garantia"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "reembolso"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "investimento"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "valor"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "acesso"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "vitalício"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "Jaylton"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "certificado"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "IAJUR"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [SupabaseService] Buscando por: "Mar.IA"
+2025-09-28 17:21:20 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:21:20 INFO [RAGService] Desligando RAG Service...
+2025-09-28 17:21:20 INFO [SupabaseService] Supabase desconectado
+2025-09-28 17:21:20 INFO [RAGService] RAG Service desligado
+2025-09-28 17:22:18 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:22:18 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:22:18 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:22:18 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:22:18 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:22:18 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:22:18 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 17:22:18 INFO [SupabaseService] Buscando por: "O curso tem garantia de satisfação?"
+2025-09-28 17:22:19 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:22:19 INFO [RAGService] Usando busca em memória (fallback)
+2025-09-28 17:22:30 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 17:22:30 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 17:22:30 INFO [SupabaseService] Buscando por: "Posso pedir meu dinheiro de volta?"
+2025-09-28 17:22:30 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:22:30 INFO [RAGService] Usando busca em memória (fallback)
+2025-09-28 17:22:34 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 17:22:34 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 17:22:34 INFO [SupabaseService] Buscando por: "Quanto custa o curso de direito sucessório?"
+2025-09-28 17:22:34 INFO [SupabaseService] Busca retornou 0 resultados
+2025-09-28 17:22:34 INFO [RAGService] Usando busca em memória (fallback)
+2025-09-28 17:22:37 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 17:22:37 INFO [RAGService] Desligando RAG Service...
+2025-09-28 17:22:37 INFO [SupabaseService] Supabase desconectado
+2025-09-28 17:22:37 INFO [RAGService] RAG Service desligado
+2025-09-28 17:22:52 INFO [RAGService] Inicializando RAG Service...
+2025-09-28 17:22:52 INFO [SupabaseService] Conectando ao Supabase...
+2025-09-28 17:22:52 INFO [SupabaseService] Supabase conectado com sucesso
+2025-09-28 17:22:52 INFO [GeminiService] Inicializando Gemini AI...
+2025-09-28 17:22:52 INFO [GeminiService] Gemini AI inicializado com sucesso
+2025-09-28 17:22:52 INFO [RAGService] RAG Service inicializado com sucesso
+2025-09-28 17:22:52 INFO [RAGService] Gerando resposta com RAG...
+2025-09-28 17:22:52 INFO [SupabaseService] Buscando por: "garantia"
+2025-09-28 17:22:52 INFO [SupabaseService] Busca retornou 3 resultados
+2025-09-28 17:22:59 INFO [RAGService] Resposta gerada com sucesso
+2025-09-28 17:22:59 INFO [RAGService] Desligando RAG Service...
+2025-09-28 17:22:59 INFO [SupabaseService] Supabase desconectado
+2025-09-28 17:22:59 INFO [RAGService] RAG Service desligado

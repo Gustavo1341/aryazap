@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import readline from 'readline';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import SalesAgent from './agents/salesAgent.js';
@@ -17,7 +16,6 @@ const __dirname = dirname(__filename);
 class SalesAgentCLI {
   constructor() {
     this.agent = new SalesAgent();
-    this.rl = null;
     this.isRunning = false;
   }
 
@@ -39,18 +37,18 @@ class SalesAgentCLI {
         process.exit(1);
       }
 
-      // Carrega base de conhecimento
-      console.log(chalk.gray('Carregando base de conhecimento...'));
-      const knowledgePath = path.join(__dirname, '../data/knowledge.json');
+      // Carrega base de conhecimento (usando knowledge.js como exemplo)
+      console.log(chalk.gray('Carregando base de conhecimento de exemplo...'));
 
-      if (!fs.existsSync(knowledgePath)) {
-        console.log(chalk.red('❌ Arquivo knowledge.json não encontrado!'));
-        console.log(chalk.yellow('💡 Execute: npm run load-knowledge'));
-        process.exit(1);
+      try {
+        const knowledgeModule = await import('../knowledge.js');
+        const knowledgeData = knowledgeModule.processedKnowledge;
+        await this.agent.loadKnowledge(knowledgeData);
+        console.log(chalk.green(`✅ ${knowledgeData.length} documentos carregados como exemplo`));
+      } catch (error) {
+        console.log(chalk.yellow('⚠️  Não foi possível carregar knowledge.js, continuando sem conhecimento base...'));
+        console.log(chalk.gray('💡 Para produção, use Supabase ou configure conhecimento'));
       }
-
-      const knowledgeData = JSON.parse(fs.readFileSync(knowledgePath, 'utf8'));
-      await this.agent.loadKnowledge(knowledgeData);
 
       console.log(chalk.green('✅ Sistema inicializado com sucesso!\n'));
 
@@ -90,54 +88,64 @@ class SalesAgentCLI {
     console.log(chalk.gray('Digite suas mensagens como um prospect interessado no curso.'));
     console.log(chalk.gray('Digite "sair" para voltar ao menu principal.\n'));
 
-    this.setupReadline();
-
     // Mostra estado inicial
     await this.showCurrentStep();
 
-    // Inicia primeira interação
-    const currentStep = this.agent.funnelService.getCurrentStep();
-    if (currentStep && currentStep.coreQuestionPrompt) {
-      console.log(chalk.blue('🤖 Pedro:'), currentStep.coreQuestionPrompt);
-    }
-
-    this.promptUser();
+    // Loop de conversa usando inquirer - primeiro input sempre do usuário
+    await this.chatLoop();
   }
 
-  setupReadline() {
-    this.rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-      prompt: chalk.yellow('👤 Você: '),
-    });
+  async chatLoop() {
+    while (true) {
+      try {
+        const { userInput } = await inquirer.prompt([
+          {
+            type: 'input',
+            name: 'userInput',
+            message: chalk.yellow('👤 Você:'),
+            validate: (input) => {
+              if (input.trim() === '') {
+                return 'Por favor, digite uma mensagem ou "sair" para voltar ao menu.';
+              }
+              return true;
+            }
+          }
+        ]);
 
-    this.rl.on('line', async (input) => {
-      const trimmedInput = input.trim();
+        const trimmedInput = userInput.trim();
 
-      if (trimmedInput.toLowerCase() === 'sair') {
-        this.rl.close();
+        if (trimmedInput.toLowerCase() === 'sair') {
+          console.log(chalk.gray('\nRetornando ao menu principal...\n'));
+          return;
+        }
+
+        await this.processUserInput(trimmedInput);
+
+      } catch (error) {
+        console.log(chalk.red('\n❌ Erro na conversa:', error.message));
+        console.log(chalk.gray('Retornando ao menu principal...\n'));
         return;
       }
-
-      if (trimmedInput === '') {
-        this.promptUser();
-        return;
-      }
-
-      await this.processUserInput(trimmedInput);
-    });
-
-    this.rl.on('close', () => {
-      console.log(chalk.gray('\nRetornando ao menu principal...\n'));
-      this.showMainMenu().then(action => this.handleMenuAction(action));
-    });
+    }
   }
 
   async processUserInput(input) {
     try {
       console.log(chalk.gray('\n🔄 Processando...'));
 
-      const result = await this.agent.processMessage(input);
+      // Verifica se é a primeira mensagem da sessão para gerar resposta inicial
+      const sessionInfo = this.agent.getSessionInfo();
+      const isFirstMessage = sessionInfo.historyCount === 0;
+
+      let result;
+
+      if (isFirstMessage) {
+        // Para primeira mensagem, gera resposta de saudação + input do usuário
+        result = await this.agent.processFirstMessage(input);
+      } else {
+        // Para mensagens subsequentes, processamento normal
+        result = await this.agent.processMessage(input);
+      }
 
       // Mostra resposta do agente
       console.log(chalk.blue('\n🤖 Pedro:'), result.response);
@@ -153,19 +161,12 @@ class SalesAgentCLI {
       }
 
       console.log(''); // Linha em branco
-      this.promptUser();
     } catch (error) {
       logger.error('Erro ao processar entrada:', error);
       console.log(chalk.red('\n❌ Erro ao processar sua mensagem. Tente novamente.'));
-      this.promptUser();
     }
   }
 
-  promptUser() {
-    if (this.rl) {
-      this.rl.prompt();
-    }
-  }
 
   async showCurrentStep() {
     const sessionInfo = this.agent.getSessionInfo();

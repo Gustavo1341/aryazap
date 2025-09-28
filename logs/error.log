@@ -407,3 +407,29 @@ ChromaConnectionError: Failed to connect to chromadb. Make sure your server is r
 2025-09-28 12:01:11 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
 [90m2025-09-28 12:01:26[39m [31mERROR[39m  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
 2025-09-28 12:01:53 ERROR  Erro ao limpar tabela Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 16:58:29 ERROR  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 16:58:29 ERROR  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 16:59:07[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 16:59:07[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 17:01:32 ERROR  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 17:01:32 ERROR  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 17:01:38 ERROR  Erro ao processar mensagem: shouldAdvance is not defined
+ReferenceError: shouldAdvance is not defined
+    at SalesAgent.processMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/agents/salesAgent.js:95:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async SalesAgentCLI.processUserInput (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/index.js:144:22)
+    at async SalesAgentCLI.chatLoop (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/index.js:130:9)
+    at async SalesAgentCLI.startChat (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/src/index.js:103:5)
+    at async testChat (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryazap/sales-bot-workbench-main/cli-sales/test-chat.js:21:5)
+2025-09-28 17:02:04 ERROR  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+2025-09-28 17:02:04 ERROR  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:04:13[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:04:13[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:04:35[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:04:35[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:08:43[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:08:43[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:09:09[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:09:09[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:09:30[39m [31mERROR[39m  Erro na busca textual: Could not find the table 'public.sales_knowledge' in the schema cache
+[90m2025-09-28 17:09:30[39m [31mERROR[39m  Erro ao buscar no Supabase: Could not find the table 'public.sales_knowledge' in the schema cache

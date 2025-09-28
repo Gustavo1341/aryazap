@@ -32,33 +32,58 @@ async function testSimple() {
 
     console.log(chalk.green('✅ Agente inicializado!\n'));
 
-    // Testa algumas mensagens
-    const testMessages = [
-      'Oi, tudo bem?',
-      'Me chama de João',
-      'Já atuo um pouco com direito sucessório',
-      'Minha maior dificuldade é com inventários',
-      'Isso me faz perder muito tempo',
-      'Gostaria de ver os depoimentos',
-      'Pode apresentar a oferta',
-      'Pode enviar o link'
+    // Testa mensagens simples (que NÃO devem usar RAG)
+    console.log(chalk.magenta('🚀 Testando mensagens simples (sem RAG):\n'));
+    const simpleMessages = [
+      'oi',
+      'olá',
+      'tudo bem',
+      'beleza',
+      'ok'
     ];
 
-    for (const message of testMessages) {
+    for (const message of simpleMessages) {
+      console.log(chalk.yellow(`👤 Usuário: ${message}`));
+
+      const result = await agent.processFirstMessage(message);
+
+      console.log(chalk.blue(`🤖 Pedro: ${result.response.substring(0, 100)}...`));
+
+      // Verifica se RAG foi usado
+      if (result.directResponse) {
+        console.log(chalk.green('✅ Resposta DIRETA (sem RAG) - Tokens economizados!'));
+      } else {
+        console.log(chalk.red('⚠️ Usou RAG desnecessariamente'));
+      }
+
+      console.log(chalk.gray('─'.repeat(80)));
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    // Testa mensagens complexas (que DEVEM usar RAG)
+    console.log(chalk.magenta('\n🔍 Testando mensagens complexas (com RAG):\n'));
+    const complexMessages = [
+      'Qual o preço do curso?',
+      'Como funciona o inventário judicial?',
+      'Preciso de ajuda com sucessões'
+    ];
+
+    for (const message of complexMessages) {
       console.log(chalk.yellow(`👤 Usuário: ${message}`));
 
       const result = await agent.processMessage(message);
 
-      console.log(chalk.blue(`🤖 Pedro: ${result.response}`));
+      console.log(chalk.blue(`🤖 Pedro: ${result.response.substring(0, 100)}...`));
 
-      if (result.advanced) {
-        console.log(chalk.green(`📍 Avançou para: ${result.currentStep.title}`));
+      // Verifica se RAG foi usado
+      if (result.hasContext) {
+        console.log(chalk.green('✅ Usou RAG (correto para pergunta específica)'));
+      } else {
+        console.log(chalk.yellow('⚠️ Não encontrou contexto relevante'));
       }
 
       console.log(chalk.gray('─'.repeat(80)));
-
-      // Pausa para simular conversa
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     // Mostra estatísticas finais

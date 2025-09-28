@@ -59,38 +59,62 @@ class SalesAgent {
       // Detecta nome se estivermos na primeira etapa
       this.detectAndSaveName(userMessage);
 
-      // Para primeira mensagem, combinamos a saudação inicial com a resposta ao input do usuário
-      const currentStep = this.funnelService.getCurrentStep();
-
-      // Constrói prompt especial para primeira mensagem
-      let initialPrompt = '';
-      if (currentStep && currentStep.coreQuestionPrompt) {
-        initialPrompt = this.formatResponse(currentStep.coreQuestionPrompt);
-      }
-
-      // Constrói instrução especial que combina saudação + resposta ao usuário
+      // Gera instrução do sistema baseada na etapa atual
       const systemInstruction = this.funnelService.generateSystemInstruction();
       const enhancedInstruction = this.enhanceInstructionWithStepContext(systemInstruction);
 
+      // Instrução para primeira mensagem SEM forçar saudação
       const firstMessageInstruction = `${enhancedInstruction}
 
 PRIMEIRA MENSAGEM DA CONVERSA:
-Você deve iniciar com a saudação/pergunta inicial da etapa e depois responder ao que o usuário disse.
+Esta é a primeira interação do usuário. Responda de forma natural e direta ao que ele perguntou ou disse.
 
-SAUDAÇÃO INICIAL OBRIGATÓRIA: "${initialPrompt}"
+⚠️ PROIBIÇÕES ABSOLUTAS:
+- NUNCA comece com "Olá", "Oi", "Bom dia", "Boa tarde", "Boa noite"
+- NUNCA diga "aqui é o Pedro do DPA"
+- NUNCA use saudações formais automáticas
+- NUNCA force apresentações quando não necessárias
 
-INSTRUÇÃO ESPECIAL PARA PRIMEIRA MENSAGEM:
-1. SEMPRE inicie sua resposta com a saudação/pergunta inicial formatada
-2. Se o usuário fez uma pergunta, responda após a saudação
-3. Siga todas as instruções específicas da etapa atual
-4. Mensagem do usuário foi: "${userMessage}"`;
+✅ DIRETRIZES OBRIGATÓRIAS:
+1. Responda DIRETAMENTE ao que o usuário perguntou
+2. Se o usuário disse "oi", responda naturalmente sem repetir saudações
+3. Seja conversacional e humano
+4. Foque no que o usuário realmente quer saber
+5. Use um tom profissional mas natural
+6. Mensagem do usuário: "${userMessage}"
 
-      // Gera resposta usando RAG
-      const result = await this.ragService.generateResponse(
-        userMessage,
-        firstMessageInstruction,
-        5 // máximo de contextos
-      );
+EXEMPLO DE COMO RESPONDER:
+- Se usuário diz "oi" → "Tudo bem? Em que posso te ajudar?"
+- Se usuário pergunta preço → "O investimento é de..."
+- Se usuário pergunta sobre curso → "O curso oferece..."`;
+
+      // Verifica se precisa usar RAG ou pode responder diretamente
+      const needsRAG = this.shouldUseRAG(userMessage);
+      let result;
+
+      if (needsRAG) {
+        // Gera resposta usando RAG
+        result = await this.ragService.generateResponse(
+          userMessage,
+          firstMessageInstruction,
+          5 // máximo de contextos
+        );
+      } else {
+        // Gera resposta direta sem RAG para economizar tokens
+        logger.info('Resposta direta sem RAG (mensagem simples)', { module: 'SalesAgent' });
+        const directResponse = await this.ragService.geminiService.generateText(
+          userMessage,
+          firstMessageInstruction
+        );
+        logger.debug(`[DEBUG DIRECT] Resposta direta do Gemini: "${directResponse.text}"`, { module: 'SalesAgent' });
+        result = {
+          response: directResponse.text,
+          context: '',
+          usage: directResponse.usage,
+          hasContext: false,
+          directResponse: true
+        };
+      }
 
       // Processa resposta e determina próximos passos
       const processedResponse = this.processResponse(result.response, userMessage);
@@ -117,14 +141,8 @@ INSTRUÇÃO ESPECIAL PARA PRIMEIRA MENSAGEM:
       logger.error('Erro ao processar primeira mensagem:', error, { module: 'SalesAgent' });
 
       // Resposta de fallback para primeira mensagem
-      const currentStep = this.funnelService.getCurrentStep();
-      let fallbackResponse = 'Desculpe, tive um problema técnico. ';
-      if (currentStep && currentStep.coreQuestionPrompt) {
-        fallbackResponse += this.formatResponse(currentStep.coreQuestionPrompt);
-      }
-
       return {
-        response: fallbackResponse,
+        response: 'Desculpe, tive um problema técnico. Poderia repetir sua pergunta?',
         currentStep: this.funnelService.getCurrentStep(),
         advanced: false,
         hasContext: false,
@@ -152,14 +170,35 @@ INSTRUÇÃO ESPECIAL PARA PRIMEIRA MENSAGEM:
 
       // Adiciona histórico da conversa para contexto
       const conversationContext = this.funnelService.getConversationContext();
-      const fullInstruction = enhancedInstruction + '\n\nHISTÓRICO DA CONVERSA:\n' + conversationContext;
+      const fullInstruction = enhancedInstruction + '\n\nHISTÓRICO DA CONVERSA:\n' + conversationContext + '\n\n⚠️ PROIBIÇÕES ABSOLUTAS:\n- NUNCA comece com saudações como "Olá", "Oi", "Bom dia"\n- NUNCA repita apresentações já feitas\n- Esta é uma CONTINUAÇÃO da conversa\n\n✅ DIRETRIZES OBRIGATÓRIAS:\n1. Responda DIRETAMENTE ao que o usuário perguntou\n2. Seja natural e conversacional\n3. Continue a conversa de onde parou';
 
-      // Gera resposta usando RAG
-      const result = await this.ragService.generateResponse(
-        userMessage,
-        fullInstruction,
-        5 // máximo de contextos
-      );
+      // Verifica se precisa usar RAG ou pode responder diretamente
+      const needsRAG = this.shouldUseRAG(userMessage);
+      let result;
+
+      if (needsRAG) {
+        // Gera resposta usando RAG
+        result = await this.ragService.generateResponse(
+          userMessage,
+          fullInstruction,
+          5 // máximo de contextos
+        );
+      } else {
+        // Gera resposta direta sem RAG para economizar tokens
+        logger.info('Resposta direta sem RAG (mensagem simples)', { module: 'SalesAgent' });
+        const directResponse = await this.ragService.geminiService.generateText(
+          userMessage,
+          fullInstruction
+        );
+        logger.debug(`[DEBUG DIRECT] Resposta direta do Gemini: "${directResponse.text}"`, { module: 'SalesAgent' });
+        result = {
+          response: directResponse.text,
+          context: '',
+          usage: directResponse.usage,
+          hasContext: false,
+          directResponse: true
+        };
+      }
 
       // Processa resposta e determina próximos passos
       const processedResponse = this.processResponse(result.response, userMessage);
@@ -227,14 +266,58 @@ INSTRUÇÃO ESPECIAL PARA PRIMEIRA MENSAGEM:
     }
   }
 
+  shouldUseRAG(userMessage) {
+    const message = userMessage.toLowerCase().trim();
+
+    // Mensagens simples de saudação/cortesia que não precisam de RAG
+    const simpleGreetings = [
+      'oi', 'olá', 'ola', 'oie', 'eae', 'e ai', 'e aí',
+      'tchau', 'até', 'ate', 'valeu', 'obrigado', 'obrigada',
+      'blz', 'beleza', 'tudo bem', 'tudo bom', 'como vai',
+      'bom dia', 'boa tarde', 'boa noite',
+      'ok', 'certo', 'entendi', 'perfeito',
+      'sim', 'não', 'nao', 'talvez',
+      'legal', 'show', 'massa', 'top'
+    ];
+
+    // Verifica se é uma mensagem muito curta (até 3 palavras) e comum
+    const words = message.split(/\s+/);
+    if (words.length <= 3) {
+      // Se é exatamente uma das saudações simples
+      if (simpleGreetings.includes(message)) {
+        return false;
+      }
+
+      // Se tem menos de 10 caracteres e não contém palavras relacionadas ao negócio
+      const businessKeywords = [
+        'curso', 'preço', 'preco', 'valor', 'custo', 'pagamento', 'parcelamento',
+        'inventário', 'inventario', 'sucessão', 'sucessao', 'juiz', 'direito',
+        'advogado', 'juridico', 'jurídico', 'certificado', 'aula', 'material',
+        'dúvida', 'duvida', 'pergunta', 'informação', 'informacao',
+        'quando', 'como', 'onde', 'porque', 'por que', 'quanto'
+      ];
+
+      const hasBusinessKeyword = businessKeywords.some(keyword =>
+        message.includes(keyword)
+      );
+
+      if (message.length < 10 && !hasBusinessKeyword) {
+        return false;
+      }
+    }
+
+    // Para mensagens mais elaboradas ou com palavras-chave do negócio, usar RAG
+    return true;
+  }
+
   enhanceInstructionWithStepContext(baseInstruction) {
     const currentStep = this.funnelService.getCurrentStep();
 
     let enhanced = baseInstruction;
 
-    // Adiciona pergunta principal da etapa se apropriado
+    // Adiciona pergunta principal da etapa apenas se apropriado para o contexto
     if (currentStep.coreQuestionPrompt) {
-      enhanced += `\n\nPERGUNTA PRINCIPAL DA ETAPA: ${currentStep.coreQuestionPrompt}`;
+      enhanced += `\n\nPERGUNTA PRINCIPAL DA ETAPA (use apenas quando apropriado): ${currentStep.coreQuestionPrompt}`;
     }
 
     // Adiciona informações específicas baseadas na etapa
@@ -282,6 +365,14 @@ INSTRUÇÃO ESPECIAL PARA PRIMEIRA MENSAGEM:
     finalResponse = this.formatResponse(finalResponse);
 
     return { finalResponse, shouldAdvance };
+  }
+
+  getNextStepAfterAdvance() {
+    const currentStep = this.funnelService.getCurrentStep();
+    if (currentStep && currentStep.nextStepDefault) {
+      return this.funnelService.getStepById(currentStep.nextStepDefault);
+    }
+    return null;
   }
 
   formatResponse(response) {

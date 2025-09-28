@@ -167,6 +167,116 @@ class RAGService {
     }
   }
 
+  // Busca avançada em memória com suporte a sinônimos e termos relacionados
+  async searchInMemory(query, maxResults = 5) {
+    const normalizedQuery = this.normalizeText(query);
+    const queryTerms = this.extractKeyTerms(normalizedQuery);
+
+    // Mapa de sinônimos e termos relacionados
+    const synonymMap = {
+      'preço': ['valor', 'custo', 'investimento', 'pagamento', 'dinheiro'],
+      'valor': ['preço', 'custo', 'investimento', 'pagamento'],
+      'curso': ['treinamento', 'capacitação', 'formação', 'ensino'],
+      'professor': ['instrutor', 'docente', 'jaylton'],
+      'aulas': ['lições', 'conteúdo', 'material'],
+      'certificado': ['certificação', 'diploma'],
+      'tempo': ['prazo', 'duração', 'período'],
+      'acesso': ['disponibilidade', 'liberação'],
+      'pagamento': ['forma de pagar', 'como pagar', 'opções'],
+      'cartão': ['cartao', 'credito', 'crédito'],
+      'boleto': ['transferência', 'depósito'],
+      'garantia': ['reembolso', 'devolução', 'satisfação'],
+      'inventário': ['inventario', 'sucessões', 'sucessão', 'herança'],
+      'holding': ['planejamento patrimonial', 'estruturação'],
+      'advogado': ['advocacia', 'jurídico', 'direito']
+    };
+
+    // Expande os termos da query com sinônimos
+    const expandedTerms = new Set(queryTerms);
+    queryTerms.forEach(term => {
+      if (synonymMap[term]) {
+        synonymMap[term].forEach(synonym => expandedTerms.add(synonym));
+      }
+    });
+
+    // Busca e pontua documentos
+    const scored = this.fallbackKnowledge.map(doc => {
+      const score = this.calculateRelevanceScore(doc.content, Array.from(expandedTerms), normalizedQuery);
+      return {
+        content: doc.content,
+        metadata: { source: doc.source },
+        score: score
+      };
+    });
+
+    // Filtra apenas resultados com score > 0 e ordena por relevância
+    const filtered = scored
+      .filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, maxResults);
+
+    logger.debug(`Busca em memória: ${filtered.length} resultados relevantes de ${queryTerms.join(', ')}`, { module: 'RAGService' });
+
+    return filtered;
+  }
+
+  // Normaliza texto removendo acentos e padronizando
+  normalizeText(text) {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+      .replace(/[^\w\s]/g, ' ') // Remove pontuação
+      .replace(/\s+/g, ' ') // Normaliza espaços
+      .trim();
+  }
+
+  // Extrai termos-chave da query
+  extractKeyTerms(normalizedText) {
+    const stopWords = ['o', 'a', 'e', 'de', 'do', 'da', 'em', 'um', 'uma', 'para', 'com', 'por', 'que', 'se', 'na', 'no', 'como', 'tem', 'ter', 'qual', 'quais', 'quando', 'onde', 'porque', 'por que'];
+
+    return normalizedText
+      .split(' ')
+      .filter(word => word.length > 2 && !stopWords.includes(word))
+      .filter(word => word.length > 0);
+  }
+
+  // Calcula score de relevância
+  calculateRelevanceScore(content, expandedTerms, originalQuery) {
+    const normalizedContent = this.normalizeText(content);
+    const contentWords = normalizedContent.split(' ');
+
+    let score = 0;
+
+    // Pontuação por termos encontrados
+    expandedTerms.forEach(term => {
+      const regex = new RegExp(`\\b${term}\\b`, 'gi');
+      const matches = (normalizedContent.match(regex) || []).length;
+      score += matches * 10; // Peso base para termo encontrado
+    });
+
+    // Bonus para correspondência exata de frases
+    if (originalQuery.length > 10) {
+      const queryParts = originalQuery.split(' ').filter(w => w.length > 3);
+      queryParts.forEach(part => {
+        if (normalizedContent.includes(part)) {
+          score += 15; // Bonus para correspondência de frase
+        }
+      });
+    }
+
+    // Bonus para documentos com múltiplos termos
+    const termsFound = expandedTerms.filter(term =>
+      new RegExp(`\\b${term}\\b`, 'i').test(normalizedContent)
+    ).length;
+
+    if (termsFound > 1) {
+      score += termsFound * 5; // Bonus por cobertura múltipla
+    }
+
+    return score;
+  }
+
   async retrieveContext(query, maxResults = 5) {
     if (!this.isInitialized) {
       throw new Error('RAG Service não está inicializado');
@@ -187,19 +297,10 @@ class RAGService {
         }
       }
 
-      // Fallback: busca em memória
+      // Fallback: busca em memória com sistema aprimorado
       if (!this.useSupabase || results.length === 0) {
-        logger.info('Usando busca em memória (fallback)', { module: 'RAGService' });
-        const queryLower = query.toLowerCase();
-
-        results = this.fallbackKnowledge
-          .filter(doc => doc.content.toLowerCase().includes(queryLower))
-          .slice(0, maxResults)
-          .map(doc => ({
-            content: doc.content,
-            metadata: { source: doc.source },
-            score: 1.0 // Score fixo para busca textual simples
-          }));
+        logger.info('Usando busca em memória avançada (fallback)', { module: 'RAGService' });
+        results = await this.searchInMemory(query, maxResults);
       }
 
       // Formata o contexto
@@ -234,6 +335,7 @@ class RAGService {
         systemInstruction
       );
 
+      logger.debug(`[DEBUG RAG] Resposta do Gemini: "${response.text}"`, { module: 'RAGService' });
       logger.info('Resposta gerada com sucesso', { module: 'RAGService' });
 
       return {
@@ -252,6 +354,8 @@ class RAGService {
           userMessage,
           systemInstruction
         );
+
+        logger.debug(`[DEBUG RAG FALLBACK] Resposta do Gemini: "${fallbackResponse.text}"`, { module: 'RAGService' });
 
         return {
           response: fallbackResponse.text,
@@ -285,18 +389,10 @@ class RAGService {
         }
       }
 
-      // Fallback: busca em memória
+      // Fallback: busca em memória com sistema avançado
       if (!this.useSupabase || results.length === 0) {
-        const queryLower = query.toLowerCase();
-        const memoryResults = this.fallbackKnowledge
-          .filter(doc => doc.content.toLowerCase().includes(queryLower))
-          .slice(0, limit);
-
-        results = memoryResults.map(doc => ({
-          content: doc.content,
-          metadata: { source: doc.source },
-          score: 1.0
-        }));
+        logger.info('Usando busca avançada em memória para searchKnowledge', { module: 'RAGService' });
+        results = await this.searchInMemory(query, limit);
       }
 
       return results.map(result => ({

@@ -59,13 +59,14 @@ class GeminiService {
         fullPrompt = `${systemInstruction}\n\nUsuário: ${prompt}`;
       }
 
+      logger.info(`[GEMINI DEBUG] Prompt enviado (primeiros 500 chars): "${fullPrompt.substring(0, 500)}..."`, { module: 'GeminiService' });
       logger.debug('Gerando texto com Gemini...', { module: 'GeminiService' });
 
       const result = await this.model.generateContent(fullPrompt);
       const response = await result.response;
       const text = response.text();
 
-      logger.debug('Texto gerado com sucesso', { module: 'GeminiService' });
+      logger.info(`[GEMINI DEBUG] Texto gerado: "${text}"`, { module: 'GeminiService' });
 
       return {
         text: text.trim(),

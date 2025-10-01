@@ -2,6 +2,17 @@
 
 ## Visão Geral
 
+  🚀 Para Iniciar:
+
+  # 1. Inicie a Evolution API com Docker
+  docker-compose -f docker-compose-evolution.yml up -d
+
+  # 2. Teste a conexão (opcional)
+  node test-evolution-connection.js
+
+  # 3. Inicie seu bot
+  npm start
+
 O **AryaZap** é um agente de vendas inteligente baseado em WhatsApp, desenvolvido para automatizar a qualificação de leads, gerenciamento de conversas, tratamento de objeções e processos de fechamento. Utiliza modelos de IA avançados (como GPT-4o e GPT-3.5-Turbo) para engajar clientes em potencial de forma natural, guiá-los através de um funil de vendas configurável e converter vendas diretamente no WhatsApp.
 
 Este projeto fornece uma plataforma robusta, configurável e extensível para empresas que desejam escalar suas vendas e interações com clientes no WhatsApp usando IA.

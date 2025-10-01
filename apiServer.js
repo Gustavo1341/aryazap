@@ -194,6 +194,33 @@ app.get("/misc/ping", (req, res) => {
   res.status(200).send("pong");
 });
 
+// --- Rota POST /webhook (Evolution API) ---
+app.post("/webhook", async (req, res) => {
+  try {
+    logger.debug("[API Webhook] Webhook recebido da Evolution API", null, {
+      event: req.body?.event,
+      instance: req.body?.instance
+    });
+
+    // Responde imediatamente para não bloquear a Evolution API
+    res.status(200).json({ received: true });
+
+    // Processa o webhook de forma assíncrona
+    if (clientManager && typeof clientManager.processWebhook === 'function') {
+      const trainingData = trainingDataCache || null;
+      await clientManager.processWebhook(req.body, trainingData);
+    } else {
+      logger.warn("[API Webhook] clientManager.processWebhook não disponível");
+    }
+  } catch (error) {
+    logger.error("[API Webhook] Erro ao processar webhook:", error);
+    // Ainda responde 200 para não causar reenvios da Evolution API
+    if (!res.headersSent) {
+      res.status(200).json({ received: true, error: "Internal processing error" });
+    }
+  }
+});
+
 // --- Rota POST /send-message ---
 app.post("/send-message", authenticateApiKey, async (req, res) => {
   const { number, message } = req.body;
@@ -399,7 +426,7 @@ async function start() {
           `[API Server] Servidor API iniciado e escutando em http://0.0.0.0:${port}`
         );
         logger.info(
-          `   Rotas disponíveis: GET /status, GET /misc/ping, POST /send-message`
+          `   Rotas disponíveis: GET /status, GET /misc/ping, POST /webhook, POST /send-message`
         );
         if (API_KEY) {
           logger.info(

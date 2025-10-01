@@ -1,92 +1,89 @@
 // --- START OF FILE whatsappClient.js ---
 
 /**
- * whatsappClient.js - Módulo Cliente WhatsApp (whatsapp-web.js) (v. Robusta)
+ * whatsappClient.js - Módulo Cliente WhatsApp (Evolution API) (v. Refatorada)
  * =======================================================================
  * Responsável por:
- * - Inicializar e configurar o cliente whatsapp-web.js com autenticação local.
- * - Gerenciar o ciclo de vida do cliente: QR code, autenticação, conexão, desconexão.
- * - Registrar e lidar com os principais eventos do cliente WWebJS.
+ * - Inicializar e configurar conexão com Evolution API via HTTP.
+ * - Gerenciar instância do WhatsApp: criar, conectar, QR code, status.
+ * - Processar webhooks recebidos da Evolution API.
  * - Delegar o processamento de mensagens recebidas para o messageHandler.
- * - Fornecer acesso controlado à instância do cliente e seu estado.
+ * - Fornecer acesso controlado à API e seu estado.
  * =======================================================================
  */
 
 // --- Node.js & Third-Party Imports ---
-import pkg from "whatsapp-web.js";
-const { Client, LocalAuth, WAState } = pkg; // MessageMedia não é usado diretamente aqui
-import qrcode from "qrcode-terminal";
-import path from "node:path"; // Usar node: prefix
-import { clearTimeout, setTimeout } from "node:timers";
-import { serializeError } from "serialize-error"; // Para logs de erro
+import axios from "axios";
+import { serializeError } from "serialize-error";
 
 // --- Project Imports ---
 import logger from "./logger.js";
 import botConfig from "./botConfig.js";
-import { SESSION_DIR } from "./fileSystemHandler.js"; // Diretório da sessão
-import { sleep, parseIntEnv } from "./utils.js"; // Utilitários
-// Importa apenas a função necessária do messageHandler
-// Nota: Isso pode criar dependência cíclica se messageHandler importar whatsappClient.
-// Alternativa: Usar um sistema de eventos ou passar a função como callback.
+import { sleep, parseIntEnv } from "./utils.js";
 import {
   processIncomingMessage,
   checkHumanIntervention,
 } from "./messageHandler.js";
 
 // --- Module State ---
-/** @type {Client | null} */
-let client = null; // Instância do cliente WWebJS
-let currentQr = null; // Armazena o último QR code gerado
-let isClientReady = false; // Flag: Cliente autenticado e pronto
+let instanceName = null; // Nome da instância Evolution API
+let isClientReady = false; // Flag: Instância conectada e pronta
 let isInitializing = false; // Flag: Processo de inicialização em andamento
-/** @type {NodeJS.Timeout | null} */
-let qrRetryTimeout = null; // Timer para re-exibir QR code
-/** @type {Function | null} */
+let currentQrCode = null; // Armazena o último QR code
+let qrCodeCheckInterval = null; // Intervalo para verificar QR code
+let connectionCheckInterval = null; // Intervalo para verificar status de conexão
 let clientReadyResolve = null; // Resolve da Promise de inicialização
-/** @type {Function | null} */
 let clientReadyReject = null; // Reject da Promise de inicialização
 
-// --- Constants ---
-const WAPP_CLIENT_INIT_TIMEOUT_MS = parseIntEnv(
+// --- Evolution API Configuration ---
+const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL || "http://localhost:8080";
+const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY || "CHANGE_THIS_API_KEY_FOR_SECURITY";
+const EVOLUTION_INSTANCE_NAME = process.env.EVOLUTION_INSTANCE_NAME || "sales-bot-instance";
+const WEBHOOK_URL = process.env.WEBHOOK_URL || `http://localhost:${process.env.PORT || 3000}/webhook`;
+
+// Timeouts
+const INIT_TIMEOUT_MS = parseIntEnv(
   process.env.WAPP_CLIENT_INIT_TIMEOUT_MS,
   180000,
   "WAPP_CLIENT_INIT_TIMEOUT_MS"
 ); // 3 minutos
-const WAPP_AUTH_TIMEOUT_MS = parseIntEnv(
-  process.env.WAPP_AUTH_TIMEOUT_MS,
-  120000,
-  "WAPP_AUTH_TIMEOUT_MS"
-); // 2 minutos
-const CHROME_EXECUTABLE_PATH = process.env.CHROME_PATH || undefined; // Caminho para Chrome/Chromium (opcional)
-// Versão do WhatsApp Web a ser usada (VERIFICAR COMPATIBILIDADE com a versão whatsapp-web.js instalada!)
-// Consulte: https://github.com/wppconnect-team/wa-version
-// Exemplo para whatsapp-web.js v1.23.0 (verifique a versão correta para a sua instalação)
-const WA_WEB_VERSION = "2.2412.54"; // <<< ATUALIZE CONFORME NECESSÁRIO >>>
-const WA_WEB_CACHE_URL = `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${WA_WEB_VERSION}.html`;
+const QR_CHECK_INTERVAL_MS = 5000; // Verifica QR a cada 5 segundos
+const CONNECTION_CHECK_INTERVAL_MS = 10000; // Verifica conexão a cada 10 segundos
 
 // ================================================================
 // ===               FUNÇÕES DE CONTROLE DO CLIENTE             ===
 // ================================================================
 
 /**
- * Inicializa e configura o cliente whatsapp-web.js.
- * Retorna uma Promise que resolve quando o cliente está pronto ('ready')
- * ou rejeita em caso de erro fatal na inicialização/autenticação.
- * @param {object} trainingData - Dados de treinamento/contexto a serem passados para o messageHandler.
+ * Cria um cliente HTTP configurado para Evolution API
+ */
+function createApiClient() {
+  return axios.create({
+    baseURL: EVOLUTION_API_URL,
+    headers: {
+      "apikey": EVOLUTION_API_KEY,
+      "Content-Type": "application/json",
+    },
+    timeout: 30000,
+  });
+}
+
+/**
+ * Inicializa e configura a conexão com Evolution API.
+ * Retorna uma Promise que resolve quando a instância está conectada.
+ * @param {object} trainingData - Dados de treinamento/contexto.
  * @returns {Promise<void>}
  * @throws {Error} Se a inicialização falhar criticamente.
  */
 async function initialize(trainingData) {
-  if (client || isInitializing) {
+  if (isInitializing || isClientReady) {
     logger.warn(
-      "[WAPP Client Init] Inicialização já em progresso ou cliente já existe."
+      "[Evolution API Init] Inicialização já em progresso ou instância já conectada."
     );
-    // Retorna a promise existente ou uma nova que será resolvida/rejeitada pelos eventos
     return new Promise((res, rej) => {
       if (isClientReady) {
-        res(); // Já pronto, resolve imediatamente
+        res();
       } else {
-        // Anexa aos resolvers pendentes (se houver) ou cria novos
         const originalResolve = clientReadyResolve;
         const originalReject = clientReadyReject;
         clientReadyResolve = () => {
@@ -103,417 +100,545 @@ async function initialize(trainingData) {
 
   isInitializing = true;
   isClientReady = false;
-  _resetClientStateFlags(); // Reseta flags internas, exceto isInitializing
-  logger.startup(
-    "[WAPP Client Init] Configurando e inicializando cliente WWebJS..."
-  );
-  logger.wapp("Initializing client...");
+  instanceName = EVOLUTION_INSTANCE_NAME;
 
-  return new Promise((resolve, reject) => {
+  logger.startup(
+    "[Evolution API Init] Configurando e inicializando conexão com Evolution API..."
+  );
+  logger.wapp("Initializing Evolution API client...");
+
+  return new Promise(async (resolve, reject) => {
     clientReadyResolve = resolve;
     clientReadyReject = reject;
 
+    const timeoutId = setTimeout(() => {
+      logger.fatal("[Evolution API Init] Timeout na inicialização!");
+      _handleFatalError("INIT_TIMEOUT", new Error("Timeout na inicialização"));
+    }, INIT_TIMEOUT_MS);
+
     try {
-      logger.info(
-        `[WAPP Client Init] Using remote WA Web cache v${WA_WEB_VERSION} from ${WA_WEB_CACHE_URL}`
-      );
-      // Log browser executable path more clearly
-      if (CHROME_EXECUTABLE_PATH) {
-        logger.info(
-          `[WAPP Client Init] Usando instalação EXTERNA do Google Chrome em: ${CHROME_EXECUTABLE_PATH}`
-        );
-      } else {
-        logger.warn(
-          `[WAPP Client Init] CHROME_PATH não definido no .env. Puppeteer usará o Chromium padrão EMPACOTADO (pode NÃO suportar codecs de vídeo como H.264/AAC para envio nativo). Para envio nativo de vídeos, defina CHROME_PATH.`
-        );
+      const apiClient = createApiClient();
+
+      // 1. Verificar se a instância já existe
+      logger.info(`[Evolution API Init] Verificando instância '${instanceName}'...`);
+      let instanceExists = false;
+
+      try {
+        const fetchResponse = await apiClient.get(`/instance/fetchInstances`, {
+          params: { instanceName }
+        });
+        instanceExists = fetchResponse.data && fetchResponse.data.length > 0;
+      } catch (error) {
+        logger.debug("[Evolution API Init] Instância não encontrada, será criada.");
       }
 
-      client = new Client({
-        authStrategy: new LocalAuth({ dataPath: SESSION_DIR }),
-        puppeteer: {
-          // Usar 'new' em produção para headless real, false para ver o browser em dev
-          headless: process.env.NODE_ENV === "production" ? "new" : false,
-          executablePath: CHROME_EXECUTABLE_PATH,
-          args: [
-            "--no-sandbox",
-            "--disable-setuid-sandbox",
-            "--disable-dev-shm-usage", // Essencial para Docker/Linux
-            "--disable-accelerated-2d-canvas",
-            "--no-first-run",
-            "--no-zygote",
-            // '--single-process', // Pode causar instabilidade, evitar se possível
-            "--disable-gpu", // Frequentemente necessário em headless
-            "--disable-extensions", // Opcional: Reduzir consumo
-            // Adicionar mais flags de otimização/compatibilidade se necessário
+      // 2. Criar ou reconectar à instância
+      if (!instanceExists) {
+        logger.info(`[Evolution API Init] Criando nova instância '${instanceName}'...`);
+
+        const createResponse = await apiClient.post("/instance/create", {
+          instanceName: instanceName,
+          token: EVOLUTION_API_KEY,
+          qrcode: true,
+          integration: "WHATSAPP-BAILEYS",
+          webhookUrl: WEBHOOK_URL,
+          webhookByEvents: true,
+          webhookBase64: false,
+          events: [
+            "MESSAGES_UPSERT",
+            "MESSAGES_UPDATE",
+            "CONNECTION_UPDATE",
+            "QRCODE_UPDATED",
           ],
-          timeout: WAPP_CLIENT_INIT_TIMEOUT_MS, // Timeout para launch/connect
-        },
-        webVersionCache: {
-          type: "remote",
-          remotePath: WA_WEB_CACHE_URL, // Usa URL baseada na versão constante
-        },
-        takeoverOnConflict: true, // Tenta assumir sessão se aberta em outro local
-        takeoverTimeoutMs: 20000, // Tempo para tentar takeover
-        qrMaxRetries: 3, // Tentativas de obter QR code
-        authTimeoutMs: WAPP_AUTH_TIMEOUT_MS, // Timeout para usuário escanear QR
-        // userAgent: 'Mozilla/5.0 ...' // Opcional: Definir User Agent específico se necessário
-      });
+        });
 
-      // Registra os handlers para os eventos do cliente
-      _registerEventHandlers(trainingData);
+        logger.info(`[Evolution API Init] Instância criada: ${createResponse.data.instance.instanceName}`);
+      } else {
+        logger.info(`[Evolution API Init] Instância '${instanceName}' já existe.`);
+      }
 
-      logger.debug("[WAPP Client Init] Chamando client.initialize()...");
-      // A inicialização é assíncrona, os eventos ('qr', 'ready', 'auth_failure')
-      // irão resolver ou rejeitar a Promise externa.
-      client.initialize().catch((initError) => {
-        // Este catch pega erros síncronos ou rejeições da promise interna do initialize()
-        logger.fatal(
-          "[WAPP Client Init] Erro CRÍTICO retornado/lançado por client.initialize()!",
-          initError
-        );
-        _handleFatalError("CLIENT_INIT_FAILURE", initError); // Chama desligamento
-      });
-    } catch (configError) {
-      // Erro na configuração do new Client()
+      // 3. Conectar à instância
+      logger.info(`[Evolution API Init] Conectando instância '${instanceName}'...`);
+
+      const connectResponse = await apiClient.get(`/instance/connect/${instanceName}`);
+      logger.debug(`[Evolution API Init] Resposta de conexão:`, connectResponse.data);
+
+      // 4. Verificar status da conexão
+      await _checkConnectionStatus(apiClient, timeoutId);
+
+    } catch (error) {
+      clearTimeout(timeoutId);
       logger.fatal(
-        "[WAPP Client Init] Erro CRÍTICO ao configurar o new Client().",
-        configError
+        "[Evolution API Init] Erro CRÍTICO na inicialização!",
+        serializeError(error)
       );
-      _handleFatalError("CLIENT_CONFIG_ERROR", configError);
+      _handleFatalError("INIT_FAILURE", error);
     }
   });
 }
 
 /**
- * Destrói a instância atual do cliente WhatsApp de forma graciosa.
- * @returns {Promise<void>}
+ * Verifica o status da conexão e aguarda QR code ou conexão
+ * @private
  */
-async function destroy() {
-  logger.shutdown(
-    "[WAPP Client Destroy] Solicitado desligamento do cliente..."
-  ); // Usando tipo SHUTDOWN
-  const currentClient = client; // Referência local
-  _resetClientStateFlags(); // LINHA CORRETA
+async function _checkConnectionStatus(apiClient, timeoutId) {
+  return new Promise((resolve, reject) => {
+    let attempts = 0;
+    const maxAttempts = INIT_TIMEOUT_MS / CONNECTION_CHECK_INTERVAL_MS;
 
-  if (currentClient && typeof currentClient.destroy === "function") {
+    connectionCheckInterval = setInterval(async () => {
+      attempts++;
+
+      try {
+        const statusResponse = await apiClient.get(`/instance/connectionState/${instanceName}`);
+        const state = statusResponse.data?.state;
+
+        logger.debug(`[Evolution API] Estado da conexão: ${state} (tentativa ${attempts}/${maxAttempts})`);
+
+        if (state === "open") {
+          // Conexão estabelecida!
+          clearInterval(connectionCheckInterval);
+          clearInterval(qrCodeCheckInterval);
+          clearTimeout(timeoutId);
+
+          logger.ready(
+            `🟢🟢🟢 EVOLUTION API CONECTADA! [${instanceName}] 🟢🟢🟢`
+          );
+          logger.wapp("Client Ready", null, { instanceName, state });
+
+          isInitializing = false;
+          isClientReady = true;
+          currentQrCode = null;
+
+          if (clientReadyResolve) {
+            clientReadyResolve();
+            clientReadyResolve = null;
+            clientReadyReject = null;
+          }
+
+          resolve();
+        } else if (state === "close") {
+          // Precisa escanear QR code
+          if (!qrCodeCheckInterval) {
+            _startQrCodeCheck(apiClient);
+          }
+        }
+
+        if (attempts >= maxAttempts) {
+          clearInterval(connectionCheckInterval);
+          clearInterval(qrCodeCheckInterval);
+          clearTimeout(timeoutId);
+          reject(new Error("Timeout aguardando conexão"));
+        }
+
+      } catch (error) {
+        logger.error(
+          "[Evolution API] Erro ao verificar status:",
+          serializeError(error)
+        );
+      }
+    }, CONNECTION_CHECK_INTERVAL_MS);
+  });
+}
+
+/**
+ * Inicia verificação periódica do QR code
+ * @private
+ */
+function _startQrCodeCheck(apiClient) {
+  logger.info("[Evolution API] Iniciando verificação de QR code...");
+
+  qrCodeCheckInterval = setInterval(async () => {
     try {
-      // Tenta destruir com timeout
-      const destroyPromise = currentClient.destroy();
-      const timeoutPromise = sleep(15000).then(() => {
-        throw new Error("Timeout (15s) ao destruir cliente WAPP.");
-      });
-      await Promise.race([destroyPromise, timeoutPromise]);
-      logger.info("[WAPP Client Destroy] Cliente destruído com sucesso.");
+      const qrResponse = await apiClient.get(`/instance/qrcode/${instanceName}`);
+
+      if (qrResponse.data?.qrcode?.code) {
+        const newQrCode = qrResponse.data.qrcode.code;
+
+        if (newQrCode !== currentQrCode) {
+          currentQrCode = newQrCode;
+          _displayQrCode(currentQrCode);
+        }
+      }
     } catch (error) {
-      logger.error(
-        "[WAPP Client Destroy] Erro/Timeout ao destruir cliente (pode já estar fechado).",
-        serializeError(error)
-      );
+      logger.debug("[Evolution API] Aguardando QR code...");
     }
-  } else {
-    logger.info("[WAPP Client Destroy] Cliente não ativo ou já destruído.");
+  }, QR_CHECK_INTERVAL_MS);
+}
+
+/**
+ * Exibe o QR Code no terminal
+ * @private
+ */
+function _displayQrCode(qrString) {
+  if (!qrString) {
+    logger.warn("[QR Display] QR Code vazio.");
+    return;
+  }
+
+  try {
+    // Importação dinâmica do qrcode-terminal
+    import("qrcode-terminal").then((qrcode) => {
+      console.log("\n" + "-".repeat(60));
+      logger.info("📱 Escaneie o QR Code abaixo com o WhatsApp:");
+
+      qrcode.generate(qrString, { small: true }, (output) => {
+        if (output) {
+          console.log(output);
+          console.log("-".repeat(60));
+          logger.info("✨ Aguardando leitura e autenticação... ✨");
+        }
+      });
+
+      console.log("\n");
+    }).catch((error) => {
+      logger.error("[QR Display] Erro ao importar qrcode-terminal:", error);
+      // Fallback: mostrar o QR code como texto/link
+      logger.info(`📱 QR Code: ${qrString.substring(0, 100)}...`);
+    });
+  } catch (error) {
+    logger.error(
+      "[QR Display] Erro ao exibir QR Code:",
+      serializeError(error)
+    );
   }
 }
 
-/** Reseta as flags de estado interno do módulo. */
-function _resetClientStateFlags() {
-  // client é setado para null em destroy()
-  currentQr = null;
+/**
+ * Destrói a instância atual do WhatsApp.
+ * @returns {Promise<void>}
+ */
+async function destroy() {
+  logger.shutdown("[Evolution API Destroy] Solicitado desligamento...");
+
+  if (qrCodeCheckInterval) {
+    clearInterval(qrCodeCheckInterval);
+    qrCodeCheckInterval = null;
+  }
+
+  if (connectionCheckInterval) {
+    clearInterval(connectionCheckInterval);
+    connectionCheckInterval = null;
+  }
+
+  if (instanceName && isClientReady) {
+    try {
+      const apiClient = createApiClient();
+
+      // Logout da instância (mantém os dados)
+      await apiClient.delete(`/instance/logout/${instanceName}`);
+      logger.info(`[Evolution API Destroy] Logout realizado: ${instanceName}`);
+
+    } catch (error) {
+      logger.error(
+        "[Evolution API Destroy] Erro ao fazer logout:",
+        serializeError(error)
+      );
+    }
+  }
+
   isClientReady = false;
-  // isInitializing é controlado por initialize() e ready/error events
-  if (qrRetryTimeout) clearTimeout(qrRetryTimeout);
-  qrRetryTimeout = null;
-  // Os resolvers/rejecters são resetados por destroy e no evento ready/error
+  isInitializing = false;
+  currentQrCode = null;
+  instanceName = null;
+
+  logger.info("[Evolution API Destroy] Cliente desconectado.");
 }
 
-/** Retorna a instância ativa do cliente WWebJS, ou null. */
-function getClient() {
-  return client;
-}
-
-/** Retorna se o cliente está autenticado e pronto para uso. */
+/**
+ * Retorna se a instância está conectada e pronta.
+ */
 function isReady() {
   return isClientReady;
 }
 
-/** Retorna o estado atual do cliente WWebJS ou um estado inferido. */
-async function getClientState() {
-  if (client && typeof client.getState === "function") {
-    try {
-      // WAState pode ser null durante inicialização/desconexão
-      const state = await client.getState();
-      return state || (isInitializing ? WAState.OPENING : "UNKNOWN"); // Retorna OPENING se inicializando e state for null
-    } catch (error) {
-      logger.warn(
-        "[WAPP Client] Erro ao obter estado WWebJS.",
-        serializeError(error)
-      );
-      return "ERROR_GETTING_STATE";
-    }
+/**
+ * Retorna informações da instância.
+ */
+async function getClient() {
+  if (!instanceName || !isClientReady) {
+    return null;
   }
-  // Se client não existe, infere estado baseado nas flags internas
-  return isInitializing ? "INITIALIZING" : "UNINITIALIZED";
+
+  try {
+    const apiClient = createApiClient();
+    const response = await apiClient.get(`/instance/connectionState/${instanceName}`);
+    return {
+      instanceName,
+      state: response.data?.state,
+      isReady: response.data?.state === "open",
+    };
+  } catch (error) {
+    logger.error("[Evolution API] Erro ao obter informações:", serializeError(error));
+    return null;
+  }
+}
+
+/**
+ * Retorna o estado atual da conexão.
+ */
+async function getClientState() {
+  if (!instanceName) {
+    return isInitializing ? "INITIALIZING" : "UNINITIALIZED";
+  }
+
+  try {
+    const apiClient = createApiClient();
+    const response = await apiClient.get(`/instance/connectionState/${instanceName}`);
+    return response.data?.state || "UNKNOWN";
+  } catch (error) {
+    logger.warn(
+      "[Evolution API] Erro ao obter estado:",
+      serializeError(error)
+    );
+    return "ERROR_GETTING_STATE";
+  }
 }
 
 // ================================================================
-// ===                  HANDLERS DE EVENTOS INTERNOS            ===
+// ===                  PROCESSAMENTO DE WEBHOOKS               ===
 // ================================================================
 
-/** Registra os handlers para os eventos principais do cliente WWebJS. */
-function _registerEventHandlers(trainingData) {
-  if (!client) return;
+/**
+ * Processa webhooks recebidos da Evolution API
+ * @param {object} webhookData - Dados do webhook
+ * @param {object} trainingData - Dados de treinamento
+ */
+async function processWebhook(webhookData, trainingData) {
+  try {
+    const { event, instance, data } = webhookData;
 
-  // --- QR Code ---
-  client.on("qr", (qr) => {
-    logger.info("[Event QR] Novo QR Code recebido. Escaneie com o WhatsApp.");
-    logger.wapp("QR Code Received", null, { qrLength: qr?.length });
-    currentQr = qr;
-    _displayQrCode(currentQr); // Mostra no console
+    logger.debug(`[Evolution Webhook] Evento: ${event}, Instância: ${instance}`);
 
-    // Limpa timer antigo e agenda re-exibição
-    if (qrRetryTimeout) clearTimeout(qrRetryTimeout);
-    const qrRefreshDelay = 60 * 1000; // 1 minuto
-    qrRetryTimeout = setTimeout(() => {
-      qrRetryTimeout = null;
-      // Verifica se ainda está esperando e tem QR
-      if (!isClientReady && currentQr && isInitializing) {
-        logger.warn(
-          `[Event QR] Timeout ${
-            qrRefreshDelay / 1000
-          }s: Cliente não conectado. Re-exibindo QR...`
-        );
-        logger.wapp("QR Code Timeout - Re-displaying");
-        _displayQrCode(currentQr);
-      }
-    }, qrRefreshDelay);
-  });
-
-  // --- Autenticação OK ---
-  client.on("authenticated", (/*session*/) => {
-    // Session não usada aqui
-    logger.info("✅ [Event Authenticated] Cliente autenticado com sucesso!");
-    logger.wapp("Authenticated");
-    if (qrRetryTimeout) {
-      clearTimeout(qrRetryTimeout);
-      qrRetryTimeout = null;
+    // Verifica se é da nossa instância
+    if (instance !== instanceName) {
+      logger.debug(`[Evolution Webhook] Ignorando evento de outra instância: ${instance}`);
+      return;
     }
-    currentQr = null;
-  });
 
-  // --- Falha na Autenticação ---
-  client.on("auth_failure", async (msg) => {
-    logger.fatal(
-      "❌ [Event Auth Failure] FALHA NA AUTENTICAÇÃO!",
-      new Error(`Auth Failure: ${msg}`)
-    );
+    switch (event) {
+      case "messages.upsert":
+        await _handleMessageUpsert(data, trainingData);
+        break;
+
+      case "connection.update":
+        await _handleConnectionUpdate(data);
+        break;
+
+      case "qrcode.updated":
+        _handleQrCodeUpdate(data);
+        break;
+
+      default:
+        logger.debug(`[Evolution Webhook] Evento não tratado: ${event}`);
+    }
+  } catch (error) {
     logger.error(
-      `   >> POSSÍVEL CAUSA: QR inválido/expirado, sessão revogada, problema de conexão/bloqueio.`
-    );
-    logger.error(
-      `   >> AÇÃO RECOMENDADA: Exclua a pasta './${SESSION_DIR}' e reinicie a aplicação para gerar um NOVO QR Code.`
-    );
-    if (qrRetryTimeout) {
-      clearTimeout(qrRetryTimeout);
-      qrRetryTimeout = null;
-    }
-    currentQr = null;
-    _handleFatalError("AUTH_FAILURE", new Error(msg)); // Desliga a aplicação
-  });
-
-  // --- Cliente Pronto para Uso ---
-  client.on("ready", async () => {
-    try {
-      const botName =
-        client.info?.pushname || botConfig.identity.firstName || "Bot";
-      const botNumber = client.info?.wid?.user || "N/A";
-      const platform = client.info?.platform || "N/A";
-      const waVersion = client.info?.wa_version || "N/A";
-
-      logger.ready(
-        `🟢🟢🟢 CLIENTE WHATSAPP PRONTO! [${botName} (${botNumber})] 🟢🟢🟢`
-      );
-      logger.wapp("Client Ready", null, {
-        botName,
-        botNumber,
-        platform,
-        waVersion,
-      });
-
-      // Atualiza flags e resolve a Promise de inicialização
-      isInitializing = false;
-      isClientReady = true;
-      if (qrRetryTimeout) {
-        clearTimeout(qrRetryTimeout);
-        qrRetryTimeout = null;
-      }
-      currentQr = null;
-      if (clientReadyResolve) {
-        clientReadyResolve(); // Resolve a promise retornada por initialize()
-      }
-    } catch (readyError) {
-      // Erro DENTRO do handler 'ready' é crítico
-      logger.fatal(
-        "💥 FATAL: Erro inesperado no handler client.on('ready')!",
-        readyError
-      );
-      _handleFatalError("READY_HANDLER_ERROR", readyError);
-    } finally {
-      // Garante limpeza dos resolvers da promise de inicialização
-      clientReadyResolve = null;
-      clientReadyReject = null;
-    }
-  });
-
-  // --- Desconexão ---
-  client.on("disconnected", (reason) => {
-    logger.warn(
-      `🔌 [Event Disconnected] Cliente desconectado! Razão: ${reason}`
-    );
-    logger.wapp("Disconnected", null, { reason });
-    const wasReady = isClientReady; // Guarda estado anterior
-    _resetClientStateFlags();
-    client = null; // Limpa a instância do cliente
-    // Só trata como erro fatal se *estava* pronto antes. Se desconectou durante init, já é erro fatal.
-    if (wasReady) {
-      _handleFatalError(`DISCONNECTED_${reason}`); // Inicia desligamento
-    }
-  });
-
-  // --- Erros Gerais do Cliente ---
-  client.on("error", (error) => {
-    logger.error(
-      "🆘 [Event Error] Erro geral no cliente WWebJS:",
+      "[Evolution Webhook] Erro ao processar webhook:",
       serializeError(error)
     );
-    logger.wapp("Client Error", null, { error: serializeError(error) });
-    // Verifica erros específicos que indicam problemas irrecuperáveis com o browser/puppeteer
-    if (
-      error.message?.includes("Page crashed") ||
-      error.message?.includes("Target closed") ||
-      error.message?.includes("Protocol error") ||
-      error.message?.includes("Connection closed")
-    ) {
-      logger.fatal(
-        "[WAPP Client] Erro CRÍTICO detectado (Puppeteer/Browser Crash?). Desligando..."
-      );
-      _handleFatalError("PUPPETEER_CRASH", error);
+  }
+}
+
+/**
+ * Processa mensagens recebidas
+ * @private
+ */
+async function _handleMessageUpsert(data, trainingData) {
+  try {
+    if (!data || !Array.isArray(data.messages)) {
+      return;
     }
-    // Outros erros podem ser temporários, não necessariamente desligam.
-  });
 
-  // --- Mudança de Estado Interno ---
-  client.on("change_state", (newState) => {
-    logger.info(`🌀 [Event State Change] Novo estado WWebJS: ${newState}`);
-    logger.wapp("State Changed", null, { newState });
-    switch (newState) {
-      case WAState.CONFLICT:
-        logger.warn(
-          "[WAPP Client] CONFLITO detectado (WhatsApp aberto em outro local?). Tentando reassumir..."
-        );
-        break;
-      case WAState.UNPAIRED:
-      case WAState.UNLAUNCHED:
-        logger.error(
-          `[WAPP Client] Estado CRÍTICO: ${newState}. Sessão perdida ou navegador fechado. Limpe './${SESSION_DIR}' e reinicie.`
-        );
-        _handleFatalError(`STATE_${newState}`);
-        break;
-      case WAState.TIMEOUT:
-        logger.error(
-          `[WAPP Client] Estado TIMEOUT durante conexão/autenticação. Verifique a rede/QR. Desligando.`
-        );
-        _handleFatalError("STATE_TIMEOUT");
-        break;
-      // Logar outros estados como DEBUG se necessário (PAIRING, OPENING, CONNECTED, etc.)
-      case WAState.CONNECTED: // Já logado no evento 'ready'
-      case WAState.PAIRING:
-      case WAState.OPENING:
-        logger.debug(`[WAPP Client] Estado transitório: ${newState}`);
-        break;
-    }
-  });
-
-  // --- Tela de Carregamento (Debug) ---
-  client.on("loading_screen", (percent, message) => {
-    logger.debug(`⏳ [Event Loading] ${percent}% ${message || ""}`);
-  });
-
-  // --- Mensagem Recebida ---
-  // Delega para o messageHandler, passando client e trainingData
-  client.on("message", async (message) => {
-    try {
-      // Rejeita mensagens de grupos explicitamente
-      const chatId = message.from || null;
-      if (!chatId) {
-        logger.debug("[WAPP Client] Ignorando message: chatId indeterminado");
-        return;
+    for (const msg of data.messages) {
+      // Ignora mensagens de grupos
+      if (msg.key?.remoteJid?.endsWith("@g.us")) {
+        logger.debug("[Evolution Webhook] Ignorando mensagem de grupo");
+        continue;
       }
-      
-      // REJEITA GRUPOS explicitamente
-      if (typeof chatId === 'string' && chatId.endsWith('@g.us')) {
-        logger.debug("[WAPP Client] Ignorando message de GRUPO. Grupos não são suportados.");
-        return;
-      }
-      
-      // Primeiramente, verifica se é uma intervenção humana 
-      // (mensagem recebida não do bot)
+
+      // Converte mensagem Evolution API para formato compatível
+      const message = _convertEvolutionMessage(msg);
+
+      // Verifica intervenção humana
       if (!message.fromMe) {
-        const isHumanTakeover = await checkHumanIntervention(message, client);
-        // Se a função detectou e processou uma intervenção humana, podemos parar aqui
+        const isHumanTakeover = await checkHumanIntervention(message, {
+          instanceName,
+          sendMessage: sendMessage,
+        });
+
         if (isHumanTakeover) {
-          logger.debug(`[WAPP Client] Intervenção humana detectada e processada para ${message.from}`);
-          return;
+          logger.debug(`[Evolution Webhook] Intervenção humana detectada para ${message.from}`);
+          continue;
         }
       }
-      
-      // Adiciona try/catch aqui para isolar erros do messageHandler
-      await processIncomingMessage(message, client, trainingData);
-    } catch (messageHandlerError) {
-      logger.error(
-        `[WAPP Client] Erro não capturado DENTRO do processIncomingMessage para msg ${message.id?.id}`,
-        messageHandlerError,
-        message.from
-      );
-      // Considerar notificar o usuário sobre falha no processamento? Ou apenas logar?
-    }
-  });
 
-  // --- Mensagem Criada (fromMe) ---
-  // Usado para detectar intervenção humana
-  client.on("message_create", async (message) => {
-    if (!message) return;
-    
-    try {
-      // Só lida com mensagens ENVIADAS pelo bot ou cliente (fromMe: true)
-      if (!message.fromMe) return;
-      
-      // Garante que temos um chatId válido e NÃO é um grupo
-      const chatId = message.to || null;
-      if (!chatId) {
-        logger.debug("[WAPP Client] Ignorando message_create: chatId indeterminado");
-        return;
-      }
-      
-      // REJEITA GRUPOS explicitamente
-      if (typeof chatId === 'string' && chatId.endsWith('@g.us')) {
-        logger.debug("[WAPP Client] Ignorando message_create de GRUPO. Grupos não são suportados.");
-        return;
-      }
-      
-      // Load checkHumanIntervention dynamically to avoid circular dependencies
-      // Importação dinâmica para evitar dependências circulares
-      const { checkHumanIntervention } = await import("./messageHandler.js");
-      await checkHumanIntervention(message, client);
-    } catch (err) {
-      logger.error(
-        "[WAPP Client] Erro ao executar checkHumanIntervention em message_create",
-        err
-      );
+      // Processa a mensagem
+      await processIncomingMessage(message, {
+        instanceName,
+        sendMessage: sendMessage,
+      }, trainingData);
     }
-  });
+  } catch (error) {
+    logger.error(
+      "[Evolution Webhook] Erro ao processar mensagem:",
+      serializeError(error)
+    );
+  }
+}
 
-  // Registrar outros handlers de evento WWebJS conforme necessário (ex: 'group_join', 'change_battery', etc.)
-  // client.on('change_battery', (batteryInfo) => { logger.info(`[Event Battery] Carga: ${batteryInfo.battery}%, Carregando: ${batteryInfo.plugged}`); });
+/**
+ * Converte mensagem da Evolution API para formato compatível com o sistema
+ * @private
+ */
+function _convertEvolutionMessage(evolutionMsg) {
+  const remoteJid = evolutionMsg.key?.remoteJid || "";
+  const fromMe = evolutionMsg.key?.fromMe || false;
+
+  return {
+    id: {
+      fromMe: fromMe,
+      remote: remoteJid,
+      id: evolutionMsg.key?.id || "",
+      _serialized: `${fromMe}_${remoteJid}_${evolutionMsg.key?.id}`,
+    },
+    from: remoteJid,
+    to: fromMe ? remoteJid : instanceName,
+    body: evolutionMsg.message?.conversation ||
+          evolutionMsg.message?.extendedTextMessage?.text || "",
+    type: _getMessageType(evolutionMsg.message),
+    timestamp: evolutionMsg.messageTimestamp || Date.now(),
+    fromMe: fromMe,
+    hasMedia: !!(evolutionMsg.message?.imageMessage ||
+                 evolutionMsg.message?.videoMessage ||
+                 evolutionMsg.message?.audioMessage ||
+                 evolutionMsg.message?.documentMessage),
+    _data: evolutionMsg, // Mantém dados originais
+  };
+}
+
+/**
+ * Determina o tipo da mensagem
+ * @private
+ */
+function _getMessageType(message) {
+  if (!message) return "chat";
+
+  if (message.conversation || message.extendedTextMessage) return "chat";
+  if (message.imageMessage) return "image";
+  if (message.videoMessage) return "video";
+  if (message.audioMessage) return "ptt"; // Push to talk
+  if (message.documentMessage) return "document";
+  if (message.stickerMessage) return "sticker";
+
+  return "chat";
+}
+
+/**
+ * Processa atualização de conexão
+ * @private
+ */
+async function _handleConnectionUpdate(data) {
+  logger.info(`[Evolution Webhook] Atualização de conexão:`, data);
+
+  if (data.state === "open") {
+    isClientReady = true;
+    logger.ready("🟢 Evolution API conectada via webhook!");
+  } else if (data.state === "close") {
+    isClientReady = false;
+    logger.warn("🔴 Evolution API desconectada!");
+  }
+}
+
+/**
+ * Processa atualização de QR code
+ * @private
+ */
+function _handleQrCodeUpdate(data) {
+  if (data?.qrcode) {
+    currentQrCode = data.qrcode;
+    _displayQrCode(currentQrCode);
+  }
+}
+
+// ================================================================
+// ===                  ENVIO DE MENSAGENS                      ===
+// ================================================================
+
+/**
+ * Envia mensagem de texto
+ */
+async function sendMessage(to, message) {
+  if (!isClientReady) {
+    throw new Error("Evolution API não está conectada");
+  }
+
+  try {
+    const apiClient = createApiClient();
+
+    const response = await apiClient.post(`/message/sendText/${instanceName}`, {
+      number: to.replace("@c.us", ""),
+      text: message,
+    });
+
+    logger.debug(`[Evolution API] Mensagem enviada para ${to}`);
+    return response.data;
+  } catch (error) {
+    logger.error(
+      `[Evolution API] Erro ao enviar mensagem para ${to}:`,
+      serializeError(error)
+    );
+    throw error;
+  }
+}
+
+/**
+ * Envia mensagem com mídia
+ */
+async function sendMediaMessage(to, mediaUrl, caption = "", mediaType = "image") {
+  if (!isClientReady) {
+    throw new Error("Evolution API não está conectada");
+  }
+
+  try {
+    const apiClient = createApiClient();
+
+    let endpoint = "";
+    let payload = {
+      number: to.replace("@c.us", ""),
+    };
+
+    switch (mediaType) {
+      case "image":
+        endpoint = "/message/sendMedia/${instanceName}";
+        payload.mediatype = "image";
+        payload.media = mediaUrl;
+        payload.caption = caption;
+        break;
+      case "audio":
+        endpoint = "/message/sendWhatsAppAudio/${instanceName}";
+        payload.audio = mediaUrl;
+        break;
+      case "video":
+        endpoint = "/message/sendMedia/${instanceName}";
+        payload.mediatype = "video";
+        payload.media = mediaUrl;
+        payload.caption = caption;
+        break;
+      default:
+        throw new Error(`Tipo de mídia não suportado: ${mediaType}`);
+    }
+
+    const response = await apiClient.post(endpoint, payload);
+    logger.debug(`[Evolution API] Mídia ${mediaType} enviada para ${to}`);
+    return response.data;
+  } catch (error) {
+    logger.error(
+      `[Evolution API] Erro ao enviar mídia para ${to}:`,
+      serializeError(error)
+    );
+    throw error;
+  }
 }
 
 // ================================================================
@@ -521,106 +646,56 @@ function _registerEventHandlers(trainingData) {
 // ================================================================
 
 /**
- * Lida com erros fatais: rejeita a promise de inicialização (se pendente)
- * e dispara o graceful shutdown da aplicação.
+ * Lida com erros fatais
  * @private
  */
 function _handleFatalError(signal, error = null) {
   const errorToReject = error || new Error(signal);
-  // Rejeita a promise de inicialização se ela ainda estiver pendente
+
   if (clientReadyReject) {
-    logger.debug(
-      `[WAPP Fatal] Rejeitando promise de inicialização devido a: ${signal}`
-    );
+    logger.debug(`[Evolution Fatal] Rejeitando promise devido a: ${signal}`);
     clientReadyReject(errorToReject);
   }
-  // Limpa os resolvers para evitar chamadas múltiplas
+
   clientReadyResolve = null;
   clientReadyReject = null;
-  isInitializing = false; // Marca que não está mais inicializando
+  isInitializing = false;
   isClientReady = false;
 
-  // Dispara o desligamento da aplicação principal
-  // Usando import dinâmico para quebrar dependência cíclica main <-> whatsappClient
-  // RECOMENDAÇÃO: Usar um sistema de eventos ou gerenciador de shutdown para melhor arquitetura.
-  import("./main.js") // Ajuste o caminho se necessário
+  // Dispara shutdown
+  import("./main.js")
     .then(async ({ gracefulShutdown }) => {
-      if (
-        gracefulShutdown &&
-        typeof gracefulShutdown === "function" &&
-        !isShuttingDown
-      ) {
-        logger.info(
-          `[WAPP Fatal] Chamando gracefulShutdown com sinal: ${signal}`
-        );
-        await gracefulShutdown(signal); // Chama o shutdown de main.js
-      } else if (!isShuttingDown) {
-        logger.fatal(
-          `[WAPP Fatal] gracefulShutdown não encontrado/inválido em main.js ou já desligando. Forçando process.exit(1). Signal: ${signal}`
-        );
-        process.exit(1); // Fallback extremo
+      if (gracefulShutdown && typeof gracefulShutdown === "function") {
+        logger.info(`[Evolution Fatal] Chamando gracefulShutdown: ${signal}`);
+        await gracefulShutdown(signal);
+      } else {
+        logger.fatal(`[Evolution Fatal] gracefulShutdown não encontrado. Signal: ${signal}`);
+        process.exit(1);
       }
     })
     .catch((importErr) => {
       logger.fatal(
-        "[WAPP Fatal] Falha CRÍTICA ao importar gracefulShutdown de main.js! Forçando process.exit(1).",
+        "[Evolution Fatal] Falha ao importar gracefulShutdown!",
         importErr
       );
-      process.exit(1); // Fallback extremo
+      process.exit(1);
     });
-}
-
-/**
- * Exibe o QR Code no terminal de forma clara.
- * @private
- */
-function _displayQrCode(qrString) {
-  if (!qrString) {
-    logger.warn("[QR Display] Tentativa de exibir QR Code vazio.");
-    return;
-  }
-  try {
-    // Limpa console anterior se possível (pode não funcionar em todos terminais)
-    // process.stdout.write('\x1Bc'); // Ou usar \033c
-    console.log("\n" + "-".repeat(60));
-    logger.info("📱 Escaneie o QR Code abaixo com o WhatsApp do seu celular:");
-    qrcode.generate(qrString, { small: true }, (output) => {
-      if (output) {
-        console.log(output);
-        console.log("-".repeat(60));
-        logger.info(
-          "✨ Aguardando leitura e autenticação... ✨ (O QR atualiza automaticamente)"
-        );
-      } else {
-        logger.error(
-          "[QR Display] Falha ao gerar QR code para o terminal (qrcode-terminal retornou nulo)."
-        );
-      }
-    });
-    console.log("\n");
-  } catch (error) {
-    logger.error(
-      "[QR Display] Erro CRÍTICO ao tentar exibir QR Code no terminal.",
-      serializeError(error)
-    );
-  }
 }
 
 // ================================================================
 // ===                         EXPORTS                          ===
 // ================================================================
 export default {
-  /** Inicializa o cliente e retorna Promise que resolve quando pronto. */
   initialize,
-  /** Destrói o cliente WWebJS. */
   destroy,
-  /** Retorna a instância do cliente WWebJS ou null. */
   getClient,
-  /** Retorna true se o cliente estiver pronto. */
   isReady,
-  /** Retorna o estado atual do cliente WWebJS. */
   getClientState,
-  
+  processWebhook,
+  sendMessage,
+  sendMediaMessage,
+  // Mantém compatibilidade
+  instanceName: () => instanceName,
 };
 
 // --- END OF FILE whatsappClient.js ---

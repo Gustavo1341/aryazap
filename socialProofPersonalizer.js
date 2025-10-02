@@ -21,9 +21,10 @@ function isRequestingMoreProofs(userInput) {
   }
 
   const lowerInput = userInput.toLowerCase();
-  
-  // Indicadores de pedido de mais provas sociais
+
+  // Indicadores de pedido de provas sociais (primeira vez OU mais)
   const indicators = [
+    // Pedidos de MAIS provas
     'mais provas',
     'mais depoimentos',
     'outros depoimentos',
@@ -37,7 +38,37 @@ function isRequestingMoreProofs(userInput) {
     'outros casos',
     'mais informações',
     'página completa',
-    'site completo'
+    'site completo',
+
+    // 🔥 NOVO: Pedidos INICIAIS de provas sociais
+    'tem prova',
+    'tem depoimento',
+    'tem caso',
+    'tem exemplo',
+    'tem evidência',
+    'tem resultado',
+    'quero ver prova',
+    'quero ver depoimento',
+    'quero ver caso',
+    'quero ver resultado',
+    'mostra prova',
+    'mostra depoimento',
+    'mostra caso',
+    'mostra resultado',
+    'mostra algum caso',
+    'ver prova',
+    'ver depoimento',
+    'ver caso',
+    'ver resultado',
+    'prova social',
+    'provas sociais',
+    'case de sucesso',
+    'cases de sucesso',
+    'caso de sucesso',
+    'casos de sucesso',
+    'funciona mesmo',
+    'dá resultado',
+    'da resultado'
   ];
 
   return indicators.some(indicator => lowerInput.includes(indicator));

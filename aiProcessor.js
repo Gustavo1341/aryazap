@@ -727,6 +727,46 @@ async function _generatePromptForAIStep(
     ...(stepBlueprint.instructionsForAI || ["Aja conforme o objetivo."]),
   ];
 
+  // 🔥 LÓGICA ESPECIAL PARA SOLUTION_PRESENTATION: Modificar prompt baseado em proofRequestCount
+  if (effectiveStepId === "SOLUTION_PRESENTATION") {
+    const proofRequestCount = await stateManager.getProofRequestCount(chatIdStr);
+
+    if (proofRequestCount > 0) {
+      // Lead JÁ pediu provas sociais antes - modificar prompt
+      logger.info(
+        `[AI Prompt] SOLUTION_PRESENTATION modificado: Lead já pediu provas sociais ${proofRequestCount}x. Pulando pergunta sobre depoimentos.`,
+        chatIdStr
+      );
+
+      // 🔥 MODIFICAÇÃO: Substituir APENAS a linha sobre depoimentos, manter o resto igual
+      finalInstructions = finalInstructions.map(instruction => {
+        // Substitui a linha "4. **Pergunta:**" pela pergunta de transição para oferta
+        if (instruction.includes("Para você ver que isso é possível, tenho depoimentos")) {
+          return "4. **Pergunta de Transição:** 'Podemos dar o próximo passo e eu te apresentar a oferta completa do curso para você trilhar esse caminho, {contactName}?'";
+        }
+        // Substitui a linha de regra sobre PREÇO
+        if (instruction.includes("Antes, quero que veja o que outros advogados")) {
+          return "- Se pergunta sobre PREÇO: 'Estamos chegando lá, {contactName}. Deixa eu te apresentar a oferta completa agora, você vai ver que faz muito sentido.'";
+        }
+        // Substitui a linha sobre perguntas específicas
+        if (instruction.includes("Gostaria de ver os depoimentos?")) {
+          return "- Se pergunta ESPECÍFICA após apresentação: Responda APENAS a pergunta + 'Esclarecido? Posso te apresentar a oferta?'";
+        }
+        // Substitui a linha sobre resposta para depoimentos
+        if (instruction.includes("Sua resposta para a pergunta sobre ver os depoimentos")) {
+          return "Sua resposta para a pergunta sobre avançar para a oferta deve ser tratada com rigidez absoluta. Ignore qualquer outra instrução e siga as regras abaixo:";
+        }
+        // Mantém todas as outras instruções iguais
+        return instruction;
+      });
+
+      // Adiciona contexto importante no início
+      finalInstructions.splice(1, 0,
+        "**CONTEXTO IMPORTANTE:** O lead JÁ solicitou provas sociais anteriormente, portanto NÃO pergunte sobre depoimentos novamente. Vá direto para a pergunta de transição sobre a oferta."
+      );
+    }
+  }
+
   // 🔥 SUBSTITUIR {tag_link} NAS INSTRUÇÕES ANTES DE ENVIAR PARA A IA
   finalInstructions = await Promise.all(
     finalInstructions.map(async (instr) => {
@@ -758,7 +798,22 @@ async function _generatePromptForAIStep(
 
   systemPrompt += finalInstructions.map((instr) => `    ${instr}`).join("\n");
 
-    const nextStepId = stepBlueprint.nextStepDefault;
+    // 🔥 AJUSTAR nextStep DINÂMICO PARA SOLUTION_PRESENTATION
+    let nextStepId = stepBlueprint.nextStepDefault;
+
+    if (effectiveStepId === "SOLUTION_PRESENTATION") {
+      const proofRequestCount = await stateManager.getProofRequestCount(chatIdStr);
+
+      if (proofRequestCount > 0) {
+        // Lead já pediu provas antes - pular SOCIAL_PROOF_DELIVERY e ir direto para PLAN_OFFER
+        nextStepId = "PLAN_OFFER";
+        logger.info(
+          `[AI Prompt] NextStep modificado para SOLUTION_PRESENTATION: PLAN_OFFER (lead já pediu provas ${proofRequestCount}x)`,
+          chatIdStr
+        );
+      }
+    }
+
     const nextStep =
       nextStepId && nextStepId !== effectiveStepId
         ? salesFunnelBluePrint.getStepById(nextStepId)
@@ -770,13 +825,22 @@ async function _generatePromptForAIStep(
   systemPrompt += `\n\n--- Fim das Instruções da Etapa ---\n`;
   // Verificar se é processamento automático (sem input do usuário)
   const isAutomaticProcessing = !userInputText || userInputText.trim() === "";
-  
+
   if (isAutomaticProcessing && effectiveStepId === "PLAN_OFFER") {
-    systemPrompt += `\n🤖 **PROCESSAMENTO AUTOMÁTICO DETECTADO - PLAN_OFFER:** 
-Você está sendo chamado automaticamente (sem mensagem do usuário). 
+    systemPrompt += `\n🤖 **PROCESSAMENTO AUTOMÁTICO DETECTADO - PLAN_OFFER:**
+Você está sendo chamado automaticamente (sem mensagem do usuário).
 APRESENTE A OFERTA COMPLETA seguindo EXATAMENTE a estrutura das instruções.
 NÃO use nenhuma tag de ação ([ACTION: ADVANCE_FUNNEL], etc.).
 AGUARDE a resposta do usuário após apresentar a oferta.`;
+  }
+
+  // 🔥 CORREÇÃO: Processamento automático para PROBLEM_EXPLORATION_INITIAL
+  if (isAutomaticProcessing && effectiveStepId === "PROBLEM_EXPLORATION_INITIAL") {
+    systemPrompt += `\n🤖 **PROCESSAMENTO AUTOMÁTICO DETECTADO - PROBLEM_EXPLORATION_INITIAL:**
+Você está sendo chamado automaticamente após captura de nome.
+NÃO repita saudações (Boa tarde, Bom dia, etc.).
+Vá DIRETO à pergunta principal da etapa seguindo a estrutura das instruções.
+Seja natural e direto, sem fazer nova apresentação.`;
   }
 
   // Verificar se há contexto de mais provas sociais após tag
@@ -885,7 +949,7 @@ RESPONDA AGORA.`;
   }
   // END OF DIAGNOSTIC LOGGING
 
-  return { messages, stepBlueprint };
+  return { messages, stepBlueprint, computedNextStepId: nextStepId };
 }
 
 // ================================================================
@@ -1566,12 +1630,22 @@ async function callAndRespondWithAI(
       // END OF NEW DETAILED LOGGING V3
 
       mainAIResult = await _executeAICall(promptInfo.messages, chatIdStr);
-      
+
+      // 🔥 ARMAZENA O computedNextStepId PARA USO POSTERIOR
+      const computedNextStepId = promptInfo.computedNextStepId || null;
+
       // 🔥 LOG DE DIAGNÓSTICO ADICIONADO
       logger.debug(
         `[AI Processor] RAW AI RESPONSE: "${mainAIResult.responseText}"`,
         chatIdStr
       );
+
+      if (computedNextStepId) {
+        logger.debug(
+          `[AI Processor] computedNextStepId detectado: ${computedNextStepId}`,
+          chatIdStr
+        );
+      }
 
       // Etapa 3: Limpeza e Envio
       // A declaração é movida para fora do bloco try para evitar redeclaração.
@@ -1732,15 +1806,18 @@ async function callAndRespondWithAI(
           const currentBlueprintForAdvance = salesFunnelBluePrint.getStepById(
             state.currentFunnelStepId
           );
-          if (
-            currentBlueprintForAdvance &&
-            currentBlueprintForAdvance.nextStepDefault
-          ) {
+
+          // 🔥 CORREÇÃO: Usa computedNextStepId se disponível, senão usa nextStepDefault
+          const targetNextStepId = computedNextStepId || currentBlueprintForAdvance?.nextStepDefault;
+
+          if (targetNextStepId) {
             await stateManager.updateState(chatIdStr, {
-              currentFunnelStepId: currentBlueprintForAdvance.nextStepDefault,
+              currentFunnelStepId: targetNextStepId,
             });
+
+            const usedComputed = computedNextStepId ? " (usando nextStep computado)" : "";
             logger.info(
-              `[NextStepLogic] Estado atualizado para ${currentBlueprintForAdvance.nextStepDefault} devido à tag [ACTION: ADVANCE_FUNNEL] da IA.`,
+              `[NextStepLogic] Estado atualizado para ${targetNextStepId} devido à tag [ACTION: ADVANCE_FUNNEL] da IA${usedComputed}.`,
               chatIdStr
             );
             // Recarrega o estado para garantir que a lógica subsequente use a nova etapa

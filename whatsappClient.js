@@ -604,15 +604,29 @@ async function _handleMessageUpsert(data, trainingData) {
   try {
     logger.debug("[Evolution Webhook] _handleMessageUpsert chamado", {
       hasData: !!data,
-      messagesCount: data?.messages?.length || 0
+      messagesCount: data?.messages?.length || 0,
+      dataKeys: data ? Object.keys(data) : []
     });
 
-    if (!data || !Array.isArray(data.messages)) {
-      logger.warn("[Evolution Webhook] Dados inválidos ou sem mensagens");
+    // Verifica se data é válido
+    if (!data) {
+      logger.warn("[Evolution Webhook] Dados inválidos ou ausentes");
       return;
     }
 
-    for (const msg of data.messages) {
+    // Normaliza o formato: se não tiver array messages, cria um com o próprio data
+    let messages;
+    if (Array.isArray(data.messages)) {
+      messages = data.messages;
+    } else if (data.key && data.message) {
+      // Formato novo da Evolution API: data contém diretamente os campos da mensagem
+      messages = [data];
+    } else {
+      logger.warn("[Evolution Webhook] Formato de dados não reconhecido");
+      return;
+    }
+
+    for (const msg of messages) {
       logger.debug("[Evolution Webhook] Processando mensagem", {
         remoteJid: msg.key?.remoteJid,
         fromMe: msg.key?.fromMe,

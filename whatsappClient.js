@@ -865,6 +865,75 @@ async function sendMessage(to, message, options = {}) {
 }
 
 /**
+ * Marca uma mensagem como lida
+ * @param {string} chatId - ID do chat (número com @c.us ou @s.whatsapp.net)
+ * @param {string} messageId - ID da mensagem a ser marcada como lida
+ */
+async function markMessageAsRead(chatId, messageId) {
+  if (!isClientReady) {
+    throw new Error("Evolution API não está conectada");
+  }
+
+  try {
+    // Remove sufixo @c.us ou @s.whatsapp.net para obter apenas o número
+    let number = chatId.replace(/@c\.us|@s\.whatsapp\.net/g, "");
+
+    logger.debug(`[Evolution API Read] Marcando mensagem ${messageId} como lida para ${number}`);
+
+    // Para WhatsApp Business API, usar Graph API diretamente
+    const WA_BUSINESS_TOKEN = process.env.WA_BUSINESS_TOKEN;
+    const WA_BUSINESS_PHONE_NUMBER_ID = process.env.WA_BUSINESS_PHONE_NUMBER_ID;
+
+    if (WA_BUSINESS_TOKEN && WA_BUSINESS_PHONE_NUMBER_ID) {
+      logger.debug(`[WhatsApp Business] Marcando como lida via Graph API`);
+
+      const graphApiUrl = `https://graph.facebook.com/v23.0/${WA_BUSINESS_PHONE_NUMBER_ID}/messages`;
+      const axios = (await import('axios')).default;
+
+      const payload = {
+        messaging_product: "whatsapp",
+        status: "read",
+        message_id: messageId
+      };
+
+      await axios.post(graphApiUrl, payload, {
+        headers: {
+          'Authorization': `Bearer ${WA_BUSINESS_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      logger.trace(`[WhatsApp Business] ✓ Mensagem ${messageId} marcada como lida`);
+      return true;
+    }
+
+    // Fallback: Evolution API (Baileys)
+    logger.warn(`[Evolution API Read] WhatsApp Business token não configurado, tentando Evolution API`);
+    const apiClient = createApiClient();
+
+    const payload = {
+      read_messages: [{
+        remoteJid: `${number}@s.whatsapp.net`,
+        id: messageId,
+        fromMe: false
+      }]
+    };
+
+    await apiClient.post(`/chat/readMessages/${encodeURIComponent(instanceName)}`, payload);
+
+    logger.trace(`[Evolution API Read] ✓ Mensagem ${messageId} marcada como lida`);
+    return true;
+  } catch (error) {
+    logger.warn(
+      `[Evolution API Read] Erro ao marcar mensagem ${messageId} como lida:`,
+      serializeError(error)
+    );
+    // Não lança erro, pois marcar como lida é uma ação secundária
+    return false;
+  }
+}
+
+/**
  * Envia mensagem com mídia
  */
 async function sendMediaMessage(to, mediaUrl, caption = "", mediaType = "image") {
@@ -966,6 +1035,7 @@ export default {
   processWebhook,
   sendMessage,
   sendMediaMessage,
+  markMessageAsRead,
   // Mantém compatibilidade
   instanceName: () => instanceName,
 };

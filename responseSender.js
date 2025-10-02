@@ -105,6 +105,7 @@ function markMessageAsSent(chatId, content) {
  * @param {number} partIndex - Índice da parte na sequência (para logs).
  * @param {number} totalParts - Total de partes na sequência (para logs).
  * @param {string | null} originalMsgId - ID da mensagem original para citação (quoted). Null se não disponível.
+ * @param {boolean} shouldMarkAsRead - Se deve marcar a mensagem como lida (apenas no primeiro bloco).
  * @returns {Promise<boolean>} True se enviado com sucesso, False caso contrário.
  */
 async function _sendSingleMessagePart(
@@ -113,7 +114,8 @@ async function _sendSingleMessagePart(
   messagePart,
   partIndex,
   totalParts,
-  originalMsgId = null
+  originalMsgId = null,
+  shouldMarkAsRead = true
 ) {
   // Verifica se o Evolution API está pronto
   if (!clientManager.isReady()) {
@@ -229,6 +231,23 @@ async function _sendSingleMessagePart(
           `${logPrefix} Enviando com citação (quoted) da mensagem ID: ${originalMsgId}`,
           chatId
         );
+      }
+
+      // Marca mensagem como lida ANTES de enviar a resposta (apenas no primeiro bloco)
+      if (shouldMarkAsRead && originalMsgId) {
+        try {
+          await clientManager.markMessageAsRead(chatId, originalMsgId);
+          logger.trace(
+            `${logPrefix} Mensagem ${originalMsgId} marcada como lida`,
+            chatId
+          );
+        } catch (readError) {
+          logger.warn(
+            `${logPrefix} Erro ao marcar mensagem como lida (continuando envio)`,
+            readError,
+            chatId
+          );
+        }
       }
 
       // Usa clientManager.sendMessage() diretamente (Evolution API)
@@ -607,7 +626,8 @@ async function sendMessages(
   contactName,
   messageContents,
   tryTTS = false,
-  originalMsgId = null
+  originalMsgId = null,
+  markAsReadOnlyOnce = true // Novo parâmetro: marcar como lida apenas no primeiro bloco
 ) {
   if (
     !chatId ||
@@ -826,13 +846,19 @@ async function sendMessages(
       chatId
     );
 
+    // Marca como lida apenas no primeiro bloco (i === 0)
+    const shouldMarkAsRead = markAsReadOnlyOnce ? i === 0 : true;
+    // Cita (quote) a mensagem original apenas no primeiro bloco
+    const shouldQuoteMessage = markAsReadOnlyOnce ? i === 0 : true;
+
     const textPartSentOk = await _sendSingleMessagePart(
       chat,
       chatId,
       part,
       i,
       finalMessagesToSend.length,
-      originalMsgId // Passa o ID da mensagem original para citação
+      shouldQuoteMessage ? originalMsgId : null, // Passa o ID da mensagem original para citação apenas no primeiro bloco
+      shouldMarkAsRead // Passa flag para marcar como lida
     );
 
     if (textPartSentOk) {

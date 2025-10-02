@@ -1,0 +1,106 @@
+--- DEBUG .ENV (botConfig.js Top) ---
+process.env.TTS_ENABLED raw value (from .env): 'undefined'
+process.env.ELEVENLABS_API_KEY_EXISTS: true
+--- END DEBUG .ENV ---
+22:32:33 [36mINFO [0m [System] [DB Config] Carregada: localhost:5432/minhaapi (User: postgres, SSL: false)
+22:32:33 [90mTRACE[0m [System] [Pricing createPlan] Processando plano CURSO_DIREITO_UNICO. Link definido no objeto: https://pay.hotmart.com/A44481801Y?off=qvbx78wi&checkoutMode=10&bid=1738260098796
+22:32:34 [36mINFO [0m [System] [FS Handler] Raiz do projeto definida como: C:\Users\Gustavo Brandão\Documents\aryaAgent\aryazap
+22:32:34 [36mINFO [0m [System] [Media Handler] Transcrição via SDK OpenAI desativada (API Key não fornecida).
+22:32:34 [37mDEBUG[0m [System] [Media Handler] Cliente ElevenLabs inicializado para TTS.
+22:32:34 [36mINFO [0m [Ctx:{ enabled: true,
+  f] InactivityManager inicializado com sistema de etapas
+22:32:34 [31mERROR[0m [System] [AI Init] FALHA: API Key OpenAI (OPENAI_API_KEY) não definida!
+22:32:34 [36mINFO [0m [System] [AI Init] Cliente Gemini inicializado com sucesso
+22:32:34 [36mINFO [0m [System] [IntelligentRAG] Vocabulário BoW inicializado com 1684 palavras.
+22:32:34 [36mINFO [0m [System] [IntelligentRAG] Processados 66 chunks de conhecimento.
+22:32:34 [36mINFO [0m [System] [AI Init] Sistema IntelligentRAG inicializado com sucesso
+
+======================================================================
+🧪 TESTE DE LÓGICA: Contador de Provas Sociais
+======================================================================
+
+📋 CENÁRIO 1: Cliente não pediu provas sociais
+----------------------------------------------------------------------
+Contador: 0
+Decisão: CHECKOUT_DIRECT
+Link: https://direitoprocessualaplicado.com.br/pos-graduacao-direito-sucessorio/
+Status: ✅ CORRETO
+
+📋 CENÁRIO 2: Cliente pediu provas sociais 1 vez
+----------------------------------------------------------------------
+Mensagem: "Tem mais provas?"
+Detectado como prova: true
+Contador após incremento: 1
+Decisão: CHECKOUT_DIRECT
+Link: https://direitoprocessualaplicado.com.br/pos-graduacao-direito-sucessorio/
+Status: ✅ CORRETO
+
+📋 CENÁRIO 3: Cliente pediu provas sociais 2 vezes
+----------------------------------------------------------------------
+Mensagem: "Quero ver mais depoimentos"
+Detectado como prova: true
+Contador após incremento: 2
+Decisão: SALES_PAGE
+Link: https://direitoprocessualaplicado.com.br/pos-graduacao-direito-sucessorio/
+Status: ✅ CORRETO
+
+📋 CENÁRIO 4: Cliente pediu provas sociais 3 vezes
+----------------------------------------------------------------------
+Mensagem: "Mais casos de sucesso"
+Detectado como prova: true
+Contador após incremento: 3
+Decisão: SALES_PAGE
+Link: https://direitoprocessualaplicado.com.br/pos-graduacao-direito-sucessorio/
+Status: ✅ CORRETO
+
+📋 CENÁRIO 5: Mensagens que NÃO devem incrementar contador
+----------------------------------------------------------------------
+✅ "Qual o preço?" → Detectado: false
+✅ "Como funciona?" → Detectado: false
+✅ "Quero comprar" → Detectado: false
+✅ "Aceita cartão?" → Detectado: false
+✅ "Quando começa?" → Detectado: false
+Status: ✅ TODOS CORRETOS
+
+📋 CENÁRIO 6: Mensagens que DEVEM ser detectadas como pedidos
+----------------------------------------------------------------------
+✅ "Tem mais provas?" → Detectado: true
+✅ "Quero ver mais depoimentos" → Detectado: true
+✅ "Outros casos de sucesso" → Detectado: true
+✅ "Mais evidências" → Detectado: true
+✅ "Tem mais exemplos?" → Detectado: true
+✅ "Página completa" → Detectado: true
+✅ "Mais resultados" → Detectado: true
+Status: ✅ TODOS DETECTADOS
+
+======================================================================
+📊 RESUMO DA LÓGICA IMPLEMENTADA
+======================================================================
+✓ Contador = 0 ou 1 → Usa CHECKOUT DIRETO
+✓ Contador ≥ 2 → Usa PÁGINA DE VENDAS
+
+💡 Fluxo no Sistema Real:
+1. Usuário pede mais provas → Incrementa contador (sem enviar link)
+2. IA responde naturalmente sobre provas sociais
+3. Quando chega na etapa CLOSE_DEAL:
+   - Se contador ≤ 1: Envia checkout direto
+   - Se contador > 1: Envia página de vendas
+======================================================================
+
+22:32:34 [37mDEBUG[0m [System] [Config Validate] Iniciando validação das configurações...
+22:32:34 [33mWARN [0m [System] [Config Validate] Usando nome padrão do bot ('Pedro'). Defina BOT_FIRST_NAME no .env.
+22:32:34 [33mWARN [0m [System] [Config Validate] Usando nome padrão da empresa ('DPA - Direito Processual Aplicado'). Defina BOT_COMPANY_NAME no .env.
+22:32:34 [33mWARN [0m [System] [Config Validate] Usando posição padrão do bot ('Especialista'). Defina BOT_POSITION no .env.
+22:32:34 [36mINFO [0m [System] [Config Validate] Usando tom base padrão da IA. Pode ser personalizado via BOT_TONE.
+22:32:34 [36mINFO [0m [System] [Config Validate] Número de Suporte configurado: 5511999999999
+22:32:34 [36mINFO [0m [System] [Config Validate] Produto alvo definido: CURSO_DIREITO_SUCCESSORIO_DPA
+22:32:34 [36mINFO [0m [System] [Config Validate] Estratégias: Upsell=false, CrossSell=false
+22:32:34 [36mINFO [0m [System] [Config Validate] Gemini configurado como provedor primário. Modelo: gemini-2.5-flash
+22:32:34 [33mWARN [0m [System] [Config Validate] OpenAI API Key não configurada. A transcrição de áudio pode falhar.
+22:32:34 [33mWARN [0m [System] [Config Validate] Transcrição ATIVA, mas API Key da OpenAI NÃO configurada. Transcrição falhará. [90m| { whisperModel: [32m'whisper-1'[39m }[0m
+22:32:34 [36mINFO [0m [System] [Config Validate] TTS ATIVO (ElevenLabs - config.tts.enabled = true). Voz ID: fB2lLA2TtC2KEj37Trcl, Modelo: eleven_multilingual_v2, Prob: 100%
+22:32:34 [36mINFO [0m [System] [Config Validate] Validação das configurações concluída sem erros críticos.
+22:32:34 [37mDEBUG[0m [System] [Constants Validation] Validando constantes...
+22:32:34 [36mINFO [0m [System] [Constants Validation] Constantes validadas sem erros ou avisos.
+22:32:34 [37mINFO [0m [System] --- Log Arquivo Iniciado | Formato: text | Nível: TRACE | Arquivo: C:\Users\Gustavo Brandão\Documents\aryaAgent\logs\dpaLog.log --- [90m| { pid: [33m26748[39m }[0m
+22:32:34 [37mINFO [0m [System] Logger Interface Pronta. [90m| { logDir: [32m'.\\logs'[39m, logFile: [32m'dpaLog.log'[39m, levels: { console: [32m'TRACE'[39m, file: [32m'TRACE'...[0m

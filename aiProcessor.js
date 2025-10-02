@@ -455,16 +455,18 @@ async function _buildRuntimeContextData(
 
 async function _injectRuntimePlaceholders(text, data, chatIdStr = null, userInputText = null) {
   if (!text || typeof text !== "string") return "";
-  
+
   let processedText = text;
-  
-  // Substituir outros placeholders normalmente
-  return processedText.replace(/\{([\w.-]+)\}/g, (match, key) => {
+
+  // Substituir placeholders normalmente
+  processedText = processedText.replace(/\{([\w.-]+)\}/g, (match, key) => {
     const value = data[key];
     return value !== null && value !== undefined
       ? String(value)
       : `[${key}? N/D]`;
   });
+
+  return processedText;
 }
 
 // ================================================================
@@ -724,6 +726,35 @@ async function _generatePromptForAIStep(
   let finalInstructions = [
     ...(stepBlueprint.instructionsForAI || ["Aja conforme o objetivo."]),
   ];
+
+  // 🔥 SUBSTITUIR {tag_link} NAS INSTRUÇÕES ANTES DE ENVIAR PARA A IA
+  finalInstructions = await Promise.all(
+    finalInstructions.map(async (instr) => {
+      if (instr.includes('{tag_link}')) {
+        // Obter contador de provas sociais
+        const proofRequestCount = await stateManager.getProofRequestCount(chatIdStr);
+
+        // Decidir qual link usar
+        let linkToUse;
+        if (proofRequestCount > 1) {
+          linkToUse = pricing.getSalesPageLink();
+          logger.info(
+            `[AI Prompt] Substituindo {tag_link} por SALES PAGE (contador=${proofRequestCount})`,
+            chatIdStr
+          );
+        } else {
+          linkToUse = pricing.getCheckoutLinkDirect();
+          logger.info(
+            `[AI Prompt] Substituindo {tag_link} por CHECKOUT (contador=${proofRequestCount})`,
+            chatIdStr
+          );
+        }
+
+        return instr.replace(/{tag_link}/g, linkToUse);
+      }
+      return instr;
+    })
+  );
 
   systemPrompt += finalInstructions.map((instr) => `    ${instr}`).join("\n");
 
@@ -1376,80 +1407,19 @@ async function callAndRespondWithAI(
     }
     
     // REGRA 1 - DETECÇÃO DE CONTEXTO PARA MAIS PROVAS SOCIAIS:
-    // Verifica se o usuário está pedindo mais provas sociais após já ter recebido a tag
-    // Se sim, injeta um prompt personalizado e altera o tag_link
+    // Verifica se o usuário está pedindo mais provas sociais
+    // Incrementa o contador para controlar qual link será enviado posteriormente
     if (userInputText && socialProofPersonalizer.isRequestingMoreProofs(userInputText)) {
-      // Verifica o contexto completo para determinar se deve ativar o sistema
-      const context = await socialProofPersonalizer.determineContext(chatIdStr, userInputText);
-      
-      if (context.isMoreProofsRequest) {
-        logger.info(
-          `[AI Processor] Pedido de mais provas sociais detectado APÓS tag enviada de ${contactName}. Injetando prompt personalizado.`,
-          chatIdStr
-        );
-        
-        // Usa o chunk de conhecimento para mais provas sociais
-        const maisProvasContent = "Com certeza, {contactName}! Na página de vendas que eu irei te enviar mais pra frente, você vai conseguir ver mais provas sociais de nossos alunos, casos de sucesso detalhados e muito mais informações sobre os resultados que eles obtiveram com o curso.";
-        
-        // Aplica a substituição de placeholders usando a função _injectRuntimePlaceholders
-        const personalizedMessage = _injectRuntimePlaceholders(
-          maisProvasContent,
-          contactName,
-          state,
-          productContextData,
-          conversationContext,
-          greeting,
-          chatIdStr
-        );
-        
-        // Injeta o prompt personalizado diretamente na resposta
-        const customPromptMessage = `${personalizedMessage}\n\n${context.link}`;
-        
-        // Envia a mensagem personalizada diretamente
-        await responseSender.sendMessages(
-          chat,
-          chatIdStr,
-          contactName,
-          [customPromptMessage],
-          false, // Sem TTS para esta resposta rápida
-          userInputText
-        );
-        
-        // Adiciona ao histórico
-        await stateManager.addMessageToHistory(
-          chatIdStr,
-          "assistant",
-          customPromptMessage
-        );
-        
-        // Marca que o usuário já pediu mais provas sociais
-        await socialProofPersonalizer.addTagToState(chatIdStr, "additional_social_proof");
-        
-        // Adiciona flag ao estado para alterar tag_link nas próximas interações
-        if (!state.metadata) state.metadata = {};
-        if (!state.metadata.contextFlags) state.metadata.contextFlags = {};
-        state.metadata.contextFlags.usesSalesPageLink = true;
-        
-        // 🔥 SALVAR PREFERÊNCIA NO BANCO DE DADOS
-        await stateManager.updateLinkPreference(chatIdStr, true);
-        
-        await stateManager.updateState(chatIdStr, {
-          metadata: state.metadata
-        });
-        
-        logger.info(
-          `[AI Processor] Prompt personalizado enviado e flag usesSalesPageLink ativada para ${contactName}.`,
-          chatIdStr
-        );
-        
-        // Retorna para não processar mais nada nesta iteração
-        return;
-      } else {
-        logger.debug(
-          `[AI Processor] Pedido de mais provas detectado, mas tag social_proof_delivery ainda não foi enviada. Processando normalmente.`,
-          chatIdStr
-        );
-      }
+      // Incrementa o contador de solicitações de prova social
+      const proofRequestCount = await stateManager.incrementProofRequestCount(chatIdStr);
+
+      logger.info(
+        `[AI Processor] Pedido de mais provas sociais detectado (${proofRequestCount}ª vez). Contador incrementado para ${contactName}.`,
+        chatIdStr
+      );
+
+      // NÃO envia link aqui - o sistema continua normalmente e o link correto
+      // será escolhido automaticamente quando chegar na etapa CLOSE_DEAL
     }
     
     // ================================================================
@@ -1644,7 +1614,7 @@ async function callAndRespondWithAI(
         );
         // Removido: SEND_SOCIAL_PROOF_DIREITO_SUCCESSORIO não é mais usado
         const hasSocialProofTag = false; // Desabilitado - provas sociais agora via RAG
-        
+
         // Fluxo normal - provas sociais agora são gerenciadas via RAG
 
         // Fluxo normal se não houver tag de provas sociais

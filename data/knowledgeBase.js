@@ -237,6 +237,7 @@ export const knowledgeBase = {
 
   "provas_sociais": {
     "depoimentos_video": {
+      "instrucao_geral": "⚠️ IMPORTANTE: Quando o lead pedir para ver provas sociais, depoimentos ou resultados de alunos, você DEVE enviar os links dos vídeos do YouTube. Use o formato abaixo para apresentar os depoimentos.",
       "aluna_mariana": {
         "nome": "Mariana",
         "status": "Aluna do curso DPA",
@@ -250,7 +251,8 @@ export const knowledgeBase = {
         "link_youtube": "https://www.youtube.com/watch?v=H0LMl6BFPso",
         "resumo_depoimento": "Relatou que depois de se especializar, consegue fechar contratos de 600 mil reais. Disse que 'ultrapassou todas suas expectativas'",
         "citacao_destaque": "Depois de me especializar, eu fecho contratos de 600 mil reais. É claro que tem contratos menores também, mas assim, ultrapassou todas minhas expectativas.",
-        "palavras_chave": "depoimento, prova social, resultado, sucesso, cristiane, costa, 600 mil, contratos, especialização, expectativas, vídeo, youtube"
+        "palavras_chave": "depoimento, prova social, resultado, sucesso, cristiane, costa, 600 mil, contratos, especialização, expectativas, vídeo, youtube",
+        "como_apresentar": "Mencione a citação destaque e SEMPRE envie o link do YouTube para o lead assistir"
       },
       "aluno_ernandes": {
         "nome": "Ernandes",
@@ -265,9 +267,10 @@ export const knowledgeBase = {
       "instrucoes_uso": "Estes são os links oficiais dos depoimentos dos alunos que obtiveram resultados excepcionais com o curso. Podem ser compartilhados quando o lead solicitar provas sociais, depoimentos ou quiser ver resultados reais de outros alunos."
     },
     "mais_provas": {
-      "instrucao": "Quando o lead pedir MAIS provas sociais, ou perguntar se existem outros depoimentos além dos que já foram mostrados.",
-      "resposta_sugerida": "Com certeza, {contactName}! Na página de vendas que eu irei te enviar mais pra frente, você vai conseguir ver mais provas sociais de nossos alunos, casos de sucesso detalhados e muito mais informações sobre os resultados que eles obtiveram com o curso.",
-      "palavras_chave": "mais provas, outros depoimentos, alem desses, especificacoes, detalhes, pagina de vendas"
+      "instrucao": "⚠️ USAR SOMENTE quando o lead pedir MAIS provas sociais DEPOIS de já ter recebido os links dos vídeos do YouTube (Cristiane, Mariana e Ernandes). NÃO USE este chunk na primeira solicitação de provas sociais.",
+      "quando_usar": "Apenas quando o lead já viu os 3 depoimentos em vídeo e pede ainda mais provas além desses três",
+      "resposta_sugerida": "Com certeza, {contactName}! Na página de vendas que eu irei te enviar mais pra frente, você vai conseguir ver ainda mais provas sociais de nossos alunos, casos de sucesso detalhados e muito mais informações sobre os resultados que eles obtiveram com o curso.",
+      "palavras_chave": "mais provas APOS receber videos, outros depoimentos ALEM dos 3, mais casos DEPOIS dos links"
     },
     "especificacoes_curso": {
       "instrucao": "Quando o lead pedir especificações do curso, detalhes completos, programa do curso ou quiser ver mais informações.",

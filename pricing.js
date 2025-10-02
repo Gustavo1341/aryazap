@@ -143,8 +143,8 @@ const TARGET_PRODUCT_ID = "CURSO_DIREITO_SUCCESSORIO_DPA";
 
 // Configuração de links baseada nas variáveis de ambiente
 const LINK_CONFIGURATION = {
-  checkout: process.env.SALES_PAGE_URL || "https://direitoprocessualaplicado.com.br/pos-graduacao-direito-sucessorio/",
-  salesPage: process.env.SALES_PAGE_URL || "https://direitoprocessualaplicado.com.br/pos-graduacao-direito-sucessorio/"
+  checkout: "https://pay.hotmart.com/A44481801Y?off=qvbx78wi&checkoutMode=10&bid=1738260098796", // Link direto do Hotmart
+  salesPage: process.env.SALES_PAGE_URL || "https://direitoprocessualaplicado.com.br/pos-graduacao-direito-sucessorio/" // Landing page
 };
 
 // --- Estrutura principal que armazena todos os produtos ---

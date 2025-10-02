@@ -1580,6 +1580,59 @@ async function getLinkPreference(chatId) {
   }
 }
 
+/**
+ * Incrementa o contador de solicitações de prova social
+ * @param {string} chatId - ID do chat
+ * @returns {Promise<number>} Número total de solicitações
+ */
+async function incrementProofRequestCount(chatId) {
+  try {
+    const state = await getChatState(chatId);
+    if (!state) {
+      logger.warn(`[Proof Request Counter] Estado não encontrado`, chatId);
+      return 0;
+    }
+
+    // Garante que metadata e contextFlags existem
+    if (!state.metadata) {
+      state.metadata = {};
+    }
+    if (!state.metadata.contextFlags) {
+      state.metadata.contextFlags = {};
+    }
+
+    // Incrementa o contador
+    const currentCount = state.metadata.contextFlags.proofRequestCount || 0;
+    const newCount = currentCount + 1;
+    state.metadata.contextFlags.proofRequestCount = newCount;
+
+    const success = await updateState(chatId, { metadata: state.metadata });
+    if (success) {
+      logger.info(`[Proof Request Counter] Contador incrementado para ${newCount}`, chatId);
+      return newCount;
+    }
+    return currentCount;
+  } catch (error) {
+    logger.error(`[Proof Request Counter] Erro ao incrementar contador: ${error.message}`, chatId, { error: serializeError(error) });
+    return 0;
+  }
+}
+
+/**
+ * Obtém o contador de solicitações de prova social
+ * @param {string} chatId - ID do chat
+ * @returns {Promise<number>} Número de solicitações
+ */
+async function getProofRequestCount(chatId) {
+  try {
+    const state = await getChatState(chatId);
+    return state?.metadata?.contextFlags?.proofRequestCount || 0;
+  } catch (error) {
+    logger.error(`[Proof Request Counter] Erro ao obter contador: ${error.message}`, chatId);
+    return 0;
+  }
+}
+
 // ================================================================
 // ===           FUNÇÕES DE CONTEXTO CONVERSACIONAL             ===
 // ================================================================
@@ -1751,7 +1804,11 @@ export default {
   // Funções de preferência de link
   updateLinkPreference,
   getLinkPreference,
-  
+
+  // Funções de contador de prova social
+  incrementProofRequestCount,
+  getProofRequestCount,
+
   // Funções de contexto conversacional
   updateConversationContext,
   addUserPainPoint,

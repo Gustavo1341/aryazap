@@ -68,22 +68,9 @@ services:
       - DATABASE_SAVE_DATA_CHATS=true
 
       # Redis Configuration
-      - REDIS_ENABLED=true
-      - REDIS_URI=redis://redis:6379/0
+      - REDIS_ENABLED=false
+      - REDIS_URI=redis://redis:6379
       - REDIS_PREFIX=evolution
-      - CACHE_REDIS_ENABLED=true
-      - CACHE_REDIS_URI=redis://redis:6379/1
-      - CACHE_REDIS_PREFIX_KEY=evolution
-      - CACHE_REDIS_SAVE_INSTANCES=false
-      - CACHE_LOCAL_ENABLED=false
-
-      # WhatsApp Business API
-      - WA_BUSINESS_TOKEN_WEBHOOK=meu_token_webhook_2025
-      - WA_BUSINESS_URL=https://graph.facebook.com
-      - WA_BUSINESS_VERSION=v23.0
-      - WA_BUSINESS_TOKEN=EAFTsItWJ4bQBPnVMAGVNT08HDqDCPzcf5AiCOSOjZBhqWGYGwgmo0OTKZCs471AAC7GAjVQqreiq2Xk6oAr7AqgHiP89vBZBZCZAU8wvpZB5EL6C1lC1qIaWIs2j4WhqJOAByyUmDZA275L0wyKGGatB2yEcZArniSdZBHmgrju3Od5pmIyo3nNuYfr1WucBxXfj9T5PCJh0dWbbkKpI2taoZBlMKyTLOvSpE7D0dxFe4tiTCt5OMzUG9D11yxDsjr6gZDZD
-      - WA_BUSINESS_PHONE_NUMBER_ID=785005758035788
-      - WA_BUSINESS_ID=1950390949146130
 
       # Webhook Global - Evolution envia mensagens para seu bot
       - WEBHOOK_GLOBAL_URL=http://host.docker.internal:3000/webhook

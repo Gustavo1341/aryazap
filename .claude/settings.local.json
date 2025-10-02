@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(where docker)"
+      "Bash(where docker)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

@@ -1859,7 +1859,16 @@ async function callAndRespondWithAI(
         // Só envia mensagens se não devemos pular o envio
         if (!shouldSkipMessageSending) {
           const processedMessagesArray = [...messagesArray];
-          
+
+          // Recupera o originalMsgId do metadata (se disponível)
+          const originalMsgId = initialState?.metadata?.lastOriginalMsgId || null;
+          if (originalMsgId) {
+            logger.debug(
+              `[AI Processor] Enviando resposta com citação (quoted) da mensagem ID: ${originalMsgId}`,
+              chatIdStr
+            );
+          }
+
           // CRUCIAL: Aguarda completamente o envio das mensagens antes de processar a próxima etapa
           const messageSendingSuccess = await responseSender.sendMessages(
             chat,
@@ -1867,7 +1876,7 @@ async function callAndRespondWithAI(
             contactName,
             processedMessagesArray,
             attemptTTSForThisResponse,
-            userInputText
+            originalMsgId // Passa o ID da mensagem original para citação
           );
           
           logger.info(

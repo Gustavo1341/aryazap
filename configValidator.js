@@ -38,17 +38,22 @@ function validateBotConfig() {
   let warnings = 0;
   const mainProductId = botConfig.behavior.salesStrategy.targetProductId;
 
-  // --- 1. Validação IA (OpenAI / LM Studio) ---
+  // --- 1. Validação IA (OpenAI / LM Studio / Gemini) ---
   const hasApiKey = !!botConfig.openai.apiKey;
   const hasLmStudioUrl = !!botConfig.openai.lmStudioBaseUrl;
+  const hasGeminiKey = !!botConfig.gemini?.apiKey;
+  const primaryProvider = botConfig.ai?.primaryProvider || 'openai';
 
-  if (!hasApiKey && !hasLmStudioUrl) {
+  // Se Gemini está configurado como primário, não exigir OpenAI
+  if (!hasApiKey && !hasLmStudioUrl && !hasGeminiKey) {
     logger.error(
-      "[Config Validate] CRÍTICO: IA não funcionará. Defina OPENAI_API_KEY ou LMSTUDIO_BASE_URL no .env.",
+      "[Config Validate] CRÍTICO: IA não funcionará. Defina OPENAI_API_KEY, LMSTUDIO_BASE_URL ou GEMINI_API_KEY no .env.",
       null,
       { critical: true }
     );
     criticalErrors++;
+  } else if (primaryProvider === 'gemini' && hasGeminiKey) {
+    logger.info("[Config Validate] Usando Gemini como provedor primário de IA.");
   } else if (hasApiKey && hasLmStudioUrl) {
     logger.warn(
       // Aviso sobre ambiguidade, mas não crítico
@@ -68,16 +73,16 @@ function validateBotConfig() {
   }
 
   // --- 2. Validação Transcrição (Whisper) ---
-  const whisperEnabled = botConfig.openai.whisperModel !== "disabled";
+  const whisperEnabled = botConfig.openai.whisperModel && botConfig.openai.whisperModel !== "disabled";
   if (whisperEnabled) {
     if (!hasApiKey && !hasLmStudioUrl) {
-      logger.error(
-        // Erro crítico: Transcrição ativa mas sem backend IA
-        "[Config Validate] CRÍTICO: Transcrição ATIVA, mas IA base (OpenAI/LMStudio) NÃO configurada. Transcrição Whisper FALHARÁ.",
+      logger.warn(
+        // Aviso: Transcrição desabilitada se não houver OpenAI
+        "[Config Validate] Transcrição ATIVA, mas API Key da OpenAI NÃO configurada. Transcrição falhará.",
         null,
-        { whisperModel: botConfig.openai.whisperModel, critical: true }
+        { whisperModel: botConfig.openai.whisperModel }
       );
-      criticalErrors++;
+      warnings++;
     } else {
       logger.info(
         `[Config Validate] Transcrição Áudio ATIVA. Modelo: ${botConfig.openai.whisperModel}.`

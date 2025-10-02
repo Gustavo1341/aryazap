@@ -161,8 +161,8 @@ async function processIncomingMessage(message, client, trainingData) {
     return;
   }
   
-  // Verifica formato de chatId individual
-  if (!chatId.endsWith("@c.us")) {
+  // Verifica formato de chatId individual (suporta Baileys e WhatsApp Business API)
+  if (!chatId.endsWith("@c.us") && !chatId.endsWith("@s.whatsapp.net")) {
     logger.debug(`[Msg Handler] Ignorando mensagem com formato de chatId inválido: ${chatId}`);
     return;
   }
@@ -210,7 +210,7 @@ async function processIncomingMessage(message, client, trainingData) {
     return;
   }
 
-  const state = await stateManager.getChatState(chatId, contactName);
+  let state = await stateManager.getChatState(chatId, contactName);
   if (!state) {
     logger.error(
       `[Msg Handler] Falha CRÍTICA obter/criar estado p/ ${contactName}. Ignorada.`,
@@ -219,6 +219,20 @@ async function processIncomingMessage(message, client, trainingData) {
     );
     return;
   }
+
+  // ✅ CORREÇÃO: Aguarda 100ms para garantir que o INSERT commitou no DB
+  // Isso previne race condition onde updateState é chamado antes do commit
+  if (!state.lastInteractionTimestamp || state.lastInteractionTimestamp === state.createdAt) {
+    logger.debug(`[Msg Handler] Estado novo detectado. Aguardando commit no DB...`, chatId);
+    await sleep(100);
+    // Recarrega estado para ter versão commitada
+    state = await stateManager.getChatState(chatId, contactName);
+    if (!state) {
+      logger.error(`[Msg Handler] Falha ao recarregar estado após criação`, chatId);
+      return;
+    }
+  }
+
   const now = Date.now();
   if (state.humanTakeoverUntil && now < state.humanTakeoverUntil) {
     logger.debug(
@@ -287,6 +301,7 @@ async function processIncomingMessage(message, client, trainingData) {
       : messageReceiveTime,
     error: null, // Indica erro no processamento da mensagem
     mediaInfo: null, // Guarda informações adicionais da mídia
+    originalMsgId: message.id?.id || null, // ID da mensagem original para citação (quoted)
   };
   const msgPreview = (
     message.body ||
@@ -793,11 +808,30 @@ async function _handleBufferedMessages(
       chatId
     );
 
-    // Adiciona mensagens ao histórico
+    // Adiciona mensagens ao histórico e guarda o ID da última mensagem
+    let lastOriginalMsgId = null;
     for (const msg of bufferedMessages.sort(
       (a, b) => a.timestamp - b.timestamp
     )) {
       await stateManager.addMessageToHistory(chatId, "user", msg.content);
+      // Guarda o ID da última mensagem para citação
+      if (msg.originalMsgId) {
+        lastOriginalMsgId = msg.originalMsgId;
+      }
+    }
+
+    // Salva o originalMsgId no metadata para uso posterior
+    if (lastOriginalMsgId) {
+      logger.debug(
+        `[Buffer Proc] Salvando originalMsgId no metadata: ${lastOriginalMsgId}`,
+        chatId
+      );
+      await stateManager.updateState(chatId, {
+        metadata: {
+          ...metadataToSaveInDB,
+          lastOriginalMsgId: lastOriginalMsgId
+        }
+      });
     }
 
     // Recarrega o estado APÓS adições ao histórico para passar à IA.

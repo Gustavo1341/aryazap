@@ -1,0 +1,1 @@
+Estamos usando a API oficial do whatsapp + Evolution API para o processamento.

@@ -104,6 +104,7 @@ function markMessageAsSent(chatId, content) {
  * @param {string} messagePart - O conteúdo textual (já trimado) a ser enviado.
  * @param {number} partIndex - Índice da parte na sequência (para logs).
  * @param {number} totalParts - Total de partes na sequência (para logs).
+ * @param {string | null} originalMsgId - ID da mensagem original para citação (quoted). Null se não disponível.
  * @returns {Promise<boolean>} True se enviado com sucesso, False caso contrário.
  */
 async function _sendSingleMessagePart(
@@ -111,12 +112,13 @@ async function _sendSingleMessagePart(
   chatId,
   messagePart,
   partIndex,
-  totalParts
+  totalParts,
+  originalMsgId = null
 ) {
-  const client = clientManager.getClient();
-  if (!client?.sendMessage) {
+  // Verifica se o Evolution API está pronto
+  if (!clientManager.isReady()) {
     logger.error(
-      "[Response Sender] Cliente WhatsApp indisponível para envio de texto.",
+      "[Response Sender] Evolution API não está conectada.",
       null,
       { chatId }
     );
@@ -124,15 +126,14 @@ async function _sendSingleMessagePart(
   }
 
   // Verificação adicional do estado do cliente
+  // Nota: Para WhatsApp Business API via Evolution, getClientState() retorna "open"
+  // mas clientManager.isReady() já validou a conexão acima, então podemos pular
+  // esta verificação se isReady() retornou true
   const clientState = await clientManager.getClientState();
-  if (clientState !== "CONNECTED" && clientState !== "READY") {
-    logger.error(
-      `[Response Sender] Cliente WhatsApp não está em estado válido: ${clientState}`,
-      null,
-      { chatId }
-    );
-    return false;
-  }
+  logger.trace(
+    `[Response Sender] Estado do cliente: ${clientState}`,
+    chatId
+  );
 
   if (!messagePart) {
     logger.warn(
@@ -213,20 +214,25 @@ async function _sendSingleMessagePart(
       `${logPrefix} Enviando texto: "${messagePart.substring(0, 80)}..."`,
       chatId
     );
-    
-    // Verificação adicional de segurança para o cliente
-    if (!client.info || !client.info.wid) {
-      logger.error(
-        `${logPrefix} Cliente WhatsApp não está completamente inicializado. Tentando reconectar...`,
-        null,
-        { chatId }
-      );
-      throw new Error("Cliente WhatsApp não inicializado completamente");
-    }
-    
+
     let sentMsg;
     try {
-      sentMsg = await client.sendMessage(String(chatId), messagePart);
+      // Prepara opções de envio com quoted se originalMsgId estiver disponível
+      const sendOptions = {};
+      if (originalMsgId) {
+        sendOptions.quoted = {
+          key: {
+            id: originalMsgId
+          }
+        };
+        logger.trace(
+          `${logPrefix} Enviando com citação (quoted) da mensagem ID: ${originalMsgId}`,
+          chatId
+        );
+      }
+
+      // Usa clientManager.sendMessage() diretamente (Evolution API)
+      sentMsg = await clientManager.sendMessage(String(chatId), messagePart, sendOptions);
     } catch (sendError) {
       // Se o erro é de serialização, a mensagem pode ter sido enviada mesmo assim
       if (sendError.message?.includes("Cannot read properties of undefined (reading 'serialize')") ||
@@ -371,16 +377,12 @@ async function _sendTTSAudio(chat, chatId, ttsAudioPath, originalCombinedText) {
   }
 
   // Verificação adicional do estado do cliente
+  // Nota: Para WhatsApp Business API via Evolution, isReady() já validou a conexão
   const clientState = await clientManager.getClientState();
-  if (clientState !== "CONNECTED" && clientState !== "READY") {
-    logger.error(
-      `[Response Sender TTS] Cliente WhatsApp não está em estado válido: ${clientState}`,
-      null,
-      { chatId }
-    );
-    fsPromises.unlink(ttsAudioPath).catch(() => {});
-    return false;
-  }
+  logger.trace(
+    `[Response Sender TTS] Estado do cliente: ${clientState}`,
+    chatId
+  );
 
   const fileName = path.basename(ttsAudioPath);
   logger.debug(
@@ -596,6 +598,7 @@ function _containsPhoneNumbersOrLinks(text) {
  * @param {string} contactName - Nome do contato (para logs).
  * @param {string[]} messageContents - Array de strings de resposta.
  * @param {boolean} [tryTTS=false] - Se true, tenta gerar e enviar TTS para o conteúdo combinado.
+ * @param {string | null} [originalMsgId=null] - ID da mensagem original para citação (quoted). Null se não disponível.
  * @returns {Promise<boolean>} True se pelo menos uma parte (texto OU TTS) foi enviada com sucesso. False se todas as tentativas falharam.
  */
 async function sendMessages(
@@ -603,7 +606,8 @@ async function sendMessages(
   chatId,
   contactName,
   messageContents,
-  tryTTS = false
+  tryTTS = false,
+  originalMsgId = null
 ) {
   if (
     !chatId ||
@@ -827,7 +831,8 @@ async function sendMessages(
       chatId,
       part,
       i,
-      finalMessagesToSend.length
+      finalMessagesToSend.length,
+      originalMsgId // Passa o ID da mensagem original para citação
     );
 
     if (textPartSentOk) {

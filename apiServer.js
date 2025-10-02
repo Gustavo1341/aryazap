@@ -194,13 +194,33 @@ app.get("/misc/ping", (req, res) => {
   res.status(200).send("pong");
 });
 
-// --- Rota POST /webhook (Evolution API) ---
-app.post("/webhook", async (req, res) => {
+// --- Função auxiliar para processar webhooks ---
+async function handleWebhook(req, res, source = "unknown") {
   try {
-    logger.debug("[API Webhook] Webhook recebido da Evolution API", null, {
-      event: req.body?.event,
-      instance: req.body?.instance
-    });
+    // Log completo do body para debug inicial
+    logger.debug(`[API Webhook ${source}] Body completo:`, JSON.stringify(req.body, null, 2));
+
+    const event = req.body?.event;
+    const instance = req.body?.instance;
+    const dataKeys = req.body?.data ? Object.keys(req.body.data) : [];
+
+    logger.info(`[API Webhook ${source}] Recebido: event=${event}, instance=${instance}, dataKeys=[${dataKeys.join(', ')}]`);
+
+    // Log detalhado apenas para mensagens
+    if (event === "messages.upsert" && req.body?.data?.messages) {
+      const messages = req.body.data.messages;
+      logger.info(`[API Webhook ${source}] 📨 messages.upsert com ${messages.length} mensagem(ns)`);
+
+      messages.forEach((msg, idx) => {
+        logger.debug(`[API Webhook ${source}] Mensagem ${idx + 1}:`, {
+          remoteJid: msg.key?.remoteJid,
+          fromMe: msg.key?.fromMe,
+          messageType: msg.message ? Object.keys(msg.message)[0] : 'unknown',
+          hasConversation: !!msg.message?.conversation,
+          hasExtendedText: !!msg.message?.extendedTextMessage
+        });
+      });
+    }
 
     // Responde imediatamente para não bloquear a Evolution API
     res.status(200).json({ received: true });
@@ -208,17 +228,29 @@ app.post("/webhook", async (req, res) => {
     // Processa o webhook de forma assíncrona
     if (clientManager && typeof clientManager.processWebhook === 'function') {
       const trainingData = trainingDataCache || null;
+      logger.debug(`[API Webhook ${source}] Chamando clientManager.processWebhook`);
       await clientManager.processWebhook(req.body, trainingData);
+      logger.info(`[API Webhook ${source}] ✅ Processamento concluído`);
     } else {
-      logger.warn("[API Webhook] clientManager.processWebhook não disponível");
+      logger.warn(`[API Webhook ${source}] ⚠️ clientManager.processWebhook não disponível`);
     }
   } catch (error) {
-    logger.error("[API Webhook] Erro ao processar webhook:", error);
+    logger.error(`[API Webhook ${source}] ❌ Erro ao processar webhook:`, error);
     // Ainda responde 200 para não causar reenvios da Evolution API
     if (!res.headersSent) {
       res.status(200).json({ received: true, error: "Internal processing error" });
     }
   }
+}
+
+// --- Rota POST /webhook (Evolution API formato padrão) ---
+app.post("/webhook", async (req, res) => {
+  await handleWebhook(req, res, "standard");
+});
+
+// --- Rota POST /webhook/meta (Evolution API formato Meta/WhatsApp Business) ---
+app.post("/webhook/meta", async (req, res) => {
+  await handleWebhook(req, res, "meta");
 });
 
 // --- Rota POST /send-message ---
@@ -426,7 +458,7 @@ async function start() {
           `[API Server] Servidor API iniciado e escutando em http://0.0.0.0:${port}`
         );
         logger.info(
-          `   Rotas disponíveis: GET /status, GET /misc/ping, POST /webhook, POST /send-message`
+          `   Rotas disponíveis: GET /status, GET /misc/ping, POST /webhook, POST /webhook/meta, POST /send-message`
         );
         if (API_KEY) {
           logger.info(

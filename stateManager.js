@@ -758,12 +758,38 @@ async function updateState(chatId, updates, tenantId = DEFAULT_TENANT_ID) {
     const { rowCount } = await dbService.query(queryText, params);
 
     if (rowCount === 0) {
-      logger.error(
-        `[State Mgr DB Update] Nenhuma linha atualizada para ${chatId} (Tenant: ${tenantId}). Estado pode não existir ou Tenant ID incorreto.`,
+      logger.warn(
+        `[State Mgr DB Update] Nenhuma linha atualizada para ${chatId} (Tenant: ${tenantId}). Tentando criar estado primeiro...`,
         null,
         { chatId, tenantId }
       );
-      return false;
+
+      // Tenta criar o estado se ele não existir
+      const state = await getChatState(chatId, null, tenantId);
+      if (!state) {
+        logger.error(
+          `[State Mgr DB Update] Falha ao criar estado para ${chatId}. Update abortado.`,
+          null,
+          { chatId, tenantId }
+        );
+        return false;
+      }
+
+      // Aguarda um pouco para o estado ser commitado
+      await new Promise(resolve => setTimeout(resolve, 50));
+
+      // Tenta o update novamente
+      const retryResult = await dbService.query(queryText, params);
+      if (retryResult.rowCount === 0) {
+        logger.error(
+          `[State Mgr DB Update] Falha no retry de update para ${chatId} após criar estado.`,
+          null,
+          { chatId, tenantId }
+        );
+        return false;
+      }
+
+      logger.debug(`[State Mgr DB Update] Update bem-sucedido no retry para ${chatId}`, chatId);
     }
     return true; // Sucesso
   } catch (dbError) {

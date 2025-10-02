@@ -29,8 +29,6 @@ import {
 let instanceName = null; // Nome da instância Evolution API
 let isClientReady = false; // Flag: Instância conectada e pronta
 let isInitializing = false; // Flag: Processo de inicialização em andamento
-let currentQrCode = null; // Armazena o último QR code
-let qrCodeCheckInterval = null; // Intervalo para verificar QR code
 let connectionCheckInterval = null; // Intervalo para verificar status de conexão
 let clientReadyResolve = null; // Resolve da Promise de inicialização
 let clientReadyReject = null; // Reject da Promise de inicialização
@@ -134,36 +132,80 @@ async function initialize(trainingData) {
 
       // 2. Criar ou reconectar à instância
       if (!instanceExists) {
-        logger.info(`[Evolution API Init] Criando nova instância '${instanceName}'...`);
+        logger.info(`[Evolution API Init] Criando nova instância WhatsApp Business '${instanceName}'...`);
+
+        const WA_BUSINESS_PHONE_NUMBER_ID = process.env.WA_BUSINESS_PHONE_NUMBER_ID || "785005758035788";
+        const WA_BUSINESS_ID = process.env.WA_BUSINESS_ID || "1950390949146130";
 
         const createResponse = await apiClient.post("/instance/create", {
           instanceName: instanceName,
           token: EVOLUTION_API_KEY,
-          qrcode: true,
-          integration: "WHATSAPP-BAILEYS",
-          webhookUrl: WEBHOOK_URL,
-          webhookByEvents: true,
-          webhookBase64: false,
-          events: [
-            "MESSAGES_UPSERT",
-            "MESSAGES_UPDATE",
-            "CONNECTION_UPDATE",
-            "QRCODE_UPDATED",
-          ],
+          integration: "WHATSAPP-BUSINESS",
+          number: WA_BUSINESS_PHONE_NUMBER_ID,
+          businessId: WA_BUSINESS_ID
         });
 
-        logger.info(`[Evolution API Init] Instância criada: ${createResponse.data.instance.instanceName}`);
+        logger.info(`[Evolution API Init] Instância WhatsApp Business criada: ${createResponse.data.instance.instanceName}`);
+        logger.info(`📱 A instância foi criada e está no estado: ${createResponse.data.instance.status}`);
       } else {
         logger.info(`[Evolution API Init] Instância '${instanceName}' já existe.`);
       }
 
-      // 3. Conectar à instância
+      // 3. Verificar se já está conectada
+      logger.info(`[Evolution API Init] Verificando status de conexão...`);
+
+      // Para WhatsApp Business API, verificar connectionStatus em fetchInstances
+      const fetchStatusResponse = await apiClient.get(`/instance/fetchInstances`);
+      const instancesList = fetchStatusResponse.data;
+      let currentState = "UNKNOWN";
+      let isWhatsAppBusiness = false;
+
+      if (Array.isArray(instancesList)) {
+        const currentInstance = instancesList.find(inst => inst.name === instanceName);
+        if (currentInstance) {
+          currentState = currentInstance.connectionStatus || "UNKNOWN";
+          isWhatsAppBusiness = currentInstance.integration === "WHATSAPP-BUSINESS";
+        }
+      }
+
+      logger.info(`[Evolution API Init] Estado atual: ${currentState} (${isWhatsAppBusiness ? 'WhatsApp Business API' : 'Baileys'})`);
+
+      // Para WhatsApp Business API, sempre considerar "open" se a instância existe
+      if (isWhatsAppBusiness || currentState === "open") {
+        // Já está conectada!
+        logger.ready(`🟢 Evolution API já conectada! [${instanceName}]`);
+        clearTimeout(timeoutId);
+        isInitializing = false;
+        isClientReady = true;
+
+        if (clientReadyResolve) {
+          clientReadyResolve();
+          clientReadyResolve = null;
+          clientReadyReject = null;
+        }
+        return;
+      }
+
+      // 4. Se está fechada/desconectada, tentar reconectar (apenas para Baileys)
+      if (currentState === "close" && instanceExists && !isWhatsAppBusiness) {
+        logger.warn(`[Evolution API Init] Instância Baileys existe mas está desconectada (${currentState}).`);
+        logger.info(`📱 AÇÃO NECESSÁRIA: Verifique se o número WhatsApp Business está ativo na Evolution API.`);
+        logger.info(`   - Acesse o painel da Evolution API`);
+        logger.info(`   - Verifique a instância: ${instanceName}`);
+        logger.info(`   - Certifique-se de que o número WhatsApp Business está conectado`);
+      }
+
+      // 5. Conectar à instância (isso pode gerar novo QR code se necessário)
       logger.info(`[Evolution API Init] Conectando instância '${instanceName}'...`);
 
-      const connectResponse = await apiClient.get(`/instance/connect/${instanceName}`);
-      logger.debug(`[Evolution API Init] Resposta de conexão:`, connectResponse.data);
+      try {
+        const connectResponse = await apiClient.get(`/instance/connect/${encodeURIComponent(instanceName)}`);
+        logger.debug(`[Evolution API Init] Resposta de conexão:`, connectResponse.data);
+      } catch (connectError) {
+        logger.warn(`[Evolution API Init] Erro ao conectar (esperado se precisa QR):`, connectError.message);
+      }
 
-      // 4. Verificar status da conexão
+      // 6. Verificar status da conexão e QR code
       await _checkConnectionStatus(apiClient, timeoutId);
 
     } catch (error) {
@@ -178,7 +220,7 @@ async function initialize(trainingData) {
 }
 
 /**
- * Verifica o status da conexão e aguarda QR code ou conexão
+ * Verifica o status da conexão para WhatsApp Business API
  * @private
  */
 async function _checkConnectionStatus(apiClient, timeoutId) {
@@ -190,25 +232,23 @@ async function _checkConnectionStatus(apiClient, timeoutId) {
       attempts++;
 
       try {
-        const statusResponse = await apiClient.get(`/instance/connectionState/${instanceName}`);
-        const state = statusResponse.data?.state;
+        const statusResponse = await apiClient.get(`/instance/connectionState/${encodeURIComponent(instanceName)}`);
+        const state = statusResponse.data?.instance?.state || statusResponse.data?.state;
 
-        logger.debug(`[Evolution API] Estado da conexão: ${state} (tentativa ${attempts}/${maxAttempts})`);
+        logger.debug(`[Evolution API] Estado da conexão: ${state} (tentativa ${attempts}/${Math.floor(maxAttempts)})`);
 
         if (state === "open") {
           // Conexão estabelecida!
           clearInterval(connectionCheckInterval);
-          clearInterval(qrCodeCheckInterval);
           clearTimeout(timeoutId);
 
           logger.ready(
-            `🟢🟢🟢 EVOLUTION API CONECTADA! [${instanceName}] 🟢🟢🟢`
+            `🟢🟢🟢 WHATSAPP BUSINESS API CONECTADA! [${instanceName}] 🟢🟢🟢`
           );
           logger.wapp("Client Ready", null, { instanceName, state });
 
           isInitializing = false;
           isClientReady = true;
-          currentQrCode = null;
 
           if (clientReadyResolve) {
             clientReadyResolve();
@@ -218,17 +258,29 @@ async function _checkConnectionStatus(apiClient, timeoutId) {
 
           resolve();
         } else if (state === "close") {
-          // Precisa escanear QR code
-          if (!qrCodeCheckInterval) {
-            _startQrCodeCheck(apiClient);
+          // WhatsApp Business API desconectada - precisa verificar no painel da Evolution
+          if (attempts % 6 === 0) { // A cada 60 segundos (6 * 10s)
+            logger.warn(
+              `[Evolution API] Instância ainda desconectada. Verifique o painel da Evolution API.`
+            );
           }
         }
 
         if (attempts >= maxAttempts) {
           clearInterval(connectionCheckInterval);
-          clearInterval(qrCodeCheckInterval);
           clearTimeout(timeoutId);
-          reject(new Error("Timeout aguardando conexão"));
+
+          logger.error(
+            `[Evolution API] Timeout aguardando conexão após ${Math.floor(INIT_TIMEOUT_MS/1000)}s`
+          );
+          logger.error(
+            `   A instância '${instanceName}' está em estado '${state}'.`
+          );
+          logger.error(
+            `   Verifique se o número WhatsApp Business está configurado corretamente na Evolution API.`
+          );
+
+          reject(new Error(`Timeout aguardando conexão. Estado: ${state}`));
         }
 
       } catch (error) {
@@ -241,68 +293,7 @@ async function _checkConnectionStatus(apiClient, timeoutId) {
   });
 }
 
-/**
- * Inicia verificação periódica do QR code
- * @private
- */
-function _startQrCodeCheck(apiClient) {
-  logger.info("[Evolution API] Iniciando verificação de QR code...");
-
-  qrCodeCheckInterval = setInterval(async () => {
-    try {
-      const qrResponse = await apiClient.get(`/instance/qrcode/${instanceName}`);
-
-      if (qrResponse.data?.qrcode?.code) {
-        const newQrCode = qrResponse.data.qrcode.code;
-
-        if (newQrCode !== currentQrCode) {
-          currentQrCode = newQrCode;
-          _displayQrCode(currentQrCode);
-        }
-      }
-    } catch (error) {
-      logger.debug("[Evolution API] Aguardando QR code...");
-    }
-  }, QR_CHECK_INTERVAL_MS);
-}
-
-/**
- * Exibe o QR Code no terminal
- * @private
- */
-function _displayQrCode(qrString) {
-  if (!qrString) {
-    logger.warn("[QR Display] QR Code vazio.");
-    return;
-  }
-
-  try {
-    // Importação dinâmica do qrcode-terminal
-    import("qrcode-terminal").then((qrcode) => {
-      console.log("\n" + "-".repeat(60));
-      logger.info("📱 Escaneie o QR Code abaixo com o WhatsApp:");
-
-      qrcode.generate(qrString, { small: true }, (output) => {
-        if (output) {
-          console.log(output);
-          console.log("-".repeat(60));
-          logger.info("✨ Aguardando leitura e autenticação... ✨");
-        }
-      });
-
-      console.log("\n");
-    }).catch((error) => {
-      logger.error("[QR Display] Erro ao importar qrcode-terminal:", error);
-      // Fallback: mostrar o QR code como texto/link
-      logger.info(`📱 QR Code: ${qrString.substring(0, 100)}...`);
-    });
-  } catch (error) {
-    logger.error(
-      "[QR Display] Erro ao exibir QR Code:",
-      serializeError(error)
-    );
-  }
-}
+// QR Code functions removed - WhatsApp Business API doesn't use QR codes
 
 /**
  * Destrói a instância atual do WhatsApp.
@@ -310,11 +301,6 @@ function _displayQrCode(qrString) {
  */
 async function destroy() {
   logger.shutdown("[Evolution API Destroy] Solicitado desligamento...");
-
-  if (qrCodeCheckInterval) {
-    clearInterval(qrCodeCheckInterval);
-    qrCodeCheckInterval = null;
-  }
 
   if (connectionCheckInterval) {
     clearInterval(connectionCheckInterval);
@@ -326,7 +312,7 @@ async function destroy() {
       const apiClient = createApiClient();
 
       // Logout da instância (mantém os dados)
-      await apiClient.delete(`/instance/logout/${instanceName}`);
+      await apiClient.delete(`/instance/logout/${encodeURIComponent(instanceName)}`);
       logger.info(`[Evolution API Destroy] Logout realizado: ${instanceName}`);
 
     } catch (error) {
@@ -339,7 +325,6 @@ async function destroy() {
 
   isClientReady = false;
   isInitializing = false;
-  currentQrCode = null;
   instanceName = null;
 
   logger.info("[Evolution API Destroy] Cliente desconectado.");
@@ -362,11 +347,12 @@ async function getClient() {
 
   try {
     const apiClient = createApiClient();
-    const response = await apiClient.get(`/instance/connectionState/${instanceName}`);
+    const response = await apiClient.get(`/instance/connectionState/${encodeURIComponent(instanceName)}`);
+    const state = response.data?.instance?.state || response.data?.state;
     return {
       instanceName,
-      state: response.data?.state,
-      isReady: response.data?.state === "open",
+      state: state,
+      isReady: state === "open",
     };
   } catch (error) {
     logger.error("[Evolution API] Erro ao obter informações:", serializeError(error));
@@ -376,6 +362,7 @@ async function getClient() {
 
 /**
  * Retorna o estado atual da conexão.
+ * Para WhatsApp Business API, verifica o connectionStatus da instância
  */
 async function getClientState() {
   if (!instanceName) {
@@ -384,8 +371,22 @@ async function getClientState() {
 
   try {
     const apiClient = createApiClient();
-    const response = await apiClient.get(`/instance/connectionState/${instanceName}`);
-    return response.data?.state || "UNKNOWN";
+
+    // Para WhatsApp Business API, usar fetchInstances para pegar connectionStatus
+    const fetchResponse = await apiClient.get(`/instance/fetchInstances`);
+    const instances = fetchResponse.data;
+
+    if (Array.isArray(instances)) {
+      const currentInstance = instances.find(inst => inst.name === instanceName);
+      if (currentInstance) {
+        // Para WhatsApp Business API, connectionStatus é "open" quando conectado
+        return currentInstance.connectionStatus || "UNKNOWN";
+      }
+    }
+
+    // Fallback: tentar endpoint de estado
+    const response = await apiClient.get(`/instance/connectionState/${encodeURIComponent(instanceName)}`);
+    return response.data?.instance?.state || response.data?.state || "UNKNOWN";
   } catch (error) {
     logger.warn(
       "[Evolution API] Erro ao obter estado:",
@@ -406,32 +407,53 @@ async function getClientState() {
  */
 async function processWebhook(webhookData, trainingData) {
   try {
-    const { event, instance, data } = webhookData;
+    logger.debug(`[Evolution Webhook] Processando webhook`, {
+      hasEvent: !!webhookData.event,
+      hasInstance: !!webhookData.instance,
+      hasData: !!webhookData.data,
+      keys: Object.keys(webhookData)
+    });
 
-    logger.debug(`[Evolution Webhook] Evento: ${event}, Instância: ${instance}`);
+    // Formato padrão Evolution API (WhatsApp Web)
+    if (webhookData.event && webhookData.data) {
+      const { event, instance, data } = webhookData;
 
-    // Verifica se é da nossa instância
-    if (instance !== instanceName) {
-      logger.debug(`[Evolution Webhook] Ignorando evento de outra instância: ${instance}`);
+      logger.debug(`[Evolution Webhook] Formato padrão - Evento: ${event}, Instância: ${instance}`);
+
+      // Verifica se é da nossa instância
+      if (instance && instance !== instanceName) {
+        logger.debug(`[Evolution Webhook] Ignorando evento de outra instância: ${instance}`);
+        return;
+      }
+
+      switch (event) {
+        case "messages.upsert":
+          await _handleMessageUpsert(data, trainingData);
+          break;
+
+        case "connection.update":
+          await _handleConnectionUpdate(data);
+          break;
+
+        default:
+          logger.debug(`[Evolution Webhook] Evento não tratado: ${event}`);
+      }
       return;
     }
 
-    switch (event) {
-      case "messages.upsert":
-        await _handleMessageUpsert(data, trainingData);
-        break;
-
-      case "connection.update":
-        await _handleConnectionUpdate(data);
-        break;
-
-      case "qrcode.updated":
-        _handleQrCodeUpdate(data);
-        break;
-
-      default:
-        logger.debug(`[Evolution Webhook] Evento não tratado: ${event}`);
+    // Formato Meta/WhatsApp Business API
+    if (webhookData.entry && Array.isArray(webhookData.entry)) {
+      logger.debug(`[Evolution Webhook] Formato Meta/WhatsApp Business API detectado`);
+      await _handleMetaWebhook(webhookData, trainingData);
+      return;
     }
+
+    // Formato desconhecido
+    logger.warn(`[Evolution Webhook] Formato de webhook desconhecido:`, {
+      keys: Object.keys(webhookData),
+      sample: JSON.stringify(webhookData).substring(0, 200)
+    });
+
   } catch (error) {
     logger.error(
       "[Evolution Webhook] Erro ao processar webhook:",
@@ -441,16 +463,162 @@ async function processWebhook(webhookData, trainingData) {
 }
 
 /**
- * Processa mensagens recebidas
+ * Processa webhook no formato Meta/WhatsApp Business API
+ * @private
+ */
+async function _handleMetaWebhook(webhookData, trainingData) {
+  try {
+    logger.debug(`[Evolution Meta Webhook] Processando webhook Meta`, {
+      entryCount: webhookData.entry?.length || 0
+    });
+
+    // Formato Meta: { entry: [{ changes: [{ value: { messages: [...] } }] }] }
+    for (const entry of webhookData.entry || []) {
+      for (const change of entry.changes || []) {
+        const value = change.value;
+
+        // Processa mensagens
+        if (value?.messages && Array.isArray(value.messages)) {
+          logger.info(`[Evolution Meta Webhook] 📨 ${value.messages.length} mensagem(ns) recebida(s)`);
+
+          for (const metaMsg of value.messages) {
+            logger.debug(`[Evolution Meta Webhook] Mensagem Meta:`, {
+              from: metaMsg.from,
+              type: metaMsg.type,
+              hasText: !!metaMsg.text,
+              timestamp: metaMsg.timestamp
+            });
+
+            // Converte formato Meta para formato Evolution padrão
+            const evolutionMsg = {
+              key: {
+                remoteJid: `${metaMsg.from}@s.whatsapp.net`,
+                fromMe: false,
+                id: metaMsg.id || `meta_${Date.now()}`,
+              },
+              message: _convertMetaMessageToEvolution(metaMsg),
+              messageTimestamp: metaMsg.timestamp || Math.floor(Date.now() / 1000),
+              pushName: value.contacts?.find(c => c.wa_id === metaMsg.from)?.profile?.name || null,
+            };
+
+            logger.debug(`[Evolution Meta Webhook] Mensagem convertida`, {
+              remoteJid: evolutionMsg.key.remoteJid,
+              hasMessage: !!evolutionMsg.message
+            });
+
+            // Processa como mensagem padrão Evolution
+            const message = _convertEvolutionMessage(evolutionMsg);
+
+            logger.info(`[Evolution Meta Webhook] Enviando para processamento: from=${message.from}, type=${message.type}`);
+
+            // Processa a mensagem (apenas se não for do bot)
+            if (!message.fromMe) {
+              await processIncomingMessage(message, {
+                instanceName,
+                sendMessage: sendMessage,
+              }, trainingData);
+            }
+          }
+        }
+
+        // Processa status
+        if (value?.statuses && Array.isArray(value.statuses)) {
+          logger.debug(`[Evolution Meta Webhook] ${value.statuses.length} status update(s) ignorado(s)`);
+        }
+      }
+    }
+  } catch (error) {
+    logger.error(
+      "[Evolution Meta Webhook] Erro ao processar webhook Meta:",
+      serializeError(error)
+    );
+  }
+}
+
+/**
+ * Converte mensagem Meta para formato Evolution
+ * @private
+ */
+function _convertMetaMessageToEvolution(metaMsg) {
+  // Formato Meta para formato Evolution/Baileys
+  const message = {};
+
+  switch (metaMsg.type) {
+    case 'text':
+      message.conversation = metaMsg.text?.body || '';
+      break;
+
+    case 'image':
+      message.imageMessage = {
+        url: metaMsg.image?.id,
+        caption: metaMsg.image?.caption || '',
+        mimetype: metaMsg.image?.mime_type || 'image/jpeg',
+      };
+      break;
+
+    case 'video':
+      message.videoMessage = {
+        url: metaMsg.video?.id,
+        caption: metaMsg.video?.caption || '',
+        mimetype: metaMsg.video?.mime_type || 'video/mp4',
+      };
+      break;
+
+    case 'audio':
+    case 'voice':
+      message.audioMessage = {
+        url: metaMsg.audio?.id || metaMsg.voice?.id,
+        mimetype: metaMsg.audio?.mime_type || metaMsg.voice?.mime_type || 'audio/ogg',
+        ptt: metaMsg.type === 'voice',
+      };
+      break;
+
+    case 'document':
+      message.documentMessage = {
+        url: metaMsg.document?.id,
+        mimetype: metaMsg.document?.mime_type || 'application/octet-stream',
+        fileName: metaMsg.document?.filename || 'document',
+      };
+      break;
+
+    case 'sticker':
+      message.stickerMessage = {
+        url: metaMsg.sticker?.id,
+        mimetype: metaMsg.sticker?.mime_type || 'image/webp',
+      };
+      break;
+
+    default:
+      logger.warn(`[Evolution Meta Webhook] Tipo de mensagem Meta não suportado: ${metaMsg.type}`);
+      message.conversation = `[Tipo não suportado: ${metaMsg.type}]`;
+  }
+
+  return message;
+}
+
+/**
+ * Processa mensagens recebidas (formato Evolution padrão)
  * @private
  */
 async function _handleMessageUpsert(data, trainingData) {
   try {
+    logger.debug("[Evolution Webhook] _handleMessageUpsert chamado", {
+      hasData: !!data,
+      messagesCount: data?.messages?.length || 0
+    });
+
     if (!data || !Array.isArray(data.messages)) {
+      logger.warn("[Evolution Webhook] Dados inválidos ou sem mensagens");
       return;
     }
 
     for (const msg of data.messages) {
+      logger.debug("[Evolution Webhook] Processando mensagem", {
+        remoteJid: msg.key?.remoteJid,
+        fromMe: msg.key?.fromMe,
+        messageType: _getMessageType(msg.message)
+      });
+
       // Ignora mensagens de grupos
       if (msg.key?.remoteJid?.endsWith("@g.us")) {
         logger.debug("[Evolution Webhook] Ignorando mensagem de grupo");
@@ -460,8 +628,10 @@ async function _handleMessageUpsert(data, trainingData) {
       // Converte mensagem Evolution API para formato compatível
       const message = _convertEvolutionMessage(msg);
 
-      // Verifica intervenção humana
-      if (!message.fromMe) {
+      logger.info(`[Evolution Webhook] Mensagem convertida: from=${message.from}, body="${message.body?.substring(0, 50)}", type=${message.type}`);
+
+      // Verifica intervenção humana apenas para mensagens enviadas pelo bot (fromMe=true)
+      if (message.fromMe) {
         const isHumanTakeover = await checkHumanIntervention(message, {
           instanceName,
           sendMessage: sendMessage,
@@ -473,11 +643,16 @@ async function _handleMessageUpsert(data, trainingData) {
         }
       }
 
-      // Processa a mensagem
-      await processIncomingMessage(message, {
-        instanceName,
-        sendMessage: sendMessage,
-      }, trainingData);
+      // Processa a mensagem (apenas se não for do bot)
+      if (!message.fromMe) {
+        logger.info(`[Evolution Webhook] Enviando mensagem para processamento: ${message.from}`);
+        await processIncomingMessage(message, {
+          instanceName,
+          sendMessage: sendMessage,
+        }, trainingData);
+      } else {
+        logger.debug(`[Evolution Webhook] Ignorando mensagem enviada pelo bot (fromMe=true)`);
+      }
     }
   } catch (error) {
     logger.error(
@@ -495,26 +670,48 @@ function _convertEvolutionMessage(evolutionMsg) {
   const remoteJid = evolutionMsg.key?.remoteJid || "";
   const fromMe = evolutionMsg.key?.fromMe || false;
 
-  return {
+  // Normaliza chatId para formato @c.us (compatível com messageHandler)
+  const normalizedChatId = remoteJid.endsWith("@s.whatsapp.net")
+    ? remoteJid.replace("@s.whatsapp.net", "@c.us")
+    : remoteJid;
+
+  // Cria objeto de mensagem compatível com whatsapp-web.js
+  const message = {
     id: {
       fromMe: fromMe,
-      remote: remoteJid,
+      remote: normalizedChatId,
       id: evolutionMsg.key?.id || "",
-      _serialized: `${fromMe}_${remoteJid}_${evolutionMsg.key?.id}`,
+      _serialized: `${fromMe}_${normalizedChatId}_${evolutionMsg.key?.id}`,
     },
-    from: remoteJid,
-    to: fromMe ? remoteJid : instanceName,
+    from: normalizedChatId,
+    to: fromMe ? normalizedChatId : `${instanceName}@c.us`,
     body: evolutionMsg.message?.conversation ||
           evolutionMsg.message?.extendedTextMessage?.text || "",
     type: _getMessageType(evolutionMsg.message),
-    timestamp: evolutionMsg.messageTimestamp || Date.now(),
+    timestamp: evolutionMsg.messageTimestamp || Math.floor(Date.now() / 1000),
     fromMe: fromMe,
     hasMedia: !!(evolutionMsg.message?.imageMessage ||
                  evolutionMsg.message?.videoMessage ||
                  evolutionMsg.message?.audioMessage ||
                  evolutionMsg.message?.documentMessage),
+    isStatus: false, // Evolution API não envia status
     _data: evolutionMsg, // Mantém dados originais
+
+    // Implementa método getChat() esperado pelo messageHandler
+    getChat: async function() {
+      return {
+        id: { _serialized: normalizedChatId },
+        isGroup: normalizedChatId.endsWith("@g.us"),
+        name: evolutionMsg.pushName || null,
+        // Simula método sendMessage
+        sendMessage: async (content, options) => {
+          return await sendMessage(normalizedChatId, content);
+        }
+      };
+    }
   };
+
+  return message;
 }
 
 /**
@@ -566,27 +763,102 @@ function _handleQrCodeUpdate(data) {
 // ================================================================
 
 /**
- * Envia mensagem de texto
+ * Envia mensagem de texto via WhatsApp Business API
+ * @param {string} to - Número de destino (pode incluir @c.us ou @s.whatsapp.net)
+ * @param {string} message - Mensagem a ser enviada
+ * @param {object} options - Opções adicionais (ex: quoted para citação)
  */
-async function sendMessage(to, message) {
+async function sendMessage(to, message, options = {}) {
   if (!isClientReady) {
     throw new Error("Evolution API não está conectada");
   }
 
   try {
+    // Remove sufixo @c.us ou @s.whatsapp.net para obter apenas o número
+    let number = to.replace(/@c\.us|@s\.whatsapp\.net/g, "");
+
+    logger.debug(`[Evolution API Send] Enviando mensagem para ${number} via instância ${instanceName}`);
+
+    // Para WhatsApp Business API, usar Graph API diretamente
+    const WA_BUSINESS_TOKEN = process.env.WA_BUSINESS_TOKEN;
+    const WA_BUSINESS_PHONE_NUMBER_ID = process.env.WA_BUSINESS_PHONE_NUMBER_ID;
+
+    if (WA_BUSINESS_TOKEN && WA_BUSINESS_PHONE_NUMBER_ID) {
+      logger.debug(`[WhatsApp Business] Enviando via Graph API direta`);
+
+      const graphApiUrl = `https://graph.facebook.com/v23.0/${WA_BUSINESS_PHONE_NUMBER_ID}/messages`;
+      const axios = (await import('axios')).default;
+
+      // Prepara payload base
+      const payload = {
+        messaging_product: "whatsapp",
+        recipient_type: "individual",
+        to: number,
+        type: "text",
+        text: {
+          body: message
+        }
+      };
+
+      // Adiciona contexto de citação se fornecido
+      if (options.quoted?.key?.id) {
+        payload.context = {
+          message_id: options.quoted.key.id
+        };
+        logger.debug(`[WhatsApp Business] Enviando com citação (context) da mensagem ID: ${options.quoted.key.id}`);
+      }
+
+      const response = await axios.post(graphApiUrl, payload, {
+        headers: {
+          'Authorization': `Bearer ${WA_BUSINESS_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      logger.info(`[WhatsApp Business] ✅ Mensagem enviada para ${to} via Graph API`, {
+        messageId: response.data?.messages?.[0]?.id,
+        status: response.data?.messages?.[0]?.message_status
+      });
+
+      return response.data;
+    }
+
+    // Fallback: tentar Evolution API (para Baileys)
+    logger.warn(`[Evolution API Send] WhatsApp Business token não configurado, tentando Evolution API`);
     const apiClient = createApiClient();
 
-    const response = await apiClient.post(`/message/sendText/${instanceName}`, {
-      number: to.replace("@c.us", ""),
-      text: message,
+    // Prepara payload base
+    const payload = {
+      number: number,
+      text: message
+    };
+
+    // Adiciona opções se fornecidas (ex: quoted para Baileys)
+    if (options && Object.keys(options).length > 0) {
+      payload.options = options;
+      if (options.quoted?.key?.id) {
+        logger.debug(`[Evolution API] Enviando com citação (quoted) da mensagem ID: ${options.quoted.key.id}`);
+      }
+    }
+
+    const response = await apiClient.post(`/message/sendText/${encodeURIComponent(instanceName)}`, payload);
+
+    logger.info(`[Evolution API Send] ✅ Mensagem enviada para ${to}`, {
+      messageId: response.data?.key?.id || response.data?.messages?.[0]?.id,
+      status: response.data?.status
     });
 
-    logger.debug(`[Evolution API] Mensagem enviada para ${to}`);
     return response.data;
   } catch (error) {
     logger.error(
-      `[Evolution API] Erro ao enviar mensagem para ${to}:`,
-      serializeError(error)
+      `[Evolution API Send] ❌ Erro ao enviar mensagem para ${to}:`,
+      serializeError(error),
+      null,
+      {
+        errorMessage: error.message,
+        errorResponse: error.response?.data,
+        errorStatus: error.response?.status
+      }
     );
     throw error;
   }

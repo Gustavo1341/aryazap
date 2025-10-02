@@ -1,0 +1,1050 @@
+--- DEBUG .ENV (botConfig.js Top) ---
+process.env.TTS_ENABLED raw value (from .env): 'undefined'
+process.env.ELEVENLABS_API_KEY_EXISTS: true
+--- END DEBUG .ENV ---
+21:30:19 [36mINFO [0m [System] [DB Config] Carregada: localhost:5432/minhaapi (User: postgres, SSL: false)
+21:30:19 [36mINFO [0m [System] [FS Handler] Raiz do projeto definida como: C:\Users\Gustavo Brandão\Documents\aryaAgent\aryazap
+21:30:19 [90mTRACE[0m [System] [Pricing createPlan] Processando plano CURSO_DIREITO_UNICO. Link definido no objeto: https://pay.hotmart.com/A44481801Y?off=qvbx78wi&checkoutMode=10&bid=1738260098796
+21:30:19 [37mDEBUG[0m [System] [PDF Loader] Iniciando localização do pdf.worker.mjs...
+21:30:20 [36mINFO [0m [System] [Media Handler] Transcrição via SDK OpenAI desativada (API Key não fornecida).
+21:30:20 [37mDEBUG[0m [System] [Media Handler] Cliente ElevenLabs inicializado para TTS.
+21:30:20 [31mERROR[0m [System] [AI Init] FALHA: API Key OpenAI (OPENAI_API_KEY) não definida!
+21:30:20 [36mINFO [0m [System] [AI Init] Cliente Gemini inicializado com sucesso
+21:30:20 [36mINFO [0m [System] [IntelligentRAG] Vocabulário BoW inicializado com 1684 palavras.
+21:30:20 [36mINFO [0m [System] [IntelligentRAG] Processados 66 chunks de conhecimento.
+21:30:20 [36mINFO [0m [System] [AI Init] Sistema IntelligentRAG inicializado com sucesso
+21:30:20 [36mINFO [0m [Ctx:{ enabled: true,
+  f] InactivityManager inicializado com sistema de etapas
+
+============================================================
+🚀 Iniciando Agente SmartZap IA (v?.?.?)... 🚀
+============================================================
+21:30:20 [37mINFO [0m [System] ===== FASE DE INICIALIZAÇÃO =====
+21:30:20 [36mINFO [0m [System] Versão Node.js: 22.19.0 (OK)
+21:30:20 [37mINFO [0m [System] [Init 1/7] Inicializando Sistema de Arquivos...
+21:30:20 [37mDEBUG[0m [System] [FS Handler] Verificando/Criando diretórios essenciais...
+21:30:20 [37mDEBUG[0m [System] [Config Validate] Iniciando validação das configurações...
+21:30:20 [33mWARN [0m [System] [Config Validate] Usando nome padrão do bot ('Pedro'). Defina BOT_FIRST_NAME no .env.
+21:30:20 [33mWARN [0m [System] [Config Validate] Usando nome padrão da empresa ('DPA - Direito Processual Aplicado'). Defina BOT_COMPANY_NAME no .env.
+21:30:20 [33mWARN [0m [System] [Config Validate] Usando posição padrão do bot ('Especialista'). Defina BOT_POSITION no .env.
+21:30:20 [36mINFO [0m [System] [Config Validate] Usando tom base padrão da IA. Pode ser personalizado via BOT_TONE.
+21:30:20 [36mINFO [0m [System] [Config Validate] Número de Suporte configurado: 5511999999999
+21:30:20 [36mINFO [0m [System] [Config Validate] Produto alvo definido: CURSO_DIREITO_SUCCESSORIO_DPA
+21:30:20 [36mINFO [0m [System] [Config Validate] Estratégias: Upsell=false, CrossSell=false
+21:30:20 [36mINFO [0m [System] [Config Validate] Gemini configurado como provedor primário. Modelo: gemini-2.5-flash
+21:30:20 [33mWARN [0m [System] [Config Validate] OpenAI API Key não configurada. A transcrição de áudio pode falhar.
+21:30:20 [33mWARN [0m [System] [Config Validate] Transcrição ATIVA, mas API Key da OpenAI NÃO configurada. Transcrição falhará. [90m| { whisperModel: [32m'whisper-1'[39m }[0m
+21:30:20 [36mINFO [0m [System] [Config Validate] TTS ATIVO (ElevenLabs - config.tts.enabled = true). Voz ID: fB2lLA2TtC2KEj37Trcl, Modelo: eleven_multilingual_v2, Prob: 100%
+21:30:20 [36mINFO [0m [System] [Config Validate] Validação das configurações concluída sem erros críticos.
+21:30:20 [37mDEBUG[0m [System] [Constants Validation] Validando constantes...
+21:30:20 [36mINFO [0m [System] [Constants Validation] Constantes validadas sem erros ou avisos.
+21:30:20 [37mDEBUG[0m [System] [PDF Loader] Worker encontrado via CWD: C:\Users\Gustavo Brandão\Documents\aryaAgent\aryazap\node_modules\pdfjs-dist\legacy\build\pdf.worker.mjs
+21:30:20 [36mINFO [0m [System] [PDF Loader] Worker PDF.js inicializado com sucesso: C:\Users\Gustavo Brandão\Documents\aryaAgent\aryazap\node_modules\pdfjs-dist\legacy\build\pdf.worker.mjs
+21:30:20 [36mINFO [0m [System] [FS Handler] Diretórios base verificados/criados: temp, provasSociais, session, training, logs
+21:30:20 [37mDEBUG[0m [System] [FS Handler] Limpando diretório temporário: temp (C:\Users\Gustavo Brandão\Documents\aryaAgent\aryazap\temp)...
+21:30:20 [37mINFO [0m [System] --- Log Arquivo Iniciado | Formato: text | Nível: TRACE | Arquivo: C:\Users\Gustavo Brandão\Documents\aryaAgent\logs\dpaLog.log --- [90m| { pid: [33m30828[39m }[0m
+21:30:20 [36mINFO [0m [System] [FS Handler] Diretório TEMP limpo (0 itens removidos).
+21:30:20 [36mINFO [0m [System] [FS Handler] Sistema de arquivos inicializado.
+21:30:20 [37mINFO [0m [System] [Init 2/7] Validando Configurações...
+21:30:20 [36mINFO [0m [System] ================================================================
+21:30:20 [36mINFO [0m [System] ===          INICIANDO VALIDAÇÃO DAS CONFIGURAÇÕES           ===
+21:30:20 [36mINFO [0m [System] ================================================================
+21:30:20 [37mDEBUG[0m [System] [Config Validate] Iniciando validação de botConfig...
+21:30:20 [36mINFO [0m [System] [Config Validate] Usando Gemini como provedor primário de IA.
+21:30:20 [33mWARN [0m [System] [Config Validate] Transcrição ATIVA, mas API Key da OpenAI NÃO configurada. Transcrição falhará. [90m| { whisperModel: [32m'whisper-1'[39m }[0m
+21:30:20 [36mINFO [0m [System] [Config Validate] Número Suporte Configurado: 5511999999999
+21:30:20 [36mINFO [0m [System] [Config Validate] TTS ATIVO (ElevenLabs). Voz: fB2lLA2TtC2KEj37Trcl, Modelo: eleven_multilingual_v2, Prob: 100%.
+21:30:20 [36mINFO [0m [System] [Config Validate] Produto Alvo Principal (ID): CURSO_DIREITO_SUCCESSORIO_DPA
+21:30:20 [36mINFO [0m [System] [Config Validate] Estratégia Upsell: DESATIVADA.
+21:30:20 [36mINFO [0m [System] [Config Validate] Estratégia Cross-Sell: DESATIVADA.
+21:30:20 [36mINFO [0m [System] [Config Validate] Validação botConfig: 0 Erro(s) Crítico(s), 1 Aviso(s).
+21:30:20 [37mDEBUG[0m [System] [Pricing Validate] Iniciando validação de produtos, planos e links...
+21:30:20 [36mINFO [0m [System] [Pricing Validate] Produto principal alvo (CURSO_DIREITO_SUCCESSORIO_DPA) encontrado e ativo em pricing.js.
+21:30:20 [36mINFO [0m [System] [Pricing Validate] Validação pricing: 0 Erro(s) Crítico(s), 0 Aviso(s).
+21:30:20 [36mINFO [0m [System] ================================================================
+21:30:20 [33mWARN [0m [System] [Config Validator] VALIDAÇÃO GERAL CONCLUÍDA SEM ERROS CRÍTICOS, mas com 1 Aviso(s). Verifique os logs.
+21:30:20 [36mINFO [0m [System] ================================================================
+21:30:20 [36mINFO [0m [System] [Init] Configurações validadas com sucesso.
+21:30:20 [37mINFO [0m [System] [Init 3/7] Conectando ao Banco de Dados...
+21:30:20 [36mINFO [0m [System] [DB Init] Inicializando pool de conexões PostgreSQL...
+21:30:20 [37mDEBUG[0m [System] [DB Init] Config: host=localhost, port=5432, db=minhaapi, user=postgres, maxClients=10, idleTimeout=30000ms, connTimeout=5000ms
+21:30:20 [37mDEBUG[0m [System] [DB Init] Testando conexão com o banco de dados...
+21:30:20 [37mINFO [0m [System] Logger Interface Pronta. [90m| { logDir: [32m'.\\logs'[39m, logFile: [32m'dpaLog.log'[39m, levels: { console: [32m'TRACE'[39m, file: [32m'TRACE'...[0m
+21:30:20 [36mINFO [0m [System] [DB Init] Conexão de teste com PostgreSQL (localhost:5432) realizada com sucesso!
+21:30:20 [36mINFO [0m [System] [DB Init] Versão PostgreSQL: 17.4
+21:30:20 [36mINFO [0m [System] [DB Schema] Verificando/Executando inicialização/migração do schema...
+21:30:20 [36mINFO [0m [System] [DB Schema] PLACEHOLDER: Tabelas básicas verificadas/criadas (use migrações!).
+21:30:20 [37mDEBUG[0m [System] [DB Init] Cliente de teste liberado.
+21:30:20 [36mINFO [0m [System] [DB Init] Pool PostgreSQL inicializado e pronto para localhost:5432/minhaapi
+21:30:20 [37mINFO [0m [System] [Init 4/7] Carregando Dados de Treinamento/Contexto...
+21:30:20 [36mINFO [0m [System] [Training Load All] Iniciando carregamento GERAL de dados de contexto...
+21:30:20 [37mDEBUG[0m [System] [Training Loader] Carregados 1 planos ativos para produto CURSO_DIREITO_SUCCESSORIO_DPA.
+21:30:20 [36mINFO [0m [System] [Training Load All] Carregando Base de Conhecimento e Provas Sociais...
+21:30:20 [36mINFO [0m [System] [KB Load] Iniciando varredura da Base de Conhecimento em: C:\Users\Gustavo Brandão\Documents\aryaAgent\aryazap\training
+21:30:20 [90mTRACE[0m [System] [Proofs Load] Extraindo nomes de arquivos de prova requeridos do Funnel Blueprint...
+21:30:20 [36mINFO [0m [System] [Proofs Load] Pasta de Verificação: C:\Users\Gustavo Brandão\Documents\aryaAgent\aryazap\provasSociais. Arquivos Requeridos: Nenhum
+21:30:20 [36mINFO [0m [System] [KB Load] 1 itens encontrados em training. Processando...
+21:30:20 [36mINFO [0m [System] [Proofs Load] 1 itens encontrados em provasSociais. Validando...
+21:30:20 [36mINFO [0m [System] [Proofs Load] Varredura Provas concluída: 0 arquivos válidos encontrados.
+21:30:20 [36mINFO [0m [System] [Proofs Load] Nenhuma prova social explicitamente requerida pelo funil.
+21:30:20 [36mINFO [0m [System] [KB Load] Varredura KB concluída (3 ms). Processados: 1 (Txt:0, Pdf:0, Json:1). Falhas: 0. Skipped: 0. Size: 15.0 KB
+21:30:20 [36mINFO [0m [System] [Training Load All] Carregamento GERAL concluído (4 ms). Status: Dados Carregados OK [90m| { productLoaded: [33mtrue[39m, productName: [32m'Curso Prática em Direito Sucessório'[39m, kbFilesProcessed: [33m1...[0m
+21:30:20 [36mINFO [0m [System] [Init] Dados de Treinamento/Contexto carregados.
+21:30:20 [37mINFO [0m [System] [Init 5/7] Inicializando Cliente WhatsApp... (Aguardando QR/Autenticação)
+21:30:20 [36mINFO [0m [System] [Startup] Session directory doesn't exist yet. No cleanup needed.
+21:30:20 [37mDEBUG[0m [System] [Startup] No lockfile found. Clean startup.
+21:30:20 [37mINFO [0m [System] [Evolution API Init] Configurando e inicializando conexão com Evolution API...
+21:30:20 [37mINFO [0m [System] Initializing Evolution API client...
+21:30:20 [36mINFO [0m [System] [Evolution API Init] Verificando instância 'Aryazap - Jaylton Lopes'...
+21:30:20 [36mINFO [0m [System] [Evolution API Init] Instância 'Aryazap - Jaylton Lopes' já existe.
+21:30:20 [36mINFO [0m [System] [Evolution API Init] Verificando status de conexão...
+21:30:20 [36mINFO [0m [System] [Evolution API Init] Estado atual: open (WhatsApp Business API)
+21:30:20 [37mINFO [0m [System] 🟢 Evolution API já conectada! [Aryazap - Jaylton Lopes]
+21:30:20 [37mINFO [0m [System] [Init] Cliente WhatsApp PRONTO e autenticado.
+21:30:20 [37mINFO [0m [System] [Init 6/7] Iniciando Servidor API na porta 3000...
+21:30:20 [36mINFO [0m [System] [API Server] Configurando e iniciando servidor HTTP...
+21:30:20 [41m[37mFATAL[0m [System] [API Server] ERRO FATAL: Porta 3000 já está em uso!
+  [31m↳ Error: '[API Server] ERRO FATAL: Porta 3000 já está em uso!'[0m
+    [90mat Object.fatal (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:394:118)
+    at Server.<anonymous> (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/apiServer.js:479:18)
+    at Object.onceWrapper (node:events:634:26)[0m
+21:30:20 [41m[37mFATAL[0m [System] [API Server] Erro crítico durante a inicialização do servidor API.
+  [31m↳ Error: Porta 3000 já em uso.[0m
+    [90mat Server.<anonymous> (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/apiServer.js:482:27)
+    at Object.onceWrapper (node:events:634:26)
+    at Server.emit (node:events:519:28)[0m
+21:30:20 [41m[37mFATAL[0m [System] 💥 FATAL: Erro durante a Etapa 6 da Inicialização!
+  [31m↳ Error: Porta 3000 já em uso.[0m
+    [90mat Server.<anonymous> (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/apiServer.js:482:27)
+    at Object.onceWrapper (node:events:634:26)
+    at Server.emit (node:events:519:28)[0m
+
+
+21:30:20 [37mINFO [0m [System] Logger Shutdown iniciado... [90m| { pid: [33m30828[39m }[0m
+21:30:20 [37mDEBUG[0m [System] [Shutdown] Servidor API não estava ativo ou já parado.
+21:30:20 [36mINFO [0m [System] [Shutdown] Desconectando Cliente WhatsApp...
+21:30:20 [33mWARN [0m [System] [Logger Shutdown WARN] Timeout (🚨 [Shutdown] Sinal/Motivo: STARTUP_ERROR_STEP_6. Iniciando desligamento ordenado... (Código Saída Esperado: 1)ms) fechando stream.
+21:30:20 [36mINFO [0m [System] [Logger Shutdown] Stream log finalizado/timeout.
+21:30:20 [37mINFO [0m [System] [Logger Shutdown] Procedimento concluído.
+21:30:20 [31mERROR[0m [System] [Evolution API Destroy] Erro ao fazer logout:
+  [31m↳ Error: {
+  message: 'Request failed with status code 400',
+  name: 'AxiosError',
+  description: undefined,
+  number: undefined,
+  fileName: undefined,
+  lineNumber: undefined,
+  columnNumber: undefined,
+  stack: 'AxiosError: Request failed with status code 400\n' +
+    '    at settle (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/settle.js:19:12)\n' +
+    '    at IncomingMessage.handleStreamEnd (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/adapters/http.js:599:11)\n' +
+    '    at IncomingMessage.emit (node:events:531:35)\n' +
+    '    at endReadableNT (node:internal/streams/readable:1698:12)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+    '    at Axios.request (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/Axios.js:45:41)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async Object.destroy (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:315:7)\n' +
+    '    at async gracefulShutdown (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/main.js:236:7)\n' +
+    '    at async startApp (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/main.js:178:5)',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 30000,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function [FormData]], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      apikey: 'B6D711FCDE4D4FD5936544120E713976',
+      'User-Agent': 'axios/1.9.0',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    baseURL: 'http://localhost:8080',
+    method: 'delete',
+    url: '/instance/logout/Aryazap%20-%20Jaylton%20Lopes',
+    allowAbsoluteUrls: true
+  },
+  code: 'ERR_BAD_REQUEST',
+  status: 400
+}[0m
+    [90mmessage: 'Request failed with status code 400',
+    name: 'AxiosError',
+    description: undefined,[0m
+21:30:20 [36mINFO [0m [System] [Evolution API Destroy] Cliente desconectado.
+21:30:20 [36mINFO [0m [System] [Shutdown] Desconectando Banco de Dados...
+21:30:20 [36mINFO [0m [System] [DB Close] Fechando pool de conexões PostgreSQL...
+21:30:20 [36mINFO [0m [System] [DB Close] Pool de conexões fechado com sucesso.
+[2025-10-02T00:30:20.543Z] INFO [SHUTD] Logger finalizado. Saindo com código 1.
+[2025-10-02T00:30:20.543Z] INFO [EXIT ] Processo finalizado com código: 1
+21:30:24 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 7/18)
+21:30:34 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 8/18)
+21:30:44 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 9/18)
+21:30:54 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 10/18)
+21:30:55 [37mINFO [0m [System] Req: GET /status | Status: 200 | Dur: 25ms [90m| { ip: [32m'127.0.0.1'[39m, userAgent: [32m'curl/8.14.1'[39m }[0m
+21:31:04 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 11/18)
+21:31:14 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 12/18)
+21:31:14 [33mWARN [0m [System] [Evolution API] Instância ainda desconectada. Verifique o painel da Evolution API.
+21:31:24 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 13/18)
+21:31:34 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 14/18)
+21:31:44 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 15/18)
+21:31:54 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 16/18)
+21:32:04 [37mDEBUG[0m [System] [Evolution API] Estado da conexão: close (tentativa 17/18)
+21:32:11 [41m[37mFATAL[0m [System] [Evolution API Init] Timeout na inicialização!
+  [31m↳ Error: '[Evolution API Init] Timeout na inicialização!'[0m
+    [90mat Object.fatal (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:394:118)
+    at Timeout._onTimeout (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:113:14)
+    at listOnTimeout (node:internal/timers:588:17)[0m
+21:32:11 [37mDEBUG[0m [System] [Evolution Fatal] Rejeitando promise devido a: INIT_TIMEOUT
+21:32:11 [41m[37mFATAL[0m [System] 💥 FATAL: Erro durante a Etapa 5 da Inicialização!
+  [31m↳ Error: Timeout na inicialização[0m
+    [90mat Timeout._onTimeout (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:114:41)
+    at listOnTimeout (node:internal/timers:588:17)
+    at process.processTimers (node:internal/timers:523:7)[0m
+
+
+21:32:11 [37mINFO [0m [System] Logger Shutdown iniciado... [90m| { pid: [33m35404[39m }[0m
+21:32:11 [37mDEBUG[0m [System] [Shutdown] Servidor API não estava ativo ou já parado.
+21:32:11 [36mINFO [0m [System] [Shutdown] Desconectando Cliente WhatsApp...
+21:32:11 [36mINFO [0m [System] [Evolution API Destroy] Cliente desconectado.
+21:32:11 [36mINFO [0m [System] [Shutdown] Desconectando Banco de Dados...
+21:32:11 [36mINFO [0m [System] [DB Close] Fechando pool de conexões PostgreSQL...
+21:32:11 [36mINFO [0m [System] [DB Close] Pool de conexões fechado com sucesso.
+[2025-10-02T00:32:11.885Z] INFO [SHUTD] Logger finalizado. Saindo com código 1.
+[2025-10-02T00:32:11.885Z] INFO [EXIT ] Processo finalizado com código: 1
+21:32:44 [37mINFO [0m [System] Req: GET /status | Status: 200 | Dur: 22ms [90m| { ip: [32m'127.0.0.1'[39m, userAgent: [32m'curl/8.14.1'[39m }[0m
+21:33:04 [37mDEBUG[0m [Ctx:{
+  "obj.. }
+  ]
+}] [API Webhook meta] Body completo:
+21:33:04 [36mINFO [0m [System] [API Webhook meta] Recebido: event=undefined, instance=undefined, dataKeys=[]
+21:33:04 [37mDEBUG[0m [System] [API Webhook meta] Chamando clientManager.processWebhook
+21:33:04 [37mDEBUG[0m [Ctx:{ hasEvent: false,
+ ] [Evolution Webhook] Processando webhook
+21:33:04 [37mDEBUG[0m [System] [Evolution Webhook] Formato Meta/WhatsApp Business API detectado
+21:33:04 [37mDEBUG[0m [Ctx:{ entryCount: 1 }] [Evolution Meta Webhook] Processando webhook Meta
+21:33:04 [36mINFO [0m [System] [Evolution Meta Webhook] 📨 1 mensagem(ns) recebida(s)
+21:33:04 [37mDEBUG[0m [Ctx:{ from: '55778862118] [Evolution Meta Webhook] Mensagem Meta:
+21:33:04 [37mDEBUG[0m [Ctx:{ remoteJid:
+   '557] [Evolution Meta Webhook] Mensagem convertida
+21:33:04 [36mINFO [0m [System] [Evolution Meta Webhook] Enviando para processamento: from=557788621185@c.us, type=chat
+21:33:04 [36mINFO [0m [Ctx:{ chatId: '557788621] [Inactivity Mgr] Fluxo de inatividade marcado para ABORTAR para 557788621185@c.us.
+21:33:04 [37mDEBUG[0m [Ctx:{ chatId: '557788621] [Inactivity Mgr] Timer de inatividade cancelado
+21:33:04 [37mINFO [0m [System] Req: POST /webhook/meta | Status: 200 | Dur: 7ms [90m| { ip: [32m'127.0.0.1'[39m, userAgent: [32m'facebookexternalua'[39m }[0m
+21:33:04 [90mTRACE[0m [Ctx:557788621185] [State Mgr GetName] ✅ Usando chat.name: "Gustavo Brandão"
+21:33:04 [37mDEBUG[0m [Ctx:557788621185] [State Mgr GetName] 🎯 Nome final extraído: "Gustavo" (original: "Gustavo Brandão")
+21:33:04 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'68.9ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params...[0m
+21:33:04 [90mTRACE[0m [Ctx:557788621185] [State Mgr GetName] 💾 Nome completo salvo: "Gustavo Brandão" | Primeiro nome: "Gustavo"
+21:33:04 [37mDEBUG[0m [System] [Msg Handler] Checking ignored list. Loaded: ["557799178152@c.us","557799263537@c.us","5513982308926@c.us","557799263537@c.us","557781631308@c.us","558388605467@c.us","557781631308@c.us","553291257025@c.us","557788724189@c.us","557791971356@c.us","557788656738@c.us","557781106464@c.us"]
+21:33:04 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.0ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:04 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.9ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:04 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:04 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365184129 para 557788621185@c.us
+21:33:04 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.9ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:33:04 [37mINFO [0m [Ctx:557788621185] [Received ] (Gustavo) [chat] "oi..." [90m| { action: [32m'Received'[39m, contact: [32m'Gustavo'[39m, description: [32m'[chat] "oi..."'[39m }[0m
+21:33:04 [90mTRACE[0m [Ctx:557788621185] [Buffer Add] Msg (chat) add p/ Gustavo. Buffer: 1
+21:33:04 [90mTRACE[0m [Ctx:557788621185] [Buffer Timeout] Agendando novo timeout (10000ms) para 557788621185@c.us
+21:33:04 [36mINFO [0m [System] [API Webhook meta] ✅ Processamento concluído
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc ENTRY] Iniciando _handleBufferedMessages para 557788621185@c.us com 1 mensagens
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.7ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365194146 para 557788621185@c.us
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc Decision] Processando mensagem na etapa atual: NAME_CAPTURE_VALIDATION
+21:33:14 [90mTRACE[0m [Ctx:557788621185] [Buffer Proc StateUpdate] Estado do funil e metadados não alterados antes da trava. Sem update no DB necessário nesta fase.
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Adquirindo trava (setando isProcessing=true) para 557788621185@c.us
+21:33:14 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' definida para 1759365194148 para 557788621185@c.us
+21:33:14 [90mTRACE[0m [System] [State Mgr Cache] Flag 'isProcessing' atualizada para true para 557788621185@c.us
+21:33:14 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' atualizada explicitamente para 1759365194148 para 557788621185@c.us
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Processando 1 mensagens para 557788621185@c.us (Etapa para IA: NAME_CAPTURE_VALIDATION, DB Step: NAME_CAPTURE_VALIDATION, trava adquirida)
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'4.8ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Salvando originalMsgId no metadata: wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMDMyQUZDQjFEMzQ4NTExRTg0RAA=
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'2.4ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.0ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365194166 para 557788621185@c.us
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Atualizando lastUserInput no estado: "oi..."
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'2.2ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.0ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.5ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365194177 para 557788621185@c.us
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Calling AI with combined text: "oi..."
+21:33:14 [36mINFO [0m [Ctx:557788621185] [Name Capture] Processando captura de nome personalizado para 557788621185@c.us
+21:33:14 [37mDEBUG[0m [Ctx:557788621185] >>> Chamando gemini (gemini-2.5-flash)... (Msg Count: 2)
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] <<< Resposta gemini (gemini-2.5-flash) | Finish: stop | Tokens: 47r/208p=255t
+21:33:17 [37mDEBUG[0m [Ctx:{ chatId: '557788621] [Name Capture AI] Análise concluída para "oi":
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [Name Capture] IA não encontrou nome válido, usando fallback por regex
+21:33:17 [36mINFO [0m [Ctx:557788621185] [Name Capture] Usando firstNameFallback: "Gustavo" para 557788621185@c.us
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:17 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:17 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365197547 para 557788621185@c.us
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'4.8ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:33:17 [36mINFO [0m [Ctx:557788621185] [State Mgr] Nome personalizado atualizado para 557788621185@c.us: "Gustavo" (Nome completo: "Gustavo Brandão")
+21:33:17 [36mINFO [0m [Ctx:557788621185] [Name Capture] Nome registrado: "Gustavo" para 557788621185@c.us (firstNameFallback)
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.8ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.9ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:17 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:17 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365197558 para 557788621185@c.us
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Estado recarregado após captura de nome personalizado: "Gustavo"
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [Intent Recognizer] Analisando entrada para intenção: "oi"
+21:33:17 [37mDEBUG[0m [System] [Intent Recognizer] Iniciando reconhecimento para: "oi..."
+21:33:17 [37mDEBUG[0m [System] [Intent Recognizer] Nenhuma intenção específica detectada por placeholder.
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [Intent Recognizer] Nenhuma intenção específica detectada ou resultado inválido.
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [AI Processor ENTRY] Effective Step: NAME_CAPTURE_VALIDATION
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Gerando prompt principal para etapa: NAME_CAPTURE_VALIDATION
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.9ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:17 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:17 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365197565 para 557788621185@c.us
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'4.4ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'3.6ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:17 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:17 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365197577 para 557788621185@c.us
+21:33:17 [90mTRACE[0m [Ctx:557788621185] [AI Prompt Gen] Usando blueprint para Etapa: NAME_CAPTURE_VALIDATION - Captura e Validação do Nome Personalizado
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.9ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.6ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:17 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:17 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365197581 para 557788621185@c.us
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [AI Runtime Context] Preferência de link recuperada do BD: usesSalesPageLink=false
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'2.0ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.7ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:17 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:17 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365197591 para 557788621185@c.us
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [AI Prompt Gen] Usando saudação: "Boa noite" para o usuário Gustavo
+21:33:17 [37mDEBUG[0m [System] [IntelligentRAG] Estágio NAME_CAPTURE_VALIDATION - Filtrados 1 chunks de preço estrito. Disponíveis: 65
+21:33:17 [36mINFO [0m [System] [IntelligentRAG] Encontrados 0 chunks relevantes (Estágio: NAME_CAPTURE_VALIDATION): [90m| { stage: [32m'NAME_CAPTURE_VALIDATION'[39m, totalAvailable: [33m65[39m, isPriceQuery: [33mfalse[39m, chunks: [] }[0m
+21:33:17 [37mDEBUG[0m [System] [IntelligentRAG] Nenhum conhecimento relevante encontrado para: "oi" (Estágio: NAME_CAPTURE_VALIDATION)
+21:33:17 [90mTRACE[0m [Ctx:557788621185] [AI Prompt Gen] Final System Prompt: [90m| { promptLength: [33m13266[39m, firstChars: [32m'!!! VOCÊ É Pedro, Especialista da DPA - Direito Processual Aplicado, ...[0m
+21:33:17 [36mINFO [0m [Ctx:557788621185] [AI Prompt Gen] Prompt Sistema final gerado para NAME_CAPTURE_VALIDATION (13266 chars).
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] [AI Prompt Gen DEBUG] Final messages array for AI call: IsArray=true, Length=6, Roles=system,user,user,user,user,user
+21:33:17 [90mTRACE[0m [Ctx:557788621185] [AI Prompt Gen DEBUG] First message (system) content length: [90m| [33m13266[39m[0m
+21:33:17 [90mTRACE[0m [Ctx:557788621185] [AI Prompt Gen DEBUG] Last message (user) content: [90m| [32m'oi'[39m[0m
+21:33:17 [37mDEBUG[0m [Ctx:{ context: '55778862] [AI Pre-Call DEBUG V3] promptInfo received. Keys: messages, stepBlueprint. Error flag: undefined. Error message: undefined
+21:33:17 [36mINFO [0m [Ctx:{ context: '55778862] [AI Pre-Call DEBUG V3] promptInfo.messages IS an array. Length: 6
+21:33:17 [90mTRACE[0m [Ctx:{ context: '55778862] [AI Pre-Call DEBUG V3] First message content (sample): "!!! VOCÊ É Pedro, Especialista da DPA - Direito Processual Aplicado, especialista em ajudar clientes como Gustavo Brandão a superar desafios com [Cur
+21:33:17 [90mTRACE[0m [Ctx:{ context: '55778862] [AI Pre-Call DEBUG V3] Last message content (sample): "oi"
+21:33:17 [37mDEBUG[0m [Ctx:557788621185] >>> Chamando gemini (gemini-2.5-flash)... (Msg Count: 6)
+21:33:19 [37mDEBUG[0m [Ctx:557788621185] <<< Resposta gemini (gemini-2.5-flash) | Finish: stop | Tokens: 39r/3367p=3406t
+21:33:19 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] RAW AI RESPONSE: "Boa noite, aqui é o Pedro do DPA. Tudo bem?%%MSG_BREAK%%Vi que seu nome aqui no WhatsApp é Gustavo Brandão. Posso te chamar assim, ou prefere outro nome?"
+21:33:19 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Enviando resposta (2 partes).
+21:33:19 [36mINFO [0m [Ctx:557788621185] [AI Processor] Tentativa de TTS para esta resposta: true (Global: true, Prob: 1)
+21:33:19 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Enviando resposta com citação (quoted) da mensagem ID: wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMDMyQUZDQjFEMzQ4NTExRTg0RAA=
+21:33:19 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] Iniciando envio de 2 parte(s) de texto para Gustavo. TTS Habilitado globalmente: true, Tentativa TTS para esta resposta: true
+21:33:19 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:19 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:19 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:19 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:19 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365199560 para 557788621185@c.us
+21:33:19 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] TTS desabilitado para etapa NAME_CAPTURE_VALIDATION (sendRecordMessage: false)
+21:33:19 [36mINFO [0m [Ctx:557788621185] [Response Sender] TTS desativado para etapa atual (sendRecordMessage: false) para Gustavo.
+21:33:19 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.1ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:33:19 [37mDEBUG[0m [Ctx:557788621185] [Response Sender Loop] Preparando envio Texto Parte 1/2: "Boa noite, aqui é o Pedro do DPA. Tudo bem?..."
+21:33:19 [31mERROR[0m [Ctx:{ chatId: '557788621] [Response Sender] Cliente WhatsApp não está em estado válido: close
+21:33:19 [31mERROR[0m [System] [Response Sender] Falha ao enviar parte de texto 1/2 para Gustavo. Continuando sequência...
+  [31m↳ Error: '557788621185@c.us'[0m
+    [90mat Object.error (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:395:127)
+    at Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:848:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[0m
+21:33:21 [37mDEBUG[0m [Ctx:557788621185] [Response Sender Loop] Preparando envio Texto Parte 2/2: "Vi que seu nome aqui no WhatsApp é Gustavo Brandão. Posso te chamar assim, ou prefere outro nome?..."
+21:33:21 [31mERROR[0m [Ctx:{ chatId: '557788621] [Response Sender] Cliente WhatsApp não está em estado válido: close
+21:33:21 [31mERROR[0m [System] [Response Sender] Falha ao enviar parte de texto 2/2 para Gustavo. Continuando sequência...
+  [31m↳ Error: '557788621185@c.us'[0m
+    [90mat Object.error (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:395:127)
+    at Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:848:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[0m
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] Sequência de envio concluída para Gustavo. Sucesso geral: false
+21:33:22 [36mINFO [0m [Ctx:557788621185] [AI Processor] Envio de mensagens concluído. Sucesso: false
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Mensagens enviadas mas etapa NÃO marcada como concluída (IA não usou tag de ação).
+21:33:22 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:22 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.0ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:22 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:22 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365202609 para 557788621185@c.us
+21:33:22 [36mINFO [0m [Ctx:557788621185] [NextStepLogic] Mantendo etapa atual NAME_CAPTURE_VALIDATION. Avanço só ocorrerá com tag [ACTION: ADVANCE_FUNNEL] da IA.
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Nenhuma alteração de estado necessária. Etapa: NAME_CAPTURE_VALIDATION, Metadados não alterados.
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] 🔄 Timer de inatividade iniciado após processamento completo
+21:33:22 [90mTRACE[0m [Ctx:557788621185] [AI Processor] Processamento concluído. Etapa atual: NAME_CAPTURE_VALIDATION. Próximo avanço dependente da decisão da IA.
+21:33:22 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' limpa para 557788621185@c.us
+21:33:22 [90mTRACE[0m [System] [State Mgr Cache] Flag 'isProcessing' atualizada para false para 557788621185@c.us
+21:33:22 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' atualizada explicitamente para null para 557788621185@c.us
+21:33:22 [90mTRACE[0m [Ctx:557788621185] [AI Processor] Timer de inatividade gerenciado após envio das mensagens para 557788621185@c.us
+21:33:22 [90mTRACE[0m [Ctx:557788621185] [AI Processor] Trava isProcessing liberada para 557788621185@c.us.
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Processamento de 1 mensagem(s) concluído, aguardando resposta do bot
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Processamento concluído para 557788621185@c.us
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Liberando trava isProcessing para 557788621185@c.us no finally.
+21:33:22 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' limpa para 557788621185@c.us
+21:33:22 [90mTRACE[0m [System] [State Mgr Cache] Flag 'isProcessing' atualizada para false para 557788621185@c.us
+21:33:22 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' atualizada explicitamente para null para 557788621185@c.us
+21:33:22 [90mTRACE[0m [Ctx:557788621185] [Buffer Proc] Flag isProcessingBuffer (em memória) liberada para 557788621185@c.us no finally.
+21:33:22 [90mTRACE[0m [Ctx:557788621185] [Buffer Timeout] Flag isProcessingBuffer liberada para 557788621185@c.us
+21:33:22 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.6ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:33:22 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:22 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:22 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:22 [37mDEBUG[0m [Ctx:{ chatId: '557788621] [Inactivity Mgr] Flag de abort anterior limpa para novo ciclo de inatividade
+21:33:22 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'4.0ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:33:22 [37mDEBUG[0m [Ctx:{ chatId: '557788621] Timer de inatividade iniciado
+21:33:52 [36mINFO [0m [Ctx:{ chatId: '557788621] 🔔 [INATIVIDADE] DETECTADA
+21:33:52 [37mDEBUG[0m [System] Função getBufferInfo não disponível globalmente para 557788621185@c.us - assumindo sem buffer
+21:33:52 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'45.8ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated...[0m
+21:33:52 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'3.5ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:33:52 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:33:52 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:33:52 [36mINFO [0m [Ctx:{ chatId: '557788621] 📊 [INATIVIDADE] Estado atual: attempts=0, stage=first_attempt, lastReengagement=nunca
+21:33:52 [36mINFO [0m [Ctx:{ chatId: '557788621] ✅ [INATIVIDADE] Todas as verificações passaram, prosseguindo com reengajamento
+21:33:52 [36mINFO [0m [Ctx:{ chatId: '557788621] 📤 Iniciando envio de reengajamento
+21:33:52 [36mINFO [0m [Ctx:{ chatId: '557788621] 📤 Iniciando envio de reengajamento
+21:33:52 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'2.8ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:33:52 [37mDEBUG[0m [Ctx:{ chatId: '557788621] 🤖 Tentando gerar mensagem com IA
+21:33:52 [37mDEBUG[0m [Ctx:557788621185] >>> Chamando gemini (gemini-2.5-flash)... (Msg Count: 2)
+21:34:23 [37mDEBUG[0m [Ctx:557788621185] <<< Resposta gemini (gemini-2.5-flash) | Finish: stop | Tokens: 85r/1034p=1119t
+21:34:23 [36mINFO [0m [Ctx:{ chatId: '557788621] 🤖 Mensagem de inatividade gerada pela IA
+21:34:23 [36mINFO [0m [Ctx:{ chatId: '557788621] ✅ Mensagem gerada pela IA com sucesso
+21:34:23 [37mDEBUG[0m [Ctx:{ chatId: '557788621] 📝 Mensagem final formatada
+21:34:23 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'98.7ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params...[0m
+21:34:23 [37mDEBUG[0m [Ctx:{ chatId: undefined,] 📝 Usando nome preferido/corrigido para inatividade
+21:34:23 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] Iniciando envio de 1 parte(s) de texto para Gustavo. TTS Habilitado globalmente: true, Tentativa TTS para esta resposta: false
+21:34:23 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.3ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:34:24 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:34:24 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:34:24 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:34:24 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365264003 para 557788621185@c.us
+21:34:24 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] TTS desabilitado para etapa NAME_CAPTURE_VALIDATION (sendRecordMessage: false)
+21:34:24 [36mINFO [0m [Ctx:557788621185] [Response Sender] TTS desativado para etapa atual (sendRecordMessage: false) para Gustavo.
+21:34:24 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'3.5ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:34:24 [37mDEBUG[0m [Ctx:557788621185] [Response Sender Loop] Preparando envio Texto Parte 1/1: "Gustavo, você chegou pertinho de destravar sua advocacia em sucessões.
+
+Lembrei do seu 'oi' e, na mi..."
+21:34:24 [31mERROR[0m [Ctx:{ chatId: '557788621] [Response Sender] Cliente WhatsApp não está em estado válido: close
+21:34:24 [31mERROR[0m [System] [Response Sender] Falha ao enviar parte de texto 1/1 para Gustavo. Continuando sequência...
+  [31m↳ Error: '557788621185@c.us'[0m
+    [90mat Object.error (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:395:127)
+    at Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:848:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[0m
+21:34:24 [37mINFO [0m [System] Req: GET /status | Status: 200 | Dur: 11ms [90m| { ip: [32m'127.0.0.1'[39m, userAgent: [32m'curl/8.14.1'[39m }[0m
+21:34:25 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] Sequência de envio concluída para Gustavo. Sucesso geral: false
+21:34:25 [31mERROR[0m [System] ❌ Falha ao enviar mensagem de reengajamento
+  [31m↳ Error: { chatId: '557788621185@c.us' }[0m
+    [90mat Object.error (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:395:127)
+    at InactivityManager.sendReengagementMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:496:24)
+    at async InactivityManager.handleInactivity (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:279:13)[0m
+21:34:25 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.3ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:35:28 [37mINFO [0m [System] Req: GET /status | Status: 200 | Dur: 17ms [90m| { ip: [32m'127.0.0.1'[39m, userAgent: [32m'curl/8.14.1'[39m }[0m
+21:38:33 [37mINFO [0m [System] Req: GET /status | Status: 200 | Dur: 88ms [90m| { ip: [32m'127.0.0.1'[39m, userAgent: [32m'curl/8.14.1'[39m }[0m
+21:39:01 [37mDEBUG[0m [Ctx:{
+  "obj.. }
+  ]
+}] [API Webhook meta] Body completo:
+21:39:01 [36mINFO [0m [System] [API Webhook meta] Recebido: event=undefined, instance=undefined, dataKeys=[]
+21:39:01 [37mDEBUG[0m [System] [API Webhook meta] Chamando clientManager.processWebhook
+21:39:01 [37mDEBUG[0m [Ctx:{ hasEvent: false,
+ ] [Evolution Webhook] Processando webhook
+21:39:01 [37mDEBUG[0m [System] [Evolution Webhook] Formato Meta/WhatsApp Business API detectado
+21:39:01 [37mDEBUG[0m [Ctx:{ entryCount: 1 }] [Evolution Meta Webhook] Processando webhook Meta
+21:39:01 [36mINFO [0m [System] [Evolution Meta Webhook] 📨 1 mensagem(ns) recebida(s)
+21:39:01 [37mDEBUG[0m [Ctx:{ from: '55778862118] [Evolution Meta Webhook] Mensagem Meta:
+21:39:01 [37mDEBUG[0m [Ctx:{ remoteJid:
+   '557] [Evolution Meta Webhook] Mensagem convertida
+21:39:01 [36mINFO [0m [System] [Evolution Meta Webhook] Enviando para processamento: from=557788621185@c.us, type=chat
+21:39:01 [36mINFO [0m [Ctx:{ chatId: '557788621] [Inactivity Mgr] Fluxo de inatividade marcado para ABORTAR para 557788621185@c.us.
+21:39:01 [37mDEBUG[0m [Ctx:{ chatId: '557788621] [Inactivity Mgr] Timer de inatividade cancelado
+21:39:01 [37mINFO [0m [System] Req: POST /webhook/meta | Status: 200 | Dur: 7ms [90m| { ip: [32m'127.0.0.1'[39m, userAgent: [32m'facebookexternalua'[39m }[0m
+21:39:01 [90mTRACE[0m [Ctx:557788621185] [State Mgr GetName] ✅ Usando chat.name: "Gustavo Brandão"
+21:39:01 [37mDEBUG[0m [Ctx:557788621185] [State Mgr GetName] 🎯 Nome final extraído: "Gustavo" (original: "Gustavo Brandão")
+21:39:01 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'122.1ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, param...[0m
+21:39:01 [90mTRACE[0m [Ctx:557788621185] [State Mgr GetName] 💾 Nome completo salvo: "Gustavo Brandão" | Primeiro nome: "Gustavo"
+21:39:01 [37mDEBUG[0m [System] [Msg Handler] Checking ignored list. Loaded: ["557799178152@c.us","557799263537@c.us","5513982308926@c.us","557799263537@c.us","557781631308@c.us","558388605467@c.us","557781631308@c.us","553291257025@c.us","557788724189@c.us","557791971356@c.us","557788656738@c.us","557781106464@c.us"]
+21:39:01 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:01 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.6ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:01 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:01 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365541256 para 557788621185@c.us
+21:39:01 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'2.1ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:01 [37mINFO [0m [Ctx:557788621185] [Received ] (Gustavo) [chat] "oi..." [90m| { action: [32m'Received'[39m, contact: [32m'Gustavo'[39m, description: [32m'[chat] "oi..."'[39m }[0m
+21:39:01 [90mTRACE[0m [Ctx:557788621185] [Buffer Add] Msg (chat) add p/ Gustavo. Buffer: 1
+21:39:01 [90mTRACE[0m [Ctx:557788621185] [Buffer Timeout] Agendando novo timeout (10000ms) para 557788621185@c.us
+21:39:01 [36mINFO [0m [System] [API Webhook meta] ✅ Processamento concluído
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc ENTRY] Iniciando _handleBufferedMessages para 557788621185@c.us com 1 mensagens
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.0ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:11 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:11 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365551280 para 557788621185@c.us
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc Decision] Processando mensagem na etapa atual: NAME_CAPTURE_VALIDATION
+21:39:11 [90mTRACE[0m [Ctx:557788621185] [Buffer Proc StateUpdate] Estado do funil e metadados não alterados antes da trava. Sem update no DB necessário nesta fase.
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Adquirindo trava (setando isProcessing=true) para 557788621185@c.us
+21:39:11 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' definida para 1759365551282 para 557788621185@c.us
+21:39:11 [90mTRACE[0m [System] [State Mgr Cache] Flag 'isProcessing' atualizada para true para 557788621185@c.us
+21:39:11 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' atualizada explicitamente para 1759365551282 para 557788621185@c.us
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Processando 1 mensagens para 557788621185@c.us (Etapa para IA: NAME_CAPTURE_VALIDATION, DB Step: NAME_CAPTURE_VALIDATION, trava adquirida)
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.7ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Salvando originalMsgId no metadata: wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA=
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'2.3ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.8ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.9ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:11 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:11 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365551302 para 557788621185@c.us
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Atualizando lastUserInput no estado: "oi..."
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.1ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:11 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:11 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365551317 para 557788621185@c.us
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Calling AI with combined text: "oi..."
+21:39:11 [36mINFO [0m [Ctx:557788621185] [Name Capture] Processando captura de nome personalizado para 557788621185@c.us
+21:39:11 [37mDEBUG[0m [Ctx:557788621185] >>> Chamando gemini (gemini-2.5-flash)... (Msg Count: 2)
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] <<< Resposta gemini (gemini-2.5-flash) | Finish: stop | Tokens: 48r/208p=256t
+21:39:14 [37mDEBUG[0m [Ctx:{ chatId: '557788621] [Name Capture AI] Análise concluída para "oi":
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [Name Capture] IA não encontrou nome válido, usando fallback por regex
+21:39:14 [36mINFO [0m [Ctx:557788621185] [Name Capture] Usando firstNameFallback: "Gustavo" para 557788621185@c.us
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.9ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365554626 para 557788621185@c.us
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'7.7ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:14 [36mINFO [0m [Ctx:557788621185] [State Mgr] Nome personalizado atualizado para 557788621185@c.us: "Gustavo" (Nome completo: "Gustavo Brandão")
+21:39:14 [36mINFO [0m [Ctx:557788621185] [Name Capture] Nome registrado: "Gustavo" para 557788621185@c.us (firstNameFallback)
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365554643 para 557788621185@c.us
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Estado recarregado após captura de nome personalizado: "Gustavo"
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [Intent Recognizer] Analisando entrada para intenção: "oi"
+21:39:14 [37mDEBUG[0m [System] [Intent Recognizer] Iniciando reconhecimento para: "oi..."
+21:39:14 [37mDEBUG[0m [System] [Intent Recognizer] Nenhuma intenção específica detectada por placeholder.
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [Intent Recognizer] Nenhuma intenção específica detectada ou resultado inválido.
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [AI Processor ENTRY] Effective Step: NAME_CAPTURE_VALIDATION
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Gerando prompt principal para etapa: NAME_CAPTURE_VALIDATION
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.0ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365554656 para 557788621185@c.us
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.9ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.4ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365554665 para 557788621185@c.us
+21:39:14 [90mTRACE[0m [Ctx:557788621185] [AI Prompt Gen] Usando blueprint para Etapa: NAME_CAPTURE_VALIDATION - Captura e Validação do Nome Personalizado
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.9ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365554673 para 557788621185@c.us
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [AI Runtime Context] Preferência de link recuperada do BD: usesSalesPageLink=false
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'4.5ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:14 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'2.1ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:14 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:14 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365554686 para 557788621185@c.us
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [AI Prompt Gen] Usando saudação: "Boa noite" para o usuário Gustavo
+21:39:14 [37mDEBUG[0m [System] [IntelligentRAG] Estágio NAME_CAPTURE_VALIDATION - Filtrados 1 chunks de preço estrito. Disponíveis: 65
+21:39:14 [36mINFO [0m [System] [IntelligentRAG] Encontrados 0 chunks relevantes (Estágio: NAME_CAPTURE_VALIDATION): [90m| { stage: [32m'NAME_CAPTURE_VALIDATION'[39m, totalAvailable: [33m65[39m, isPriceQuery: [33mfalse[39m, chunks: [] }[0m
+21:39:14 [37mDEBUG[0m [System] [IntelligentRAG] Nenhum conhecimento relevante encontrado para: "oi" (Estágio: NAME_CAPTURE_VALIDATION)
+21:39:14 [90mTRACE[0m [Ctx:557788621185] [AI Prompt Gen] Final System Prompt: [90m| { promptLength: [33m13266[39m, firstChars: [32m'!!! VOCÊ É Pedro, Especialista da DPA - Direito Processual Aplicado, ...[0m
+21:39:14 [36mINFO [0m [Ctx:557788621185] [AI Prompt Gen] Prompt Sistema final gerado para NAME_CAPTURE_VALIDATION (13266 chars).
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] [AI Prompt Gen DEBUG] Final messages array for AI call: IsArray=true, Length=7, Roles=system,user,user,user,user,user,user
+21:39:14 [90mTRACE[0m [Ctx:557788621185] [AI Prompt Gen DEBUG] First message (system) content length: [90m| [33m13266[39m[0m
+21:39:14 [90mTRACE[0m [Ctx:557788621185] [AI Prompt Gen DEBUG] Last message (user) content: [90m| [32m'oi'[39m[0m
+21:39:14 [37mDEBUG[0m [Ctx:{ context: '55778862] [AI Pre-Call DEBUG V3] promptInfo received. Keys: messages, stepBlueprint. Error flag: undefined. Error message: undefined
+21:39:14 [36mINFO [0m [Ctx:{ context: '55778862] [AI Pre-Call DEBUG V3] promptInfo.messages IS an array. Length: 7
+21:39:14 [90mTRACE[0m [Ctx:{ context: '55778862] [AI Pre-Call DEBUG V3] First message content (sample): "!!! VOCÊ É Pedro, Especialista da DPA - Direito Processual Aplicado, especialista em ajudar clientes como Gustavo Brandão a superar desafios com [Cur
+21:39:14 [90mTRACE[0m [Ctx:{ context: '55778862] [AI Pre-Call DEBUG V3] Last message content (sample): "oi"
+21:39:14 [37mDEBUG[0m [Ctx:557788621185] >>> Chamando gemini (gemini-2.5-flash)... (Msg Count: 7)
+21:39:16 [37mDEBUG[0m [Ctx:557788621185] <<< Resposta gemini (gemini-2.5-flash) | Finish: stop | Tokens: 39r/3377p=3416t
+21:39:16 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] RAW AI RESPONSE: "Boa noite, aqui é o Pedro do DPA. Tudo bem?%%MSG_BREAK%%Vi que seu nome aqui no WhatsApp é Gustavo Brandão. Posso te chamar assim, ou prefere outro nome?"
+21:39:16 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Enviando resposta (2 partes).
+21:39:16 [36mINFO [0m [Ctx:557788621185] [AI Processor] Tentativa de TTS para esta resposta: true (Global: true, Prob: 1)
+21:39:16 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Enviando resposta com citação (quoted) da mensagem ID: wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA=
+21:39:16 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] Iniciando envio de 2 parte(s) de texto para Gustavo. TTS Habilitado globalmente: true, Tentativa TTS para esta resposta: true
+21:39:16 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:16 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'0.8ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:16 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:16 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:16 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365556813 para 557788621185@c.us
+21:39:16 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] TTS desabilitado para etapa NAME_CAPTURE_VALIDATION (sendRecordMessage: false)
+21:39:16 [36mINFO [0m [Ctx:557788621185] [Response Sender] TTS desativado para etapa atual (sendRecordMessage: false) para Gustavo.
+21:39:16 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'3.7ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:16 [37mDEBUG[0m [Ctx:557788621185] [Response Sender Loop] Preparando envio Texto Parte 1/2: "Boa noite, aqui é o Pedro do DPA. Tudo bem?..."
+21:39:16 [90mTRACE[0m [Ctx:557788621185] [Part 1/2] Não é possível simular 'digitando'. Usando delay fixo de 558ms...
+21:39:17 [90mTRACE[0m [Ctx:557788621185] [Part 1/2] Preparando para enviar mensagem AGORA...
+21:39:17 [90mTRACE[0m [Ctx:557788621185] [Part 1/2] Enviando texto: "Boa noite, aqui é o Pedro do DPA. Tudo bem?..."
+21:39:17 [90mTRACE[0m [Ctx:557788621185] [Part 1/2] Enviando com citação (quoted) da mensagem ID: wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA=
+21:39:17 [37mDEBUG[0m [System] [Evolution API Send] Enviando mensagem para 557788621185 via instância Aryazap - Jaylton Lopes
+21:39:17 [37mDEBUG[0m [System] [WhatsApp Business] Enviando via Graph API direta
+21:39:17 [37mDEBUG[0m [System] [WhatsApp Business] Enviando com citação (context) da mensagem ID: wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA=
+21:39:17 [31mERROR[0m [System] [Evolution API Send] ❌ Erro ao enviar mensagem para 557788621185@c.us: [90m| { errorMessage: [32m'Request failed with status code 400'[39m, errorResponse: { error: [36m[Object][39m }, errorStat...[0m
+  [31m↳ Error: {
+  message: 'Request failed with status code 400',
+  name: 'AxiosError',
+  description: undefined,
+  number: undefined,
+  fileName: undefined,
+  lineNumber: undefined,
+  columnNumber: undefined,
+  stack: 'AxiosError: Request failed with status code 400\n' +
+    '    at settle (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/settle.js:19:12)\n' +
+    '    at BrotliDecompress.handleStreamEnd (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/adapters/http.js:599:11)\n' +
+    '    at BrotliDecompress.emit (node:events:531:35)\n' +
+    '    at endReadableNT (node:internal/streams/readable:1698:12)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+    '    at Axios.request (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/Axios.js:45:41)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async Object.sendMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:783:24)\n' +
+    '    at async _sendSingleMessagePart (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:237:17)\n' +
+    '    at async Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:835:28)\n' +
+    '    at async Module.callAndRespondWithAI (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/aiProcessor.js:1873:41)\n' +
+    '    at async _handleBufferedMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/messageHandler.js:930:7)\n' +
+    '    at async Timeout._onTimeout (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/messageHandler.js:494:13)',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function [FormData]], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer EAFTsItWJ4bQBPjy5LVIh84F9h5DZAFqOEDCaL0FKQeVw98qJlgREWHXwtGBQPULlblULW2sHgro5MsXAipV2EyRPc7ztw0BETLsCzG0s1Avn6ZA902JqmkJg5oHZBCNMKGokvsqxp1ZAOMq8FbgPovZAmhtiLtUpzMrCZA9026bfDz96xugb41Qh2t8reKjVHZCLAZDZD',
+      'User-Agent': 'axios/1.9.0',
+      'Content-Length': '253',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://graph.facebook.com/v23.0/785005758035788/messages',
+    data: '{"messaging_product":"whatsapp","recipient_type":"individual","to":"557788621185","type":"text","text":{"body":"Boa noite, aqui é o Pedro do DPA. Tudo bem?"},"context":{"message_id":"wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA="}}',
+    allowAbsoluteUrls: true
+  },
+  code: 'ERR_BAD_REQUEST',
+  status: 400
+}[0m
+    [90mmessage: 'Request failed with status code 400',
+    name: 'AxiosError',
+    description: undefined,[0m
+21:39:17 [31mERROR[0m [Ctx:557788621185] [Part 1/2] Falha ao enviar texto para 557788621185@c.us: "Boa noite, aqui é o Pedro do DPA. Tudo bem?..."
+  [31m↳ Error: {
+  message: 'Request failed with status code 400',
+  name: 'AxiosError',
+  description: undefined,
+  number: undefined,
+  fileName: undefined,
+  lineNumber: undefined,
+  columnNumber: undefined,
+  stack: 'AxiosError: Request failed with status code 400\n' +
+    '    at settle (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/settle.js:19:12)\n' +
+    '    at BrotliDecompress.handleStreamEnd (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/adapters/http.js:599:11)\n' +
+    '    at BrotliDecompress.emit (node:events:531:35)\n' +
+    '    at endReadableNT (node:internal/streams/readable:1698:12)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+    '    at Axios.request (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/Axios.js:45:41)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async Object.sendMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:783:24)\n' +
+    '    at async _sendSingleMessagePart (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:237:17)\n' +
+    '    at async Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:835:28)\n' +
+    '    at async Module.callAndRespondWithAI (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/aiProcessor.js:1873:41)\n' +
+    '    at async _handleBufferedMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/messageHandler.js:930:7)\n' +
+    '    at async Timeout._onTimeout (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/messageHandler.js:494:13)',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function [FormData]], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer EAFTsItWJ4bQBPjy5LVIh84F9h5DZAFqOEDCaL0FKQeVw98qJlgREWHXwtGBQPULlblULW2sHgro5MsXAipV2EyRPc7ztw0BETLsCzG0s1Avn6ZA902JqmkJg5oHZBCNMKGokvsqxp1ZAOMq8FbgPovZAmhtiLtUpzMrCZA9026bfDz96xugb41Qh2t8reKjVHZCLAZDZD',
+      'User-Agent': 'axios/1.9.0',
+      'Content-Length': '253',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://graph.facebook.com/v23.0/785005758035788/messages',
+    data: '{"messaging_product":"whatsapp","recipient_type":"individual","to":"557788621185","type":"text","text":{"body":"Boa noite, aqui é o Pedro do DPA. Tudo bem?"},"context":{"message_id":"wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA="}}',
+    allowAbsoluteUrls: true
+  },
+  code: 'ERR_BAD_REQUEST',
+  status: 400
+}[0m
+    [90mmessage: 'Request failed with status code 400',
+    name: 'AxiosError',
+    description: undefined,[0m
+21:39:17 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.2ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:17 [31mERROR[0m [System] [Response Sender] Falha ao enviar parte de texto 1/2 para Gustavo. Continuando sequência...
+  [31m↳ Error: '557788621185@c.us'[0m
+    [90mat Object.error (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:395:127)
+    at Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:848:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[0m
+21:39:19 [37mDEBUG[0m [Ctx:557788621185] [Response Sender Loop] Preparando envio Texto Parte 2/2: "Vi que seu nome aqui no WhatsApp é Gustavo Brandão. Posso te chamar assim, ou prefere outro nome?..."
+21:39:19 [90mTRACE[0m [Ctx:557788621185] [Part 2/2] Não é possível simular 'digitando'. Usando delay fixo de 692ms...
+21:39:20 [90mTRACE[0m [Ctx:557788621185] [Part 2/2] Preparando para enviar mensagem AGORA...
+21:39:20 [90mTRACE[0m [Ctx:557788621185] [Part 2/2] Enviando texto: "Vi que seu nome aqui no WhatsApp é Gustavo Brandão. Posso te chamar assim, ou pr..."
+21:39:20 [90mTRACE[0m [Ctx:557788621185] [Part 2/2] Enviando com citação (quoted) da mensagem ID: wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA=
+21:39:20 [37mDEBUG[0m [System] [Evolution API Send] Enviando mensagem para 557788621185 via instância Aryazap - Jaylton Lopes
+21:39:20 [37mDEBUG[0m [System] [WhatsApp Business] Enviando via Graph API direta
+21:39:20 [37mDEBUG[0m [System] [WhatsApp Business] Enviando com citação (context) da mensagem ID: wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA=
+21:39:20 [31mERROR[0m [System] [Evolution API Send] ❌ Erro ao enviar mensagem para 557788621185@c.us: [90m| { errorMessage: [32m'Request failed with status code 400'[39m, errorResponse: { error: [36m[Object][39m }, errorStat...[0m
+  [31m↳ Error: {
+  message: 'Request failed with status code 400',
+  name: 'AxiosError',
+  description: undefined,
+  number: undefined,
+  fileName: undefined,
+  lineNumber: undefined,
+  columnNumber: undefined,
+  stack: 'AxiosError: Request failed with status code 400\n' +
+    '    at settle (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/settle.js:19:12)\n' +
+    '    at BrotliDecompress.handleStreamEnd (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/adapters/http.js:599:11)\n' +
+    '    at BrotliDecompress.emit (node:events:531:35)\n' +
+    '    at endReadableNT (node:internal/streams/readable:1698:12)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+    '    at Axios.request (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/Axios.js:45:41)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async Object.sendMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:783:24)\n' +
+    '    at async _sendSingleMessagePart (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:237:17)\n' +
+    '    at async Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:835:28)\n' +
+    '    at async Module.callAndRespondWithAI (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/aiProcessor.js:1873:41)\n' +
+    '    at async _handleBufferedMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/messageHandler.js:930:7)\n' +
+    '    at async Timeout._onTimeout (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/messageHandler.js:494:13)',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function [FormData]], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer EAFTsItWJ4bQBPjy5LVIh84F9h5DZAFqOEDCaL0FKQeVw98qJlgREWHXwtGBQPULlblULW2sHgro5MsXAipV2EyRPc7ztw0BETLsCzG0s1Avn6ZA902JqmkJg5oHZBCNMKGokvsqxp1ZAOMq8FbgPovZAmhtiLtUpzMrCZA9026bfDz96xugb41Qh2t8reKjVHZCLAZDZD',
+      'User-Agent': 'axios/1.9.0',
+      'Content-Length': '308',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://graph.facebook.com/v23.0/785005758035788/messages',
+    data: '{"messaging_product":"whatsapp","recipient_type":"individual","to":"557788621185","type":"text","text":{"body":"Vi que seu nome aqui no WhatsApp é Gustavo Brandão. Posso te chamar assim, ou prefere outro nome?"},"context":{"message_id":"wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA="}}',
+    allowAbsoluteUrls: true
+  },
+  code: 'ERR_BAD_REQUEST',
+  status: 400
+}[0m
+    [90mmessage: 'Request failed with status code 400',
+    name: 'AxiosError',
+    description: undefined,[0m
+21:39:20 [31mERROR[0m [Ctx:557788621185] [Part 2/2] Falha ao enviar texto para 557788621185@c.us: "Vi que seu nome aqui no WhatsApp é Gustavo Brandão..."
+  [31m↳ Error: {
+  message: 'Request failed with status code 400',
+  name: 'AxiosError',
+  description: undefined,
+  number: undefined,
+  fileName: undefined,
+  lineNumber: undefined,
+  columnNumber: undefined,
+  stack: 'AxiosError: Request failed with status code 400\n' +
+    '    at settle (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/settle.js:19:12)\n' +
+    '    at BrotliDecompress.handleStreamEnd (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/adapters/http.js:599:11)\n' +
+    '    at BrotliDecompress.emit (node:events:531:35)\n' +
+    '    at endReadableNT (node:internal/streams/readable:1698:12)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+    '    at Axios.request (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/Axios.js:45:41)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async Object.sendMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:783:24)\n' +
+    '    at async _sendSingleMessagePart (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:237:17)\n' +
+    '    at async Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:835:28)\n' +
+    '    at async Module.callAndRespondWithAI (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/aiProcessor.js:1873:41)\n' +
+    '    at async _handleBufferedMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/messageHandler.js:930:7)\n' +
+    '    at async Timeout._onTimeout (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/messageHandler.js:494:13)',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function [FormData]], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer EAFTsItWJ4bQBPjy5LVIh84F9h5DZAFqOEDCaL0FKQeVw98qJlgREWHXwtGBQPULlblULW2sHgro5MsXAipV2EyRPc7ztw0BETLsCzG0s1Avn6ZA902JqmkJg5oHZBCNMKGokvsqxp1ZAOMq8FbgPovZAmhtiLtUpzMrCZA9026bfDz96xugb41Qh2t8reKjVHZCLAZDZD',
+      'User-Agent': 'axios/1.9.0',
+      'Content-Length': '308',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://graph.facebook.com/v23.0/785005758035788/messages',
+    data: '{"messaging_product":"whatsapp","recipient_type":"individual","to":"557788621185","type":"text","text":{"body":"Vi que seu nome aqui no WhatsApp é Gustavo Brandão. Posso te chamar assim, ou prefere outro nome?"},"context":{"message_id":"wamid.HBgMNTU3Nzg4NjIxMTg1FQIAEhgWM0VCMEQwQ0E2MzRBQkVERUZFQUJEMQA="}}',
+    allowAbsoluteUrls: true
+  },
+  code: 'ERR_BAD_REQUEST',
+  status: 400
+}[0m
+    [90mmessage: 'Request failed with status code 400',
+    name: 'AxiosError',
+    description: undefined,[0m
+21:39:20 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.6ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:20 [31mERROR[0m [System] [Response Sender] Falha ao enviar parte de texto 2/2 para Gustavo. Continuando sequência...
+  [31m↳ Error: '557788621185@c.us'[0m
+    [90mat Object.error (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:395:127)
+    at Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:848:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[0m
+21:39:21 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] Sequência de envio concluída para Gustavo. Sucesso geral: false
+21:39:21 [36mINFO [0m [Ctx:557788621185] [AI Processor] Envio de mensagens concluído. Sucesso: false
+21:39:21 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Mensagens enviadas mas etapa NÃO marcada como concluída (IA não usou tag de ação).
+21:39:21 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:21 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.1ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:21 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:21 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:21 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365561991 para 557788621185@c.us
+21:39:21 [36mINFO [0m [Ctx:557788621185] [NextStepLogic] Mantendo etapa atual NAME_CAPTURE_VALIDATION. Avanço só ocorrerá com tag [ACTION: ADVANCE_FUNNEL] da IA.
+21:39:21 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] Nenhuma alteração de estado necessária. Etapa: NAME_CAPTURE_VALIDATION, Metadados não alterados.
+21:39:21 [37mDEBUG[0m [Ctx:557788621185] [AI Processor] 🔄 Timer de inatividade iniciado após processamento completo
+21:39:21 [90mTRACE[0m [Ctx:557788621185] [AI Processor] Processamento concluído. Etapa atual: NAME_CAPTURE_VALIDATION. Próximo avanço dependente da decisão da IA.
+21:39:21 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' limpa para 557788621185@c.us
+21:39:21 [90mTRACE[0m [System] [State Mgr Cache] Flag 'isProcessing' atualizada para false para 557788621185@c.us
+21:39:21 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' atualizada explicitamente para null para 557788621185@c.us
+21:39:21 [90mTRACE[0m [Ctx:557788621185] [AI Processor] Timer de inatividade gerenciado após envio das mensagens para 557788621185@c.us
+21:39:21 [90mTRACE[0m [Ctx:557788621185] [AI Processor] Trava isProcessing liberada para 557788621185@c.us.
+21:39:21 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Processamento de 1 mensagem(s) concluído, aguardando resposta do bot
+21:39:21 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Processamento concluído para 557788621185@c.us
+21:39:21 [37mDEBUG[0m [Ctx:557788621185] [Buffer Proc] Liberando trava isProcessing para 557788621185@c.us no finally.
+21:39:21 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' limpa para 557788621185@c.us
+21:39:21 [90mTRACE[0m [System] [State Mgr Cache] Flag 'isProcessing' atualizada para false para 557788621185@c.us
+21:39:21 [90mTRACE[0m [System] [State Mgr Cache] Flag 'processingStartTime' atualizada explicitamente para null para 557788621185@c.us
+21:39:21 [90mTRACE[0m [Ctx:557788621185] [Buffer Proc] Flag isProcessingBuffer (em memória) liberada para 557788621185@c.us no finally.
+21:39:21 [90mTRACE[0m [Ctx:557788621185] [Buffer Timeout] Flag isProcessingBuffer liberada para 557788621185@c.us
+21:39:21 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'4.8ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:39:21 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.0ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:22 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:22 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:22 [37mDEBUG[0m [Ctx:{ chatId: '557788621] [Inactivity Mgr] Flag de abort anterior limpa para novo ciclo de inatividade
+21:39:22 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'2.6ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:22 [37mDEBUG[0m [Ctx:{ chatId: '557788621] Timer de inatividade iniciado
+21:39:52 [36mINFO [0m [Ctx:{ chatId: '557788621] 🔔 [INATIVIDADE] DETECTADA
+21:39:52 [37mDEBUG[0m [System] Função getBufferInfo não disponível globalmente para 557788621185@c.us - assumindo sem buffer
+21:39:52 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'60.1ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated...[0m
+21:39:52 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'3.2ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:39:52 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:39:52 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:39:52 [36mINFO [0m [Ctx:{ chatId: '557788621] 📊 [INATIVIDADE] Estado atual: attempts=0, stage=first_attempt, lastReengagement=nunca
+21:39:52 [36mINFO [0m [Ctx:{ chatId: '557788621] ✅ [INATIVIDADE] Todas as verificações passaram, prosseguindo com reengajamento
+21:39:52 [36mINFO [0m [Ctx:{ chatId: '557788621] 📤 Iniciando envio de reengajamento
+21:39:52 [36mINFO [0m [Ctx:{ chatId: '557788621] 📤 Iniciando envio de reengajamento
+21:39:52 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'3.9ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:39:52 [37mDEBUG[0m [Ctx:{ chatId: '557788621] 🤖 Tentando gerar mensagem com IA
+21:39:52 [37mDEBUG[0m [Ctx:557788621185] >>> Chamando gemini (gemini-2.5-flash)... (Msg Count: 2)
+21:40:10 [37mDEBUG[0m [Ctx:557788621185] <<< Resposta gemini (gemini-2.5-flash) | Finish: stop | Tokens: 68r/1034p=1102t
+21:40:10 [36mINFO [0m [Ctx:{ chatId: '557788621] 🤖 Mensagem de inatividade gerada pela IA
+21:40:10 [36mINFO [0m [Ctx:{ chatId: '557788621] ✅ Mensagem gerada pela IA com sucesso
+21:40:10 [37mDEBUG[0m [Ctx:{ chatId: '557788621] 📝 Mensagem final formatada
+21:40:10 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.9ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:40:10 [37mDEBUG[0m [Ctx:{ chatId: undefined,] 📝 Usando nome preferido/corrigido para inatividade
+21:40:10 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] Iniciando envio de 1 parte(s) de texto para Gustavo. TTS Habilitado globalmente: true, Tentativa TTS para esta resposta: false
+21:40:10 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'INSERT INTO chat_states (chat_id, tenant_id, state_data, last_updated)...[0m
+21:40:10 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'1.2ms'[39m, query_start: [32m'SELECT state_data FROM chat_states WHERE chat_id = $1 AND tenant_id = ...[0m
+21:40:10 [33mWARN [0m [System] [State Mgr GetChatState] Falha ao obter nome atualizado para 557788621185@c.us via whatsappClient: clientInstance.getChatById is not a function
+21:40:10 [37mDEBUG[0m [Ctx:557788621185] [State Mgr DB] Estado encontrado para 557788621185@c.us após upsert atômico.
+21:40:10 [90mTRACE[0m [System] [State Mgr] Timestamp da última interação atualizado para 1759365610940 para 557788621185@c.us
+21:40:10 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] TTS desabilitado para etapa NAME_CAPTURE_VALIDATION (sendRecordMessage: false)
+21:40:10 [36mINFO [0m [Ctx:557788621185] [Response Sender] TTS desativado para etapa atual (sendRecordMessage: false) para Gustavo.
+21:40:10 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'3.2ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:40:10 [37mDEBUG[0m [Ctx:557788621185] [Response Sender Loop] Preparando envio Texto Parte 1/1: "Gustavo, você chegou pertinho de transformar sua advocacia.
+
+Já vi advogados como você alcançarem o ..."
+21:40:10 [90mTRACE[0m [Ctx:557788621185] [Part 1/1] Não é possível simular 'digitando'. Usando delay fixo de 531ms...
+21:40:11 [90mTRACE[0m [Ctx:557788621185] [Part 1/1] Preparando para enviar mensagem AGORA...
+21:40:11 [90mTRACE[0m [Ctx:557788621185] [Part 1/1] Enviando texto: "Gustavo, você chegou pertinho de transformar sua advocacia.
+
+Já vi advogados com..."
+21:40:11 [37mDEBUG[0m [System] [Evolution API Send] Enviando mensagem para 557788621185 via instância Aryazap - Jaylton Lopes
+21:40:11 [37mDEBUG[0m [System] [WhatsApp Business] Enviando via Graph API direta
+21:40:11 [31mERROR[0m [System] [Evolution API Send] ❌ Erro ao enviar mensagem para 557788621185@c.us: [90m| { errorMessage: [32m'Request failed with status code 400'[39m, errorResponse: { error: [36m[Object][39m }, errorStat...[0m
+  [31m↳ Error: {
+  message: 'Request failed with status code 400',
+  name: 'AxiosError',
+  description: undefined,
+  number: undefined,
+  fileName: undefined,
+  lineNumber: undefined,
+  columnNumber: undefined,
+  stack: 'AxiosError: Request failed with status code 400\n' +
+    '    at settle (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/settle.js:19:12)\n' +
+    '    at BrotliDecompress.handleStreamEnd (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/adapters/http.js:599:11)\n' +
+    '    at BrotliDecompress.emit (node:events:531:35)\n' +
+    '    at endReadableNT (node:internal/streams/readable:1698:12)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+    '    at Axios.request (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/Axios.js:45:41)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async Object.sendMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:783:24)\n' +
+    '    at async _sendSingleMessagePart (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:237:17)\n' +
+    '    at async Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:835:28)\n' +
+    '    at async InactivityManager.sendReengagementMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:469:29)\n' +
+    '    at async InactivityManager.handleInactivity (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:279:13)\n' +
+    '    at async Timeout._onTimeout (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:128:17)',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function [FormData]], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer EAFTsItWJ4bQBPjy5LVIh84F9h5DZAFqOEDCaL0FKQeVw98qJlgREWHXwtGBQPULlblULW2sHgro5MsXAipV2EyRPc7ztw0BETLsCzG0s1Avn6ZA902JqmkJg5oHZBCNMKGokvsqxp1ZAOMq8FbgPovZAmhtiLtUpzMrCZA9026bfDz96xugb41Qh2t8reKjVHZCLAZDZD',
+      'User-Agent': 'axios/1.9.0',
+      'Content-Length': '381',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://graph.facebook.com/v23.0/785005758035788/messages',
+    data: '{"messaging_product":"whatsapp","recipient_type":"individual","to":"557788621185","type":"text","text":{"body":"Gustavo, você chegou pertinho de transformar sua advocacia.\\n\\nJá vi advogados como você alcançarem o domínio completo em sucessões.\\n\\nPara isso, validar seu nome é o primeiro passo para personalizarmos seu caminho.\\n\\nIsso ainda é uma prioridade pra você?"}}',
+    allowAbsoluteUrls: true
+  },
+  code: 'ERR_BAD_REQUEST',
+  status: 400
+}[0m
+    [90mmessage: 'Request failed with status code 400',
+    name: 'AxiosError',
+    description: undefined,[0m
+21:40:11 [31mERROR[0m [Ctx:557788621185] [Part 1/1] Falha ao enviar texto para 557788621185@c.us: "Gustavo, você chegou pertinho de transformar sua a..."
+  [31m↳ Error: {
+  message: 'Request failed with status code 400',
+  name: 'AxiosError',
+  description: undefined,
+  number: undefined,
+  fileName: undefined,
+  lineNumber: undefined,
+  columnNumber: undefined,
+  stack: 'AxiosError: Request failed with status code 400\n' +
+    '    at settle (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/settle.js:19:12)\n' +
+    '    at BrotliDecompress.handleStreamEnd (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/adapters/http.js:599:11)\n' +
+    '    at BrotliDecompress.emit (node:events:531:35)\n' +
+    '    at endReadableNT (node:internal/streams/readable:1698:12)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+    '    at Axios.request (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/node_modules/axios/lib/core/Axios.js:45:41)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async Object.sendMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/whatsappClient.js:783:24)\n' +
+    '    at async _sendSingleMessagePart (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:237:17)\n' +
+    '    at async Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:835:28)\n' +
+    '    at async InactivityManager.sendReengagementMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:469:29)\n' +
+    '    at async InactivityManager.handleInactivity (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:279:13)\n' +
+    '    at async Timeout._onTimeout (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:128:17)',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function [FormData]], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer EAFTsItWJ4bQBPjy5LVIh84F9h5DZAFqOEDCaL0FKQeVw98qJlgREWHXwtGBQPULlblULW2sHgro5MsXAipV2EyRPc7ztw0BETLsCzG0s1Avn6ZA902JqmkJg5oHZBCNMKGokvsqxp1ZAOMq8FbgPovZAmhtiLtUpzMrCZA9026bfDz96xugb41Qh2t8reKjVHZCLAZDZD',
+      'User-Agent': 'axios/1.9.0',
+      'Content-Length': '381',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://graph.facebook.com/v23.0/785005758035788/messages',
+    data: '{"messaging_product":"whatsapp","recipient_type":"individual","to":"557788621185","type":"text","text":{"body":"Gustavo, você chegou pertinho de transformar sua advocacia.\\n\\nJá vi advogados como você alcançarem o domínio completo em sucessões.\\n\\nPara isso, validar seu nome é o primeiro passo para personalizarmos seu caminho.\\n\\nIsso ainda é uma prioridade pra você?"}}',
+    allowAbsoluteUrls: true
+  },
+  code: 'ERR_BAD_REQUEST',
+  status: 400
+}[0m
+    [90mmessage: 'Request failed with status code 400',
+    name: 'AxiosError',
+    description: undefined,[0m
+21:40:11 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'4.9ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m
+21:40:11 [31mERROR[0m [System] [Response Sender] Falha ao enviar parte de texto 1/1 para Gustavo. Continuando sequência...
+  [31m↳ Error: '557788621185@c.us'[0m
+    [90mat Object.error (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:395:127)
+    at Object.sendMessages (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/responseSender.js:848:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[0m
+21:40:13 [37mDEBUG[0m [Ctx:557788621185] [Response Sender] Sequência de envio concluída para Gustavo. Sucesso geral: false
+21:40:13 [31mERROR[0m [System] ❌ Falha ao enviar mensagem de reengajamento
+  [31m↳ Error: { chatId: '557788621185@c.us' }[0m
+    [90mat Object.error (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/logger.js:395:127)
+    at InactivityManager.sendReengagementMessage (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:496:24)
+    at async InactivityManager.handleInactivity (file:///C:/Users/Gustavo%20Brand%C3%A3o/Documents/aryaAgent/aryazap/inactivityManager.js:279:13)[0m
+21:40:13 [90mTRACE[0m [System] [DB Query OK] [90m| { duration: [32m'5.6ms'[39m, query_start: [32m' WITH updated_base AS ( SELECT state_data || $1::jso...'[39m, params_...[0m

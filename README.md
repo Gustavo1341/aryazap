@@ -1,5 +1,13 @@
 # AryaZap - Agente de Vendas IA para WhatsApp 🤖💬💰
 
+## Credenciais WhatsApp Business API
+Access Token: EAFTsItWJ4bQBPjy5LVIh84F9h5DZAFqOEDCaL0FKQeVw98qJlgREWHXwtGBQPULlblULW2sHgro5MsXAipV2EyRPc7ztw0BETLsCzG0s1Avn6ZA902JqmkJg5oHZBCNMKGokvsqxp1ZAOMq8FbgPovZAmhtiLtUpzMrCZA9026bfDz96xugb41Qh2t8reKjVHZCLAZDZD
+
+Phone Number ID: 785005758035788
+Business Account ID: 1950390949146130
+Webhook Verify Token: meu_token_webhook_2025
+numero: 61936181493
+
 ## Visão Geral
 
   🚀 Para Iniciar:
